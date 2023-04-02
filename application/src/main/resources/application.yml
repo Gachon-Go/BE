@@ -1,0 +1,18 @@
+server:
+  port: ENC(G5lpqr5yyGblJC+I4xBvxw==)
+spring:
+  datasource:
+    url: ENC(i8AzYvK+ZeByShgqZ6ofKFI2DrpTCUFvpMmwN3Rxf1c0t2gqoN6qxWCw9BJVjBfYHrQzEC//VZllLWoIDkBRo1z3NdX05YyizzUgZ90Aza9Kwcgh4ZIkAA==)
+    username: ENC(MhuDk+u05OhlX8A8jdAnKg==)
+    password: ENC(+8mXKpWYkCZcloCXC3vUG17jM02MeQ6l8qEznCSsN8Y=)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+  mvc:
+    path-match:
+      matching-strategy: ant_path_matcher
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
