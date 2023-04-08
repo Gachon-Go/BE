@@ -14,7 +14,7 @@ spring:
     path-match:
       matching-strategy: ant_path_matcher
   redis:
-    host: ENC(BSSOOYdW+R6LCkDWVpECiEnZ4zofmDzh)
+    host: ENC(YdqJJUGkl4qPFVk3Pi0/rYlsxSKYBX9Q)
     port: 6379
     password: ENC(vSsjiDv1X6o6IU7W3jETnLeO90t2RwAD2PZX1UTeIvQ=)
   mail:
