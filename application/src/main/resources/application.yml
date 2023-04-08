@@ -16,6 +16,7 @@ spring:
   redis:
     host: ENC(BSSOOYdW+R6LCkDWVpECiEnZ4zofmDzh)
     port: 6379
+    password: ENC(vSsjiDv1X6o6IU7W3jETnLeO90t2RwAD2PZX1UTeIvQ=)
   mail:
     host: ENC(1RRXK7q5WB8ct1rnep/bnaG9RTcygPWd)
     port: 587
