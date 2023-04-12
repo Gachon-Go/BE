@@ -1,108 +1,47 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.10'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.springframework.boot' version '3.0.5'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
-group = 'com.example'
+group = 'gcu.project'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
 }
-bootJar {
-    enabled = false
-}
-jar {
-    enabled = true
-}
 repositories {
     mavenCentral()
 }
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
-    group = 'com.example'
-    version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = '11'
-    configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
 
-    repositories {
-        mavenCentral()
-    }
-
-
-    dependencies {
-        //log
-        implementation 'org.springframework.boot:spring-boot-starter-logging'
-        //test
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        //annotation
-        implementation 'org.jetbrains:annotations:24.0.1'
-        //lombok
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-    }
-
+dependencies {
+    //log
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    //test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //annotation
+    implementation 'org.jetbrains:annotations:24.0.1'
+    //lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.5'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation(group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.4')
+    implementation(group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.4')
+    implementation(group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.4')
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'com.mysql:mysql-connector-j'
+    implementation 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
-project(":core") {
-    /* 도메인 및 비즈니스 로직을 포함하고 있지 않은  */
-    dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-    }
-    bootJar { enabled = false }
-    jar { enabled = true }
-}
-
-project(":domain") {
-    /* 서비스 비즈니스 로직과 관계가 없음 */
-    dependencies {
-        implementation project(":core")
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    }
-    bootJar { enabled = false }
-    jar { enabled = true }
-}
-
-project(":infra") {
-    /* 서비스 비즈니스 로직과 관계가 없음, 하나의 인프라 스트럭쳐에 대한 책임만 갖는다. (DB Server, Redis, ElasticSearch 등등) */
-    dependencies {
-        implementation project(":domain")
-        implementation project(":core")
-        implementation 'io.springfox:springfox-boot-starter:3.0.0'
-        implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'
-        implementation 'org.springframework.boot:spring-boot-starter-security'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        implementation(group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.4')
-        implementation(group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.4')
-        implementation(group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.4')
-        implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-        implementation 'org.springframework.boot:spring-boot-starter-mail'
-        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-        implementation 'com.mysql:mysql-connector-j'
-        implementation 'com.h2database:h2'
-        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    }
-    bootJar { enabled = false }
-    jar { enabled = true }
-}
-
-project(":application") {
-    /* API용 비즈니스 로직관련 모듈 swagger */
-    dependencies {
-        implementation project(":domain")
-        implementation project(":core")
-        implementation project(":infra")
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    }
+tasks.named('test') {
+    useJUnitPlatform()
 }
