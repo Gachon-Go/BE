@@ -1,0 +1,37 @@
+server:
+  port: 9000
+spring:
+  datasource:
+    url: ENC(i8AzYvK+ZeByShgqZ6ofKFI2DrpTCUFvpMmwN3Rxf1c0t2gqoN6qxWCw9BJVjBfYHrQzEC//VZllLWoIDkBRo1z3NdX05YyizzUgZ90Aza9Kwcgh4ZIkAA==)
+    username: ENC(MhuDk+u05OhlX8A8jdAnKg==)
+    password: ENC(+8mXKpWYkCZcloCXC3vUG17jM02MeQ6l8qEznCSsN8Y=)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    generate-ddl: true
+    database: mysql
+  mvc:
+    path-match:
+      matching-strategy: ant_path_matcher
+  mail:
+    host: ENC(1RRXK7q5WB8ct1rnep/bnaG9RTcygPWd)
+    port: 587
+    username: ENC(wvIpM3+wdYpP5RCdPoMEsCvU9SMyBD/5F+qMjC8TfIk=)
+    password: ENC(tujso/Sgx1TlwJBGYbZf/fo2Mu1P/5BR4MzfaoymgFw=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+  data:
+    redis:
+      port: 6379
+      password: ENC(vSsjiDv1X6o6IU7W3jETnLeO90t2RwAD2PZX1UTeIvQ=)
+      host: ENC(YdqJJUGkl4qPFVk3Pi0/rYlsxSKYBX9Q)
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
