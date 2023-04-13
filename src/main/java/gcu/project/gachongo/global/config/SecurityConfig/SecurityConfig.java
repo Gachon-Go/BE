@@ -31,9 +31,8 @@ public class SecurityConfig {
     private static final String[] PERMITTED_URLS = {
             "/h2-console/**",
             "/test/log",
-            "/users/**",
+            "/users/signup",
             "/mail/**",
-            "/signup/**",
             "/login/oauth/code/kakao"
     };
 
