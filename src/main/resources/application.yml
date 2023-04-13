@@ -53,3 +53,5 @@ spring:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+logging:
+  config: classpath:logback-spring.xml
