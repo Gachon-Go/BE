@@ -25,7 +25,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @Api(tags = "유저")
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/users")
 public class MemberApplication {
     private final OAuthService oAuthService;
     private final MemberService memberService;
@@ -34,14 +34,14 @@ public class MemberApplication {
     @PostMapping(value = "/signup")
     public ResponseEntity<ApiResponse<String>> SignUp(@RequestBody CreateMemberDto createMemberDto) {
         OAuth2UserInfo oAuth2UserInfo = oAuthService.identificationProvider(createMemberDto.getProvider(), createMemberDto.getToken());
+        if (memberService.existMember(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId())) {
+            throw new CustomException(ErrorCode.EXISTS_MEMBER);
+        }
         if (memberService.existNickname(createMemberDto.getNickname())) {
             throw new CustomException(ErrorCode.EXISTS_USER_NICKNAME);
         }
         if (memberService.existEmail(createMemberDto.getEmail())) {
             throw new CustomException(ErrorCode.EXISTS_EMAIL);
-        }
-        if (memberService.existMember(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId())) {
-            throw new CustomException(ErrorCode.EXISTS_MEMBER);
         }
         memberService.createMember(createMemberDto, oAuth2UserInfo);
 
