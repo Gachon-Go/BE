@@ -40,6 +40,8 @@ dependencies {
     implementation 'com.mysql:mysql-connector-j'
     implementation 'com.h2database:h2'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'com.google.code.gson:gson'
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 }
 
 tasks.named('test') {
