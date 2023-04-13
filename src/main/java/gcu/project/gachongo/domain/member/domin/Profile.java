@@ -1,6 +1,7 @@
 package gcu.project.gachongo.domain.member.domin;
 
 import gcu.project.gachongo.global.common.entity.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -26,4 +27,13 @@ public class Profile extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
+    public Profile createProfile(String email, String nickname){
+        return Profile.builder()
+                .email(email)
+                .nickname(nickname)
+                .build();
+    }
+    public void setMember(Member member){
+        this.member = member;
+    }
 }

@@ -34,7 +34,6 @@ public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHan
         String username = authentication.getName();
         String accessToken = jwtTokenProvider.createAccessToken(username);
         AccessToken token = new AccessToken(accessToken);
-        token.setToken(accessToken);
         ApiResponse<AccessToken> result = new ApiResponse<>(ResponseCode.USER_LOGIN, token);
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);

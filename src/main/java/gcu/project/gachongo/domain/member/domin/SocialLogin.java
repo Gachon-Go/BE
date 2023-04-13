@@ -1,9 +1,8 @@
 package gcu.project.gachongo.domain.member.domin;
 
 import gcu.project.gachongo.global.common.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import gcu.project.gachongo.infra.ouath.core.OAuthType;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +22,12 @@ public class SocialLogin extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
-    private String authPlatform;
+    @Enumerated(EnumType.STRING)
+    private OAuthType provider;
 
     private String authId;
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

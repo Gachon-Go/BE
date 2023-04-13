@@ -33,7 +33,8 @@ public class SecurityConfig {
             "/test/log",
             "/users/**",
             "/mail/**",
-            "/login/ouath/code/kakao"
+            "/signup/**",
+            "/login/oauth/code/kakao"
     };
 
     @Bean
