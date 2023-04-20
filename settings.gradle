@@ -1,5 +1,1 @@
 rootProject.name = 'gachongo'
-include  'application'
-include  'core'
-include  'domain'
-include  'infra'
