@@ -1,6 +1,6 @@
-package gcu.project.gachongo.domain.member.dto.request;
+package gcu.project.gachongo.api.auth.dto.request;
 
-import gcu.project.gachongo.infra.ouath.core.OAuthType;
+import gcu.project.gachongo.service.oauth.dto.core.OAuthType;
 import lombok.*;
 
 @Getter
@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CreateMemberDto {
+public class CreateMemberRequest {
     String nickname;
     String email;
     String fcm_id;

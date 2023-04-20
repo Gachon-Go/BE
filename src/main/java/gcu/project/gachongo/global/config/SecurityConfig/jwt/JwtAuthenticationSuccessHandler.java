@@ -22,8 +22,6 @@ import java.io.IOException;
 public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final MemberRepository memberRepository;
-
     private final ObjectMapper objectMapper;
 
     @Override

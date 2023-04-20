@@ -1,4 +1,4 @@
-package gcu.project.gachongo.domain.member.dto.request;
+package gcu.project.gachongo.api.auth.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package gcu.project.gachongo.domain.member.domin;
 
 import gcu.project.gachongo.global.common.entity.BaseEntity;
-import gcu.project.gachongo.infra.ouath.core.OAuthType;
+import gcu.project.gachongo.service.oauth.dto.core.OAuthType;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

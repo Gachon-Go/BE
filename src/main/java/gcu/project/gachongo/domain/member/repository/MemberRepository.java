@@ -2,7 +2,7 @@ package gcu.project.gachongo.domain.member.repository;
 
 import gcu.project.gachongo.domain.member.domin.Member;
 import gcu.project.gachongo.domain.member.vo.Status;
-import gcu.project.gachongo.infra.ouath.core.OAuthType;
+import gcu.project.gachongo.service.oauth.dto.core.OAuthType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

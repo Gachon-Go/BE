@@ -52,12 +52,11 @@ public class JwtTokenProvider {
     }
 
     private String createToken(String username, String tokenType) {
-        long expiredTimeMillis = accessTokenValidityInMillis;
         return builder()
                 .setSubject(username)
                 .claim(TOKEN_TYPE, tokenType)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiredTimeMillis))
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenValidityInMillis))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -90,7 +89,4 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
-    public String getSubject(String token) {
-        return jwtParser.parseClaimsJws(token).getBody().getSubject();
-    }
 }

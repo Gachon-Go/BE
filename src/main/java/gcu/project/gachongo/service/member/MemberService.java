@@ -1,14 +1,14 @@
-package gcu.project.gachongo.domain.member.service;
+package gcu.project.gachongo.service.member;
 
 import gcu.project.gachongo.domain.member.domin.Member;
 import gcu.project.gachongo.domain.member.domin.Profile;
 import gcu.project.gachongo.domain.member.domin.SocialLogin;
-import gcu.project.gachongo.domain.member.dto.request.CreateMemberDto;
+import gcu.project.gachongo.api.auth.dto.request.CreateMemberRequest;
 import gcu.project.gachongo.domain.member.repository.MemberRepository;
 import gcu.project.gachongo.domain.member.vo.Role;
 import gcu.project.gachongo.domain.member.vo.Status;
-import gcu.project.gachongo.infra.ouath.core.OAuth2UserInfo;
-import gcu.project.gachongo.infra.ouath.core.OAuthType;
+import gcu.project.gachongo.service.oauth.dto.core.OAuth2UserInfo;
+import gcu.project.gachongo.service.oauth.dto.core.OAuthType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,15 +23,15 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     @Transactional
-    public void createMember(CreateMemberDto createMemberDto, OAuth2UserInfo oAuth2UserInfo) {
+    public void createMember(CreateMemberRequest createMemberRequest, OAuth2UserInfo oAuth2UserInfo) {
         Member member = Member.builder()
-                .fcm_id(createMemberDto.getFcm_id())
+                .fcm_id(createMemberRequest.getFcm_id())
                 .role(Role.USER)
                 .status(Status.A)
                 .build();
         Profile profile = Profile.builder()
-                .email(createMemberDto.getEmail())
-                .nickname(createMemberDto.getNickname())
+                .email(createMemberRequest.getEmail())
+                .nickname(createMemberRequest.getNickname())
                 .build();
         SocialLogin socialLogin = SocialLogin.builder()
                 .authId(oAuth2UserInfo.getProviderId())

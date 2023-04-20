@@ -1,4 +1,4 @@
-package gcu.project.gachongo.infra.email;
+package gcu.project.gachongo.service.email;
 
 import gcu.project.gachongo.domain.member.vo.Email;
 import gcu.project.gachongo.global.util.RedisUtil;
@@ -7,6 +7,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -55,7 +56,8 @@ public class EmailService {
     }
 
 
-    // 메일 보내기
+    // 메일 보내기 ( 비동기 처리)
+    @Async
     public void sendEmail(String toEmail) {
         if (redisUtil.existData(toEmail)) {
             redisUtil.deleteData(toEmail);

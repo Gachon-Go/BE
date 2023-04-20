@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gcu.project.gachongo.global.config.SecurityConfig.jwt.JwtAuthenticationCheckFilter;
 import gcu.project.gachongo.global.config.SecurityConfig.jwt.JwtAuthenticationEntryPoint;
 import gcu.project.gachongo.global.config.SecurityConfig.jwt.JwtTokenProvider;
-import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +32,7 @@ public class SecurityConfig {
             "/test/log",
             "/users/signup",
             "/mail/**",
-            "/login/oauth/code/kakao"
+            "/login/oauth/code/provider"
     };
 
     @Bean

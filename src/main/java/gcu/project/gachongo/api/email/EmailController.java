@@ -1,24 +1,21 @@
-package gcu.project.gachongo.domain.member.application;
+package gcu.project.gachongo.api.email;
 
-import gcu.project.gachongo.domain.member.dto.request.SendMailRequest;
 import gcu.project.gachongo.domain.member.vo.Email;
 import gcu.project.gachongo.global.common.api.ApiResponse;
 import gcu.project.gachongo.global.common.api.ResponseCode;
 import gcu.project.gachongo.global.util.Regex;
-import gcu.project.gachongo.infra.email.EmailService;
+import gcu.project.gachongo.service.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mail")
-public class EmailApplication {
+public class EmailController {
     private final EmailService emailService;
 
     @ResponseBody
