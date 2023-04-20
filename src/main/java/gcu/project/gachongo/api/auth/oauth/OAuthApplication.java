@@ -1,6 +1,6 @@
-package gcu.project.gachongo.infra.ouath.core;
+package gcu.project.gachongo.api.auth.oauth;
 
-import gcu.project.gachongo.infra.ouath.kakao.KakaoService;
+import gcu.project.gachongo.service.oauth.provider.KakaoService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

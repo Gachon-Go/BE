@@ -1,8 +1,10 @@
-package gcu.project.gachongo.infra.ouath.core;
+package gcu.project.gachongo.service.oauth;
 
 import gcu.project.gachongo.global.common.api.ErrorCode;
 import gcu.project.gachongo.global.common.exception.CustomException;
-import gcu.project.gachongo.infra.ouath.kakao.KakaoService;
+import gcu.project.gachongo.service.oauth.dto.core.OAuth2UserInfo;
+import gcu.project.gachongo.service.oauth.dto.core.OAuthType;
+import gcu.project.gachongo.service.oauth.provider.KakaoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

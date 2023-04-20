@@ -1,10 +1,11 @@
-package gcu.project.gachongo.infra.ouath.kakao;
+package gcu.project.gachongo.service.oauth.provider;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gcu.project.gachongo.global.common.api.ErrorCode;
 import gcu.project.gachongo.global.common.exception.CustomException;
+import gcu.project.gachongo.service.oauth.dto.kakao.KakaoUserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -22,12 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class KakaoService {
-    /**
-     * 인가코드로 토큰 받기
-     *
-     * @param code 인가코드
-     * @throws IOException // 카카오서버 접속 오류
-     */
+
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String client_id;
     @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
@@ -100,9 +96,9 @@ public class KakaoService {
 
 
         //access_token을 이용하여 사용자 정보 조회
-        KakaoUserInfo kakaoUserInfo = null;
+        KakaoUserInfo kakaoUserInfo;
 
-        URL url = null;
+        URL url;
         try {
             url = new URL(user_info_uri);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -127,7 +123,7 @@ public class KakaoService {
             // jackson objectmapper 객체 생성
             ObjectMapper objectMapper = new ObjectMapper();
             // JSON String -> Map
-            Map<String, Object> jsonMap = objectMapper.readValue(result.toString(), new TypeReference<Map<String, Object>>() {
+            Map<String, Object> jsonMap = objectMapper.readValue(result.toString(), new TypeReference<>() {
             });
             //Gson 라이브러리로 JSON파싱
             //accesstoken 정보 Dto에 빌드

@@ -1,4 +1,4 @@
-package gcu.project.gachongo.infra.ouath.core;
+package gcu.project.gachongo.service.oauth.dto.core;
 
 import java.util.Map;
 

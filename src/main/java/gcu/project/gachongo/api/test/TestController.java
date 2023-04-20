@@ -1,9 +1,8 @@
-package gcu.project.gachongo.domain.test;
+package gcu.project.gachongo.api.test;
 
 import gcu.project.gachongo.global.common.api.ApiResponse;
 import gcu.project.gachongo.global.common.api.ResponseCode;
-import gcu.project.gachongo.global.util.Regex;
-import gcu.project.gachongo.infra.email.EmailService;
+import gcu.project.gachongo.service.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/test")
-public class TestApplication {
+public class TestController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final EmailService emailService;
 
