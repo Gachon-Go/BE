@@ -3,3 +3,10 @@ dependencies {
     api project(':core:redis')
     api project(':core:async')
 }
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

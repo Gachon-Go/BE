@@ -4,3 +4,10 @@ dependencies {
     implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.5'
     implementation 'org.springframework.boot:spring-boot-starter'
 }
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
