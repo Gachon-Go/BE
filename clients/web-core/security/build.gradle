@@ -12,3 +12,10 @@ dependencies {
     implementation project(':clients:web-core:common')
     api project(':domain')
 }
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
