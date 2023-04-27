@@ -49,7 +49,7 @@ jobs:
 
       - name: web docker build and push
         run: |
-          docker build -t ${{ env.DOCKER_IMAGE }} ./application
+          docker build -t ${{ env.DOCKER_IMAGE }} ./api
           docker push ${{ env.DOCKER_IMAGE }}
 
   deploy:
