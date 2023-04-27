@@ -1,0 +1,13 @@
+spring:
+  mail:
+    host: ENC(1RRXK7q5WB8ct1rnep/bnaG9RTcygPWd)
+    port: 587
+    username: ENC(wvIpM3+wdYpP5RCdPoMEsCvU9SMyBD/5F+qMjC8TfIk=)
+    password: ENC(tujso/Sgx1TlwJBGYbZf/fo2Mu1P/5BR4MzfaoymgFw=)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true

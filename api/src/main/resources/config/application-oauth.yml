@@ -1,0 +1,19 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ENC(SIjUKpPBCYPefqZTYt9fZcnkTJtmRsaFlkTcqKxdYTFeuPngXVpLc7G3pSclS4+A)
+            client-secret: ENC(05WkTu0UcIXNVMl0ZlswfSgwXzU6hd7Qdrq1RJDfk83C05zxm1MKffSUGesajoNN)
+            scope:
+            client-name: Kakao
+            redirect-uri: ENC(2eO5eLJVt0x3dmuoVT+J58KAzz98JRBay7nr/0EKUIFme6GAvm9EsKlhB98fY5BvEFQOzx2vsog=)
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id

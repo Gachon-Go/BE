@@ -1,50 +1,60 @@
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.0.5'
-    id 'io.spring.dependency-management' version '1.1.0'
-}
-
-group = 'gcu.project'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+buildscript {
+    ext {
+        springBootVersion = '3.0.6'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:1.1.0"
     }
 }
-repositories {
-    mavenCentral()
-}
 
-dependencies {
-    //log
-    implementation 'org.springframework.boot:spring-boot-starter-logging'
-    //test
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    //annotation
-    implementation 'org.jetbrains:annotations:24.0.1'
-    //lombok
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.5'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation(group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.4')
-    implementation(group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.4')
-    implementation(group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.4')
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'com.mysql:mysql-connector-j'
-    implementation 'com.h2database:h2'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'com.google.code.gson:gson'
-    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-    implementation 'com.github.maricn:logback-slack-appender:1.6.1'
-}
+allprojects {}
 
-tasks.named('test') {
-    useJUnitPlatform()
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'gcu.mp'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        //log
+        implementation 'org.springframework.boot:spring-boot-starter-logging'
+        //test
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+        //lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+    }
+}
+project(':clients'){
+    dependencies {
+        implementation project(':core')
+    }
+}
+project(':api') {
+    dependencies {
+        implementation project(':core')
+        implementation project(':domain')
+        implementation project(':clients')
+    }
+}
+project(':domain') {
+    dependencies {
+        implementation project(':core')
+    }
+}
+project(':core'){
+    dependencies {
+    }
 }
