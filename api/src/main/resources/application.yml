@@ -1,0 +1,17 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: gachongo
+  mvc:
+    path-match:
+      matching-strategy: ant_path_matcher
+  profiles:
+    include:
+      - redis
+      - email
+      - jasypt
+      - oauth
+      - mysql
+      - slack
+    active: local
