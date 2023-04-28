@@ -40,4 +40,7 @@ public class Member extends BaseEntity {
         this.socialLogin = socialLogin;
         socialLogin.setMember(this);
     }
+    public void resignMember(){
+        this.status = Status.D;
+    }
 }

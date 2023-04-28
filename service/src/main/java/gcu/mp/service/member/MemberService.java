@@ -66,12 +66,16 @@ public class MemberService {
         Optional<Member> members = memberEntityRepository.findByProviderAndTokenAndUserStatus(oauthType, token, Status.A);
         return members.map(BaseEntity::getId).orElse(null);
     }
-
+    @Transactional
     public void modifyNickname(ModifyNicknameDto modifyNicknameDto) {
         Long id = modifyNicknameDto.getMemberId();
         String nickName = modifyNicknameDto.getNickName();
         Optional<Member> member = memberEntityRepository.findByIdAndStatus(id, Status.A);
         member.get().getProfile().updateNickname(nickName);
     }
-
+    @Transactional
+    public void resignMember(Long memberId) {
+        Optional<Member> members = memberEntityRepository.findByIdAndStatus(memberId, Status.A);
+        members.get().resignMember();
+    }
 }
