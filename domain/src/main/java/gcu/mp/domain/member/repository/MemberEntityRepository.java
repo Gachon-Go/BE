@@ -36,4 +36,5 @@ public interface MemberEntityRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmailAndStatus(
             @Param("email") String email,
             @Param("status") Status status);
+
 }

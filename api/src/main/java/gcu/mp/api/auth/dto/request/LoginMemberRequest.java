@@ -8,9 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CreateMemberRequest {
-    String nickname;
-    String email;
+public class LoginMemberRequest {
+    String fcmId;
     OAuthType provider;
     String token;
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ExistMemberDto {
+public class OauthMemberDto {
     String oauthType;
     String Token;
 
