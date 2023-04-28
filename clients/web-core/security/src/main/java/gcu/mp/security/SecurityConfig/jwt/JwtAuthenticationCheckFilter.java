@@ -24,11 +24,13 @@ public class JwtAuthenticationCheckFilter extends OncePerRequestFilter {
     protected void doFilterInternal( HttpServletRequest request,  HttpServletResponse response,  FilterChain chain)
             throws ServletException, IOException {
         String token = resolveToken(request);
+        log.info("{}",SecurityContextHolder.getContext().getAuthentication());
         log.info("Jwt Authentication Check Filter token : {}", token);
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+        log.info("{}",SecurityContextHolder.getContext().getAuthentication());
         chain.doFilter(request, response);
     }
 

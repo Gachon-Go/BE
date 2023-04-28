@@ -42,7 +42,7 @@ public class JwtTokenProvider {
             @Value("3bWNO73XHugZHzVjVCy03cAqD91NQU6BJmTHAp1nrKXBpKfs0Soz00bkTnYE1DIwRRAGg592CdGZ5kj94xmZXw2nl") String secret,
             UserDetailsService userDetailsService) {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
-        this.accessTokenValidityInMillis = accessTokenValidity * 1000;
+        this.accessTokenValidityInMillis = accessTokenValidity * 1000 * 60 * 60;
         this.userDetailsService = userDetailsService;
         this.jwtParser = Jwts.parserBuilder().setSigningKey(secretKey).build();
     }
@@ -87,6 +87,10 @@ public class JwtTokenProvider {
         String usernameFromToken = jwtParser.parseClaimsJws(accessToken).getBody().getSubject();
         UserDetails userDetails = userDetailsService.loadUserByUsername(usernameFromToken);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    public String getSubject(String token) {
+        return jwtParser.parseClaimsJws(token).getBody().getSubject();
     }
 
 }

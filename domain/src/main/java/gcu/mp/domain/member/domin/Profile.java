@@ -35,4 +35,7 @@ public class Profile extends BaseEntity {
     public void setMember(Member member){
         this.member = member;
     }
+    public void updateNickname(String nickname){
+        this.nickname = nickname;
+    }
 }

@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "유저")
+@Tag(name = "인증")
 @RequestMapping(value = "/auth")
 public class AuthController {
     private final AuthMapper authMapper;
@@ -56,7 +56,7 @@ public class AuthController {
         Long memberId = memberService.getMemberId(authMapper.toOauthMemberDto(oAuth2UserInfo));
         if (memberId == null)
             throw new CustomException(ErrorCode.NO_EXISTS_USER);
-        LogInMemberResponse logInMemberResponse = new LogInMemberResponse(jwtTokenProvider.createAccessToken(Long.toString(memberId)));
+        LogInMemberResponse logInMemberResponse = new LogInMemberResponse(memberId,jwtTokenProvider.createAccessToken(Long.toString(memberId)));
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.USER_LOGIN, logInMemberResponse));
     }
 
