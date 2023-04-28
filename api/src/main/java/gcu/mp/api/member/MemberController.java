@@ -26,8 +26,8 @@ public class MemberController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
 
-    @PatchMapping("/modify/nickname")
     @Operation(summary = "닉네임 변경")
+    @PatchMapping("/modify/nickname")
     public ResponseEntity<ApiResponse<String>> logIn(@RequestBody ModifyNicknameRequest modifyNicknameRequest) {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         Long memberId = Long.parseLong(loggedInUser.getName());
@@ -36,5 +36,13 @@ public class MemberController {
         }
         memberService.modifyNickname(memberMapper.toModifyNicknameDto(modifyNicknameRequest, memberId));
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.MODIFY_NICKNAME));
+    }
+    @Operation(summary = "회원탈퇴")
+    @DeleteMapping("/resign")
+    public ResponseEntity<ApiResponse<String>> resign(){
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        Long memberId = Long.parseLong(loggedInUser.getName());
+        memberService.resignMember(memberId);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.RESIGN_MEMBER));
     }
 }
