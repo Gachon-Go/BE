@@ -30,8 +30,7 @@ public class SecurityConfig {
             "/swagger-resources/**", //swagger
             "/v3/api-docs/**",  //swagger
             "/test/log",
-            "/users/signup",
-            "/users/login",
+            "/auth/**",
             "/mail/**",
             "/login/oauth/code/**"
     };
