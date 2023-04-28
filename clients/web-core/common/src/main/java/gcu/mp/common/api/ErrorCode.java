@@ -24,7 +24,8 @@ public enum ErrorCode {
     INVALID_PROVIDER(HttpStatus.CONFLICT, "잘못된 Oauth provider 입니다."),
     EXISTS_MEMBER(HttpStatus.CONFLICT, "이미 가입된 유저입니다."),
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "유효한 토큰이 아닙니다."),
-    EXISTS_EMAIL(HttpStatus.CONFLICT,"이미 가입된 이메일입니다." );
+    EXISTS_EMAIL(HttpStatus.CONFLICT,"이미 가입된 이메일입니다." ),
+    NO_EXISTS_USER(HttpStatus.CONFLICT, "존재하지 않는 유저입니다.");
 
     private final HttpStatus status;
     private final String message;

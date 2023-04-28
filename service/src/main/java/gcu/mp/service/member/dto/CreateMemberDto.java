@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @Builder
 public class CreateMemberDto {
-    String fcm_id;
     String email;
     String nickname;
     String providerId;
