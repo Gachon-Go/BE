@@ -8,5 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class LogInMemberResponse {
+    Long id;
     String jwt;
 }
