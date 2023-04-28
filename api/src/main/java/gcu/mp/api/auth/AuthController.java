@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "유저")
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/auth")
 public class AuthController {
     private final AuthMapper authMapper;
     private final OAuthService oAuthService;
@@ -36,13 +36,13 @@ public class AuthController {
     public ResponseEntity<ApiResponse<String>> signUp(@RequestBody CreateMemberRequest createMemberRequest) {
         OAuth2UserInfo oAuth2UserInfo = oAuthService.identificationProvider(createMemberRequest.getProvider(), createMemberRequest.getToken());
         if (memberService.existMember(authMapper.toOauthMemberDto(oAuth2UserInfo))) {
-            throw new CustomException(ErrorCode.EXISTS_MEMBER);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(ResponseCode.EXISTS_MEMBER));
         }
         if (memberService.existNickname(createMemberRequest.getNickname())) {
-            throw new CustomException(ErrorCode.EXISTS_USER_NICKNAME);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(ResponseCode.EXISTS_USER_NICKNAME));
         }
         if (memberService.existEmail(createMemberRequest.getEmail())) {
-            throw new CustomException(ErrorCode.EXISTS_EMAIL);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(ResponseCode.EXISTS_EMAIL));
         }
         memberService.createMember(authMapper.toCreateMemberDto(createMemberRequest, oAuth2UserInfo));
 
@@ -58,5 +58,14 @@ public class AuthController {
             throw new CustomException(ErrorCode.NO_EXISTS_USER);
         LogInMemberResponse logInMemberResponse = new LogInMemberResponse(jwtTokenProvider.createAccessToken(Long.toString(memberId)));
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.USER_LOGIN, logInMemberResponse));
+    }
+
+    @GetMapping(value = "/nickname/{nickname}/validation")
+    @Operation(summary = "닉네임 유효성 체크 API")
+    public ResponseEntity<ApiResponse<String>> ValidationUserNickName(@PathVariable String nickname) {
+        if (memberService.existNickname(nickname)) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(ResponseCode.EXISTS_USER_NICKNAME));
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(ResponseCode.USER_NICKNAME));
     }
 }
