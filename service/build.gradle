@@ -2,6 +2,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     api project(':domain')
+    api project(':clients:web-core:common')
 }
 bootJar {
     enabled = false

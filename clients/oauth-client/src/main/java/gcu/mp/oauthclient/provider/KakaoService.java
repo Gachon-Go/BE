@@ -2,15 +2,14 @@ package gcu.mp.oauthclient.provider;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gcu.mp.common.api.ErrorCode;
-import gcu.mp.common.exception.CustomException;
+import gcu.mp.common.api.BaseResponseStatus;
+import gcu.mp.common.exception.BaseException;
 import gcu.mp.oauthclient.dto.kakao.KakaoUserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
@@ -110,7 +109,7 @@ public class KakaoService {
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
             if(responseCode==401)
-                throw new CustomException(ErrorCode.INVALID_TOKEN);
+                throw new BaseException(BaseResponseStatus.INVALID_TOKEN);
             //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;

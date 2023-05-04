@@ -2,12 +2,14 @@ package gcu.mp.api.member;
 
 import gcu.mp.api.member.dto.request.ModifyNicknameRequest;
 import gcu.mp.api.member.mapper.MemberMapper;
-import gcu.mp.common.api.ApiResponse;
-import gcu.mp.common.api.ResponseCode;
-import gcu.mp.oauthclient.OAuthService;
-import gcu.mp.security.SecurityConfig.jwt.JwtTokenProvider;
+import gcu.mp.common.api.BaseResponse;
+import gcu.mp.common.api.BaseResponseStatus;
 import gcu.mp.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,22 +29,43 @@ public class MemberController {
     private final MemberService memberService;
 
     @Operation(summary = "닉네임 변경")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "2101", description = "사용중인 유저 닉네임 입니다.", content = @Content),
+            @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
+            @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
+    })
     @PatchMapping("/modify/nickname")
-    public ResponseEntity<ApiResponse<String>> logIn(@RequestBody ModifyNicknameRequest modifyNicknameRequest) {
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        Long memberId = Long.parseLong(loggedInUser.getName());
-        if (memberService.existNickname(modifyNicknameRequest.getNickname())) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(ResponseCode.EXISTS_USER_NICKNAME));
+    public ResponseEntity<BaseResponse<String>> logIn(@RequestBody ModifyNicknameRequest modifyNicknameRequest) {
+        try {
+            Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+            Long memberId = Long.parseLong(loggedInUser.getName());
+            if (memberService.existNickname(modifyNicknameRequest.getNickname())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponse<>(BaseResponseStatus.EXISTS_MEMBER_NICKNAME));
+            }
+            memberService.modifyNickname(memberMapper.toModifyNicknameDto(modifyNicknameRequest, memberId));
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }
-        memberService.modifyNickname(memberMapper.toModifyNicknameDto(modifyNicknameRequest, memberId));
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.MODIFY_NICKNAME));
     }
+
     @Operation(summary = "회원탈퇴")
-    @DeleteMapping("/resign")
-    public ResponseEntity<ApiResponse<String>> resign(){
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        Long memberId = Long.parseLong(loggedInUser.getName());
-        memberService.resignMember(memberId);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.RESIGN_MEMBER));
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
+            @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
+    })
+    @PatchMapping("/resign")
+    public ResponseEntity<BaseResponse<String>> resign() {
+        try {
+            Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+            Long memberId = Long.parseLong(loggedInUser.getName());
+            memberService.resignMember(memberId);
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        }
     }
 }
