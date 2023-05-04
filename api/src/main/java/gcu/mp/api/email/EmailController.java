@@ -1,13 +1,18 @@
 package gcu.mp.api.email;
 
-import gcu.mp.common.api.ApiResponse;
-import gcu.mp.common.api.ErrorCode;
-import gcu.mp.common.api.ResponseCode;
-import gcu.mp.common.exception.CustomException;
+import gcu.mp.common.api.BaseResponse;
+import gcu.mp.common.api.BaseResponseStatus;
+import gcu.mp.common.exception.BaseException;
 import gcu.mp.mailclient.EmailService;
 import gcu.mp.redis.Email;
 import gcu.mp.util.Regex;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,23 +27,42 @@ public class EmailController {
     private final EmailService emailService;
 
     @Operation(summary = "이메일 인증번호 전송 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "2010", description = "유효한 이메일 정규식이 아닙니다.", content = @Content),
+            @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
+    })
     @ResponseBody
     @PostMapping("")
-    public ResponseEntity<ApiResponse<String>> sendMail(@RequestParam("address") String email) {
-        if(!Regex.isRegexEmail(email))
-            throw new CustomException(ErrorCode.REGEX_FAILED_EMAIL);
-        emailService.sendEmail(email);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.MAIL_CERTIFICATION));
+    public ResponseEntity<BaseResponse<String>> sendMail(@RequestParam("address") String email) {
+        try {
+            if (!Regex.isRegexEmail(email))
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponse<>(BaseResponseStatus.REGEX_FAILED_EMAIL));
+            emailService.sendEmail(email);
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        }
     }
 
     @Operation(summary = "이메일 인증번호 인증 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "2011", description = "이메일 인증에 실패하였습니다.", content = @Content),
+            @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
+    })
     @PostMapping("/auth")
     @ResponseBody
-    public ResponseEntity<ApiResponse<String>> checkMailCode(@RequestParam("mail") String email, @RequestParam("code") String emailCode) {
-        boolean authCode = emailService.verifyEmailCode(new Email(email, emailCode));
-        if (!authCode) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(ResponseCode.MAIL_CERTIFICATION_FAIL));
+    public ResponseEntity<BaseResponse<String>> checkMailCode(@Parameter(name = "mail", description = "이메일", in = ParameterIn.QUERY) @RequestParam("mail") String email,
+                                                              @Parameter(name = "code", description = "이메일 인증 코드", in = ParameterIn.QUERY) @RequestParam("code") String emailCode) {
+        try {
+            boolean authCode = emailService.verifyEmailCode(new Email(email, emailCode));
+            if (!authCode) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponse<>(BaseResponseStatus.MAIL_CERTIFICATION_FAIL));
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(ResponseCode.MAIL_CERTIFICATION_AUTH));
     }
 }
