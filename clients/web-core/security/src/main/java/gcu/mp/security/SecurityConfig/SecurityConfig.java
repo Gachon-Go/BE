@@ -27,7 +27,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private static final String[] PERMITTED_URLS = {
-            "/**"
+            "/swagger-ui/**", //swagger
+            "/swagger-resources/**", //swagger
+            "/v3/api-docs/**",  //swagger
+            "/test/log",
+            "/auth/**",
+            "/mail/**",
+            "/login/oauth/code/**"
     };
 
     @Bean
