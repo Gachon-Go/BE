@@ -1,13 +1,11 @@
 package gcu.mp.service.member;
 
 import gcu.mp.common.exception.BaseException;
-import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.domin.Member;
-import gcu.mp.domain.member.domin.Profile;
 import gcu.mp.domain.member.domin.SocialLogin;
 import gcu.mp.domain.member.repository.MemberEntityRepository;
 import gcu.mp.domain.member.vo.Role;
-import gcu.mp.domain.member.vo.Status;
+import gcu.mp.domain.member.vo.State;
 import gcu.mp.service.member.dto.CreateMemberDto;
 import gcu.mp.service.member.dto.ModifyNicknameDto;
 import gcu.mp.service.member.dto.OauthMemberDto;
@@ -32,17 +30,16 @@ public class MemberServiceImpl implements MemberService{
     public void createMember(CreateMemberDto createMemberDto) {
         Member member = Member.builder()
                 .role(Role.USER)
-                .status(Status.A)
-                .build();
-        Profile profile = Profile.builder()
-                .email(createMemberDto.getEmail())
+                .state(State.A)
+                .fcm_id("123456789")
                 .nickname(createMemberDto.getNickname())
+                .point(0)
+                .email(createMemberDto.getEmail())
                 .build();
         SocialLogin socialLogin = SocialLogin.builder()
                 .authId(createMemberDto.getProviderId())
                 .provider(createMemberDto.getProvider())
                 .build();
-        member.setProfile(profile);
         member.setSocialLogin(socialLogin);
         memberEntityRepository.save(member);
     }
@@ -50,36 +47,36 @@ public class MemberServiceImpl implements MemberService{
     public boolean existMember(OauthMemberDto oauthMemberDto) {
         String oauthType = oauthMemberDto.getOauthType();
         String token = oauthMemberDto.getToken();
-        Optional<Member> member = memberEntityRepository.findByProviderAndTokenAndUserStatus(oauthType, token, Status.A);
+        Optional<Member> member = memberEntityRepository.findByProviderAndTokenAndUserStatus(oauthType, token, State.A);
         return member.isPresent();
     }
 
     public boolean existNickname(String nickname) {
-        Optional<Member> members = memberEntityRepository.findByNicknameAndStatus(nickname, Status.A);
+        Optional<Member> members = memberEntityRepository.findByNicknameAndState(nickname, State.A);
         return members.isPresent();
     }
 
     public boolean existEmail(String email) {
-        Optional<Member> members = memberEntityRepository.findByEmailAndStatus(email, Status.A);
+        Optional<Member> members = memberEntityRepository.findByEmailAndState(email, State.A);
         return members.isPresent();
     }
 
     public Long getMemberId(OauthMemberDto oauthMemberDto) {
         String oauthType = oauthMemberDto.getOauthType();
         String token = oauthMemberDto.getToken();
-        Member members = memberEntityRepository.findByProviderAndTokenAndUserStatus(oauthType, token, Status.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
+        Member members = memberEntityRepository.findByProviderAndTokenAndUserStatus(oauthType, token, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
         return members.getId();
     }
     @Transactional
     public void modifyNickname(ModifyNicknameDto modifyNicknameDto) {
         Long id = modifyNicknameDto.getMemberId();
-        String nickName = modifyNicknameDto.getNickName();
-        Member member = memberEntityRepository.findByIdAndStatus(id, Status.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
-        member.getProfile().updateNickname(nickName);
+        String nickname = modifyNicknameDto.getNickName();
+        Member member = memberEntityRepository.findByIdAndState(id, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
+        member.updateNickname(nickname);
     }
     @Transactional
     public void resignMember(Long memberId) {
-        Member members = memberEntityRepository.findByIdAndStatus(memberId, Status.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
+        Member members = memberEntityRepository.findByIdAndState(memberId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
         members.resignMember();
     }
 }

@@ -1,5 +1,5 @@
 package gcu.mp.domain.member.vo;
 
-public enum Status {
+public enum State {
     A, D
 }
