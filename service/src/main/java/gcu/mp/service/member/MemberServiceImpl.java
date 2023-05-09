@@ -56,7 +56,7 @@ public class MemberServiceImpl implements MemberService{
         return members.isPresent();
     }
 
-    public boolean existEmai    l(String email) {
+    public boolean existEmail(String email) {
         Optional<Member> members = memberEntityRepository.findByEmailAndState(email, State.A);
         return members.isPresent();
     }
