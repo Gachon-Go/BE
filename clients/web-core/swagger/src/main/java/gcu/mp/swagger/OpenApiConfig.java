@@ -28,6 +28,7 @@ public class OpenApiConfig {
         SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
 
         return new OpenAPI()
+                .addServersItem(new Server().url("/"))
                 .components(new Components().addSecuritySchemes("bearerAuth",securityScheme))
                 .security(Collections.singletonList(securityRequirement))
                 .info(info);
