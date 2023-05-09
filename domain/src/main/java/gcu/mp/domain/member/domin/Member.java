@@ -2,7 +2,7 @@ package gcu.mp.domain.member.domin;
 
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.vo.Role;
-import gcu.mp.domain.member.vo.Status;
+import gcu.mp.domain.member.vo.State;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,20 +25,21 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private State state;
     @OneToOne(mappedBy = "member",cascade = CascadeType.ALL)
     private SocialLogin socialLogin;
 
     private String nickname;
 
     private String email;
+    private long point;
 
     public void setSocialLogin(SocialLogin socialLogin){
         this.socialLogin = socialLogin;
         socialLogin.setMember(this);
     }
     public void resignMember(){
-        this.status = Status.D;
+        this.state = State.D;
     }
 
     public void updateNickname(String nickname) {
