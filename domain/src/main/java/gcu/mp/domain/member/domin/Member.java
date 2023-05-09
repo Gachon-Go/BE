@@ -29,18 +29,19 @@ public class Member extends BaseEntity {
     @OneToOne(mappedBy = "member",cascade = CascadeType.ALL)
     private SocialLogin socialLogin;
 
-    @OneToOne(mappedBy = "member",cascade = CascadeType.ALL)
-    private Profile profile;
+    private String nickname;
 
-    public void setProfile(Profile profile){
-        this.profile = profile;
-        profile.setMember(this);
-    }
+    private String email;
+
     public void setSocialLogin(SocialLogin socialLogin){
         this.socialLogin = socialLogin;
         socialLogin.setMember(this);
     }
     public void resignMember(){
         this.status = Status.D;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

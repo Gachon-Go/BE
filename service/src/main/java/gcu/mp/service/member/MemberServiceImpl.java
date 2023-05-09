@@ -1,9 +1,7 @@
 package gcu.mp.service.member;
 
 import gcu.mp.common.exception.BaseException;
-import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.domin.Member;
-import gcu.mp.domain.member.domin.Profile;
 import gcu.mp.domain.member.domin.SocialLogin;
 import gcu.mp.domain.member.repository.MemberEntityRepository;
 import gcu.mp.domain.member.vo.Role;
@@ -33,16 +31,13 @@ public class MemberServiceImpl implements MemberService{
         Member member = Member.builder()
                 .role(Role.USER)
                 .status(Status.A)
-                .build();
-        Profile profile = Profile.builder()
-                .email(createMemberDto.getEmail())
                 .nickname(createMemberDto.getNickname())
+                .email(createMemberDto.getEmail())
                 .build();
         SocialLogin socialLogin = SocialLogin.builder()
                 .authId(createMemberDto.getProviderId())
                 .provider(createMemberDto.getProvider())
                 .build();
-        member.setProfile(profile);
         member.setSocialLogin(socialLogin);
         memberEntityRepository.save(member);
     }
@@ -73,9 +68,9 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     public void modifyNickname(ModifyNicknameDto modifyNicknameDto) {
         Long id = modifyNicknameDto.getMemberId();
-        String nickName = modifyNicknameDto.getNickName();
+        String nickname = modifyNicknameDto.getNickName();
         Member member = memberEntityRepository.findByIdAndStatus(id, Status.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
-        member.getProfile().updateNickname(nickName);
+        member.updateNickname(nickname);
     }
     @Transactional
     public void resignMember(Long memberId) {
