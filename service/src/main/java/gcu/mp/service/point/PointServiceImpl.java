@@ -50,11 +50,8 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public List<PointHistoryDto> getPointHistory(Long memberId, int page, int size) {
-        System.out.println("ddddddd2");
         Member member = memberService.getMember(memberId);
-        System.out.println("ddddddd3");
         PageRequest pageRequest = PageRequest.of(page, size);
-        System.out.println("ddddddd4");
         List<PointHistory> pointHistoryList = pointHistoryRepository.findByMemberIdAndState(memberId, State.A, pageRequest);
         return pointHistoryList.stream()
                 .map(pointHistory -> PointHistoryDto.builder()

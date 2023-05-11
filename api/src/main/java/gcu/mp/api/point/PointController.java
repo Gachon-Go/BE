@@ -33,6 +33,7 @@ import java.util.List;
 @RequestMapping(value = "/point")
 public class PointController {
     private final PointService pointService;
+
     @Operation(summary = "포인트 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
@@ -51,6 +52,7 @@ public class PointController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }
     }
+
     @Operation(summary = "포인트 내역 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
@@ -59,13 +61,11 @@ public class PointController {
     })
     @GetMapping("/history")
     public ResponseEntity<BaseResponse<List<PointHistoryDto>>> getPointHistory(@Parameter(name = "page", description = " 페이지 0이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer page,
-                                                                     @Parameter(name = "size", description = " 페이지 사이즈  1이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer size) {
+                                                                               @Parameter(name = "size", description = " 페이지 사이즈  1이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer size) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            System.out.println("ddddddd1");
-            System.out.println(page+" "+size);
-            List<PointHistoryDto> pointHistory = pointService.getPointHistory(memberId,page, size);
+            List<PointHistoryDto> pointHistory = pointService.getPointHistory(memberId, page, size);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(pointHistory));
 
         } catch (Exception e) {
