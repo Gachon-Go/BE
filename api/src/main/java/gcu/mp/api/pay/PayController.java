@@ -8,6 +8,7 @@ import gcu.mp.payclient.KakaoPayService;
 import gcu.mp.payclient.dto.KakaoApproveDto;
 import gcu.mp.payclient.dto.PayRequestResDto;
 import gcu.mp.service.pay.PayService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,16 +53,18 @@ public class PayController {
     }
 
     @GetMapping("/success")
+    @Hidden
     public ResponseEntity<BaseResponse<String>> paySuccess(@RequestParam("pg_token") String pgToken,
                                                            @RequestParam("partner_order_id") String partner_order_id) {
 
-        KakaoApproveDto kakaoApproveDto = kakaoPayService.paySuccess(partner_order_id,pgToken);
+        KakaoApproveDto kakaoApproveDto = kakaoPayService.paySuccess(partner_order_id, pgToken);
         payService.paySuccess(payMapper.toPaySuccessDto(kakaoApproveDto));
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>("성공"));
 
     }
 
     @GetMapping("/fail")
+    @Hidden
     public ResponseEntity<BaseResponse<String>> payFail(@RequestBody PayRequestReq payRequestReq) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
@@ -73,6 +76,7 @@ public class PayController {
     }
 
     @GetMapping("/cancel")
+    @Hidden
     public ResponseEntity<BaseResponse<String>> payCancel(@RequestBody PayRequestReq payRequestReq) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
