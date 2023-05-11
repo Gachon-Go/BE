@@ -48,7 +48,7 @@ public class KakaoService {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             StringBuilder result;
             urlConnection.setRequestMethod(client_authentication_method);
-            urlConnection.setDoOutput(true  ); // 데이터 기록 알려주기
+            urlConnection.setDoOutput(true); // 데이터 기록 알려주기
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
             String sb = "grant_type=authorization_code" +
                     "&client_id=" + client_id +
