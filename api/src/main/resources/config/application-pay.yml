@@ -29,3 +29,5 @@ pay:
         approval_url: https://gachongo.shop/pay/success
         cancel_url: https://gachongo.shop/pay/cancel
         fail_url: https://gachongo.shop/pay/fail
+      approve:
+        approve-url: https://kapi.kakao.com/v1/payment/approve
