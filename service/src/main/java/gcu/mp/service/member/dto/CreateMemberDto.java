@@ -12,4 +12,5 @@ public class CreateMemberDto {
     String nickname;
     String providerId;
     String provider;
+    String imageUrl;
 }

@@ -22,4 +22,5 @@ public class OauthApplication {
         System.out.println(code);
         kakaoService.getToken(code);
     }
+
 }

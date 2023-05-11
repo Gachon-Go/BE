@@ -36,6 +36,7 @@ public class Member extends BaseEntity {
     private String nickname;
     private String email;
     private long point;
+    private String image;
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<PointHistory> pointHistoryList = new ArrayList<>();
 
