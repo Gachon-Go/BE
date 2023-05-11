@@ -35,6 +35,7 @@ public class MemberServiceImpl implements MemberService{
                 .nickname(createMemberDto.getNickname())
                 .point(0)
                 .email(createMemberDto.getEmail())
+                .image(createMemberDto.getImageUrl())
                 .build();
         SocialLogin socialLogin = SocialLogin.builder()
                 .authId(createMemberDto.getProviderId())

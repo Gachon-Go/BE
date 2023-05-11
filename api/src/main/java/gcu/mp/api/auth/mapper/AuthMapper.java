@@ -18,6 +18,7 @@ public class AuthMapper {
                 .providerId(oAuth2UserInfo.getProviderId())
                 .provider(oAuth2UserInfo.getProvider().toString())
                 .email(createMemberRequest.getEmail())
-                .nickname(createMemberRequest.getNickname()).build();
+                .nickname(createMemberRequest.getNickname())
+                .imageUrl(oAuth2UserInfo.getProfileImage()).build();
     }
 }
