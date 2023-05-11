@@ -53,4 +53,12 @@ public class Member extends BaseEntity {
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public void addPayHistory(PayHistory payHistory) {
+        payHistoryList.add(payHistory);
+    }
+
+    public void addPoint(int totalAmount) {
+        this.point += totalAmount;
+    }
 }

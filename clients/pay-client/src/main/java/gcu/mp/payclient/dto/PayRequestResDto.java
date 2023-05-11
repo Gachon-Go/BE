@@ -3,10 +3,12 @@ package gcu.mp.payclient.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @Builder
+@ToString
 public class PayRequestResDto {
     String tid;
     String next_redirect_app_url;
