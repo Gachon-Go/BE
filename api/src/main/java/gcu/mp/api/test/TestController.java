@@ -1,10 +1,8 @@
 package gcu.mp.api.test;
 
 import gcu.mp.common.api.BaseResponse;
-import gcu.mp.domain.member.repository.MemberEntityRepository;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -20,10 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/test")
+@Tag(name = "테스트")
 public class TestController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 

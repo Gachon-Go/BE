@@ -18,5 +18,4 @@ public class CreateMemberRequest {
     OAuthType provider;
     @Schema(description = "소셜로그인 토큰", example = "pqohrc9uwhfiouqccr987q230hrpqnorf")
     String token;
-
 }

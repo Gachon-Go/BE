@@ -62,4 +62,8 @@ public class Member extends BaseEntity {
     public void addPoint(int totalAmount) {
         this.point += totalAmount;
     }
+
+    public void addPointHistory(PointHistory pointHistory) {
+        this.pointHistoryList.add(pointHistory);
+    }
 }
