@@ -31,11 +31,11 @@ public class PointServiceImpl implements PointService {
     @Override
     public void paySuccess(PaysuccessPointDto paysuccessPointDto) {
         Member member = memberService.getMember(paysuccessPointDto.getMemberId());
-        log.info("dddddd");
         PointHistory pointHistory = PointHistory.builder()
                 .point(paysuccessPointDto.getPoint())
                 .state(State.A)
-                .flag("포인트 충전")
+                .flag("+")
+                .content("포인트 충전")
                 .build();
         pointHistory.setMember(member);
         pointHistoryRepository.save(pointHistory);

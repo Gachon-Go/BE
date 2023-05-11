@@ -20,6 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @EqualsAndHashCode(callSuper = true)
 public class PointHistory extends BaseEntity{
     long point;
+    String content;
     String flag;
     @Enumerated(EnumType.STRING)
     private State state;

@@ -45,5 +45,22 @@ public class PointController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }
     }
+    @Operation(summary = "포인트 내역 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
+            @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
+    })
+    @GetMapping("/history")
+    public ResponseEntity<BaseResponse<GetPointRes>> getPointHistory() {
+        try {
+            Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+            Long memberId = Long.parseLong(loggedInUser.getName());
+            GetPointRes getPointRes = pointService.getPoint(memberId);
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getPointRes));
 
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        }
+    }
 }
