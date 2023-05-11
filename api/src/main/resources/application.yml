@@ -14,4 +14,5 @@ spring:
       - oauth
       - mysql
       - slack
+      - pay
     active: local

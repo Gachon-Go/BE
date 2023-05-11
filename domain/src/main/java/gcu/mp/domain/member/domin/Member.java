@@ -3,6 +3,7 @@ package gcu.mp.domain.member.domin;
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.vo.Role;
 import gcu.mp.domain.member.vo.State;
+import gcu.mp.domain.pay.domain.PayHistory;
 import gcu.mp.domain.point.domin.PointHistory;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -38,6 +39,8 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<PointHistory> pointHistoryList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    List<PayHistory> payHistoryList = new ArrayList<>();
     public void setSocialLogin(SocialLogin socialLogin) {
         this.socialLogin = socialLogin;
         socialLogin.setMember(this);

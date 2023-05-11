@@ -19,4 +19,5 @@ dependencies {
     implementation project(':core:Jasypt')
     implementation project(':service')
     implementation project(':clients:oauth-client')
+    implementation project(':clients:pay-client')
 }

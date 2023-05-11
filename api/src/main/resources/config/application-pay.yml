@@ -1,0 +1,29 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+pay:
+  provider:
+    kakao:
+      Authorization: 310d1788f166cfa468f18648c0c6f9be
+      cid: TC0ONETIME
+      ready:
+        ready-url: https://kapi.kakao.com/v1/payment/ready
+        approval_url: http://localhost:9000/pay/success
+        cancel_url: http://localhost:9000/pay/cancel
+        fail_url: http://localhost:9000/pay/fail
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+pay:
+  provider:
+    kakao:
+      Authorization: 310d1788f166cfa468f18648c0c6f9be
+      cid: TC0ONETIME
+      ready:
+        ready-url: https://kapi.kakao.com/v1/payment/ready
+        approval_url: http://localhost:9000/pay/success
+        cancel_url: http://localhost:9000/pay/cancel
+        fail_url: http://localhost:9000/pay/fail
