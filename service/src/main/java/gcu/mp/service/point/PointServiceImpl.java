@@ -7,10 +7,17 @@ import gcu.mp.domain.point.vo.State;
 import gcu.mp.service.member.MemberService;
 import gcu.mp.service.point.dto.GetPointRes;
 import gcu.mp.service.point.dto.PaysuccessPointDto;
+import gcu.mp.service.point.dto.PointHistoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,5 +46,21 @@ public class PointServiceImpl implements PointService {
                 .build();
         pointHistory.setMember(member);
         pointHistoryRepository.save(pointHistory);
+    }
+
+    @Override
+    public List<PointHistoryDto> getPointHistory(Long memberId, int page, int size) {
+        System.out.println("ddddddd2");
+        Member member = memberService.getMember(memberId);
+        System.out.println("ddddddd3");
+        PageRequest pageRequest = PageRequest.of(page, size);
+        System.out.println("ddddddd4");
+        List<PointHistory> pointHistoryList = pointHistoryRepository.findByMemberIdAndState(memberId, State.A, pageRequest);
+        return pointHistoryList.stream()
+                .map(pointHistory -> PointHistoryDto.builder()
+                        .content(pointHistory.getContent())
+                        .point(pointHistory.getFlag() + pointHistory.getPoint() + "P")
+                        .time(pointHistory.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
+                        .build()).collect(Collectors.toList());
     }
 }
