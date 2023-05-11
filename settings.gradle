@@ -3,4 +3,4 @@ include 'core', 'core:redis', 'core:util', 'core:Jasypt','core:async','core:comm
 include 'api'
 include 'service'
 include 'domain'
-include 'clients','clients:oauth-client', 'clients:mail-client', 'clients:web-core', 'clients:web-core:common', 'clients:web-core:security','clients:web-core:swagger'
+include 'clients','clients:oauth-client', 'clients:mail-client', 'clients:web-core', 'clients:web-core:common', 'clients:web-core:security','clients:web-core:swagger','clients:pay-client'

@@ -79,4 +79,9 @@ public class MemberServiceImpl implements MemberService{
         Member members = memberEntityRepository.findByIdAndState(memberId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
         members.resignMember();
     }
+
+    @Override
+    public Member getMember(Long memberId) {
+        return memberEntityRepository.findByIdAndState(memberId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
+    }
 }

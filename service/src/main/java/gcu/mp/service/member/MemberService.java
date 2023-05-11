@@ -1,5 +1,6 @@
 package gcu.mp.service.member;
 
+import gcu.mp.domain.member.domin.Member;
 import gcu.mp.service.member.dto.CreateMemberDto;
 import gcu.mp.service.member.dto.ModifyNicknameDto;
 import gcu.mp.service.member.dto.OauthMemberDto;
@@ -10,6 +11,7 @@ public interface MemberService {
     void modifyNickname(ModifyNicknameDto toModifyNicknameDto);
 
     void resignMember(Long memberId);
+    Member getMember(Long memberId);
 
     boolean existEmail(String email);
 

@@ -9,7 +9,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.authentication.AuthenticationManagerFactoryBean;
@@ -34,7 +33,8 @@ public class SecurityConfig {
             "/test/log2",
             "/auth/**",
             "/mail/**",
-            "/login/oauth/code/**"
+            "/login/oauth/code/**",
+            "/pay/**"
     };
 
     @Bean

@@ -1,0 +1,31 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+pay:
+  provider:
+    kakao:
+      Authorization: ENC(BtlUR6hQn21wBMoOcqnbyRq3xl2xluvnZ9prsNBijBTh7P5BdmzjIpR035VNR8W2)
+      cid: TC0ONETIME
+      ready:
+        ready-url: https://kapi.kakao.com/v1/payment/ready
+        approval_url: http://localhost:9000/pay/success
+        cancel_url: http://localhost:9000/pay/cancel
+        fail_url: http://localhost:9000/pay/fail
+      approve:
+        approve-url: https://kapi.kakao.com/v1/payment/approve
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+pay:
+  provider:
+    kakao:
+      Authorization: ENC(BtlUR6hQn21wBMoOcqnbyRq3xl2xluvnZ9prsNBijBTh7P5BdmzjIpR035VNR8W2)
+      cid: TC0ONETIME
+      ready:
+        ready-url: https://kapi.kakao.com/v1/payment/ready
+        approval_url: https://gachongo.shop/pay/success
+        cancel_url: https://gachongo.shop/pay/cancel
+        fail_url: https://gachongo.shop/pay/fail
