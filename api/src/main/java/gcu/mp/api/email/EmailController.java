@@ -2,7 +2,6 @@ package gcu.mp.api.email;
 
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
-import gcu.mp.common.exception.BaseException;
 import gcu.mp.mailclient.EmailService;
 import gcu.mp.redis.Email;
 import gcu.mp.util.Regex;
@@ -13,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/mail")
+@Tag(name = "이메일")
 public class EmailController {
     private final EmailService emailService;
 
