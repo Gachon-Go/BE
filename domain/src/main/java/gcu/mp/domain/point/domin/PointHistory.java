@@ -26,4 +26,9 @@ public class PointHistory extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     Member member;
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.addPointHistory(this);
+    }
 }

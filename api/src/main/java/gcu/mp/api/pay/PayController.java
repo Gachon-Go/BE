@@ -8,6 +8,7 @@ import gcu.mp.payclient.KakaoPayService;
 import gcu.mp.payclient.dto.KakaoApproveDto;
 import gcu.mp.payclient.dto.PayRequestResDto;
 import gcu.mp.service.pay.PayService;
+import gcu.mp.service.point.PointService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 public class PayController {
     private final KakaoPayService kakaoPayService;
     private final PayService payService;
+    private final PointService pointService;
     private final PayMapper payMapper;
 
     @Operation(summary = "결제요청")
@@ -59,6 +61,7 @@ public class PayController {
 
         KakaoApproveDto kakaoApproveDto = kakaoPayService.paySuccess(partner_order_id, pgToken);
         payService.paySuccess(payMapper.toPaySuccessDto(kakaoApproveDto));
+        pointService.paySuccess(payMapper.toPaysuccessPointDto(kakaoApproveDto));
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>("성공"));
 
     }
