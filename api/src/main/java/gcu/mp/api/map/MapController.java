@@ -27,7 +27,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "유저")
+@Tag(name = "맵")
 @RequestMapping(value = "/map")
 public class MapController {
     private final MapService mapService;
