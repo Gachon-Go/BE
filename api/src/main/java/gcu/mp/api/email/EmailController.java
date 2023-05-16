@@ -38,7 +38,7 @@ public class EmailController {
     public ResponseEntity<BaseResponse<String>> sendMail(@RequestParam("address") String email) {
         try {
             if (!Regex.isRegexEmail(email))
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponse<>(BaseResponseStatus.REGEX_FAILED_EMAIL));
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.REGEX_FAILED_EMAIL));
             emailService.sendEmail(email);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class EmailController {
         try {
             boolean authCode = emailService.verifyEmailCode(new Email(email, emailCode));
             if (!authCode) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new BaseResponse<>(BaseResponseStatus.MAIL_CERTIFICATION_FAIL));
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.MAIL_CERTIFICATION_FAIL));
             }
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
