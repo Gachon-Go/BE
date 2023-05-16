@@ -2,6 +2,7 @@ package gcu.mp.service.member;
 
 import gcu.mp.domain.member.domin.Member;
 import gcu.mp.service.member.dto.CreateMemberDto;
+import gcu.mp.service.member.dto.LoginMemberDto;
 import gcu.mp.service.member.dto.ModifyNicknameDto;
 import gcu.mp.service.member.dto.OauthMemberDto;
 
@@ -20,4 +21,6 @@ public interface MemberService {
     void createMember(CreateMemberDto toCreateMemberDto);
 
     Long getMemberId(OauthMemberDto toOauthMemberDto);
+
+    LoginMemberDto getLonginMember(Long memberId);
 }

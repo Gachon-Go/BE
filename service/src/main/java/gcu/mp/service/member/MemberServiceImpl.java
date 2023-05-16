@@ -7,6 +7,7 @@ import gcu.mp.domain.member.repository.MemberEntityRepository;
 import gcu.mp.domain.member.vo.Role;
 import gcu.mp.domain.member.vo.State;
 import gcu.mp.service.member.dto.CreateMemberDto;
+import gcu.mp.service.member.dto.LoginMemberDto;
 import gcu.mp.service.member.dto.ModifyNicknameDto;
 import gcu.mp.service.member.dto.OauthMemberDto;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import static gcu.mp.common.api.BaseResponseStatus.NOT_EXIST_MEMBER;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
     private final MemberEntityRepository memberEntityRepository;
 
     @Transactional
@@ -68,13 +69,23 @@ public class MemberServiceImpl implements MemberService{
         Member members = memberEntityRepository.findByProviderAndTokenAndUserStatus(oauthType, token, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
         return members.getId();
     }
+
+    @Override
+    public LoginMemberDto getLonginMember(Long memberId) {
+        Member member = getMember(memberId);
+        return LoginMemberDto.builder()
+                .nickname(member.getNickname())
+                .point(member.getPoint()).build();
+    }
+
     @Transactional
     public void modifyNickname(ModifyNicknameDto modifyNicknameDto) {
         Long id = modifyNicknameDto.getMemberId();
         String nickname = modifyNicknameDto.getNickName();
-        Member member = memberEntityRepository.findByIdAndState(id, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));
+        Member member = getMember(modifyNicknameDto.getMemberId());
         member.updateNickname(nickname);
     }
+
     @Transactional
     public void resignMember(Long memberId) {
         Member members = memberEntityRepository.findByIdAndState(memberId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_MEMBER));

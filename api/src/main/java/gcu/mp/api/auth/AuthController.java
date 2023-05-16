@@ -10,6 +10,7 @@ import gcu.mp.oauthclient.OAuthService;
 import gcu.mp.oauthclient.dto.core.OAuth2UserInfo;
 import gcu.mp.security.SecurityConfig.jwt.JwtTokenProvider;
 import gcu.mp.service.member.MemberService;
+import gcu.mp.service.member.dto.LoginMemberDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -78,7 +79,8 @@ public class AuthController {
             Long memberId = memberService.getMemberId(authMapper.toOauthMemberDto(oAuth2UserInfo));
             if (memberId == null)
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_MEMBER));
-            LogInMemberResponse logInMemberResponse = new LogInMemberResponse(memberId, jwtTokenProvider.createAccessToken(Long.toString(memberId)));
+            LoginMemberDto loginMemberDto = memberService.getLonginMember(memberId);
+            LogInMemberResponse logInMemberResponse = new LogInMemberResponse(memberId, jwtTokenProvider.createAccessToken(Long.toString(memberId)), loginMemberDto);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(logInMemberResponse));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
