@@ -43,7 +43,7 @@ public class MemberController {
             @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
-    @PatchMapping("/modify/nickname")
+    @PatchMapping("/nickname")
     public ResponseEntity<BaseResponse<String>> logIn(@RequestBody ModifyNicknameRequest modifyNicknameRequest) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
@@ -88,7 +88,7 @@ public class MemberController {
             @ApiResponse(responseCode = "3017", description = "이미지 파일이 아닙니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
-    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BaseResponse<String>> getImage(
             @RequestPart(value = "image") MultipartFile image) {
         try {
@@ -99,13 +99,14 @@ public class MemberController {
                     return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(INVALID_IMAGE_FILE));
                 }
             }
-            String imageUrl = memberService.modifyProfileImage(memberId,image);
+            String imageUrl = memberService.modifyProfileImage(memberId, image);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(imageUrl));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }
     }
+
     @Operation(summary = "마이 페이지")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
