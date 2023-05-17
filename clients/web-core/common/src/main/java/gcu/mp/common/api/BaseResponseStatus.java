@@ -45,7 +45,8 @@ public enum BaseResponseStatus {
     // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
-
+    FAILED_UPLOAD_S3(false,3016,"S3 업로드 실패"),
+    INVALID_IMAGE_FILE(false,3017,"이미지 파일이 아닙니다"),
 
 
     /**

@@ -11,7 +11,7 @@ dependencies {
     implementation 'com.github.maricn:logback-slack-appender:1.6.1'
 
     implementation project(':clients:mail-client')
-    implementation project(':core:redis')
+    implementation project(':clients:redis-client')
     implementation project(':clients:web-core:common')
     implementation project(':clients:web-core:security')
     implementation project(':clients:web-core:swagger')
@@ -20,4 +20,5 @@ dependencies {
     implementation project(':service')
     implementation project(':clients:oauth-client')
     implementation project(':clients:pay-client')
+    implementation project(':clients:s3-client')
 }

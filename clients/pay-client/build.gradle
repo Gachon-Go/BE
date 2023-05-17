@@ -7,7 +7,7 @@ dependencies {
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     implementation('org.springframework.boot:spring-boot-starter-webflux')
     api project(':clients:web-core:common')
-    api project(':core:redis')
+    api project(':clients:redis-client')
 }
 bootJar {
     enabled = false

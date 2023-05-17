@@ -14,10 +14,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import static gcu.mp.common.api.BaseResponseStatus.INVALID_IMAGE_FILE;
+import static gcu.mp.util.FileCheck.checkImage;
 
 @Slf4j
 @RestController
@@ -63,6 +68,26 @@ public class MemberController {
             Long memberId = Long.parseLong(loggedInUser.getName());
             memberService.resignMember(memberId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        }
+    }
+
+    @Operation(summary = "프로필 사진 변경")
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BaseResponse<String>> getImage(
+            @RequestPart(value = "image") MultipartFile image) {
+        try {
+            Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+            Long memberId = Long.parseLong(loggedInUser.getName());
+            if (image != null) {
+                if (!checkImage(image)) {
+                    return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(INVALID_IMAGE_FILE));
+                }
+            }
+            String imageUrl = memberService.modifyProfileImage(memberId,image);
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(imageUrl));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));

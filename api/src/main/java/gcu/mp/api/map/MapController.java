@@ -32,6 +32,7 @@ import java.util.List;
 public class MapController {
     private final MapService mapService;
     private final MapMapper mapMapper;
+
     @Operation(summary = "위치 전송")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
@@ -44,12 +45,13 @@ public class MapController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             long memberId = Long.parseLong(loggedInUser.getName());
-            mapService.postMapPoint(mapMapper.toPostMapPointDto(memberId,postMapPointReq));
+            mapService.postMapPoint(mapMapper.toPostMapPointDto(memberId, postMapPointReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }
     }
+
     @Operation(summary = "위치 받기")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),

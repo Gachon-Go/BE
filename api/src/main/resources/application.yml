@@ -15,4 +15,5 @@ spring:
       - mysql
       - slack
       - pay
+      - s3
     active: local

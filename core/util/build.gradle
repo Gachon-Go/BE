@@ -1,5 +1,7 @@
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    api project(':clients:web-core:common')
 }
 bootJar {
     enabled = false

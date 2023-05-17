@@ -1,6 +1,6 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    api project(':core:redis')
+    api project(':clients:redis-client')
     api project(':core:async')
 }
 bootJar {
