@@ -7,10 +7,7 @@ import gcu.mp.domain.member.repository.MemberEntityRepository;
 import gcu.mp.domain.member.vo.Role;
 import gcu.mp.domain.member.vo.State;
 import gcu.mp.s3client.S3Service;
-import gcu.mp.service.member.dto.CreateMemberDto;
-import gcu.mp.service.member.dto.LoginMemberDto;
-import gcu.mp.service.member.dto.ModifyNicknameDto;
-import gcu.mp.service.member.dto.OauthMemberDto;
+import gcu.mp.service.member.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -87,7 +84,20 @@ public class MemberServiceImpl implements MemberService {
         Member member = getMember(memberId);
         String s3ImageUrl = s3Service.uploadProfileImage(image);
         member.setProfileImage(s3ImageUrl);
+        //todo: 기존에 사용중인 이미지 S3에서 제거
         return s3ImageUrl;
+    }
+
+    @Override
+    public MyPageDto getMyPage(Long memberId) {
+        Member member = getMember(memberId);
+        //todo 게시물 api 제작 시 DB에서 가져오기
+        return MyPageDto.builder()
+                .deliveryNum(0)
+                .postNum(0)
+                .orderNum(0)
+                .nickname(member.getNickname())
+                .point(member.getPoint()).build();
     }
 
     @Transactional

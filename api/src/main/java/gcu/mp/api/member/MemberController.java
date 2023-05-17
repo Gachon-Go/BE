@@ -5,6 +5,7 @@ import gcu.mp.api.member.mapper.MemberMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
 import gcu.mp.service.member.MemberService;
+import gcu.mp.service.member.dto.MyPageDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -88,6 +89,20 @@ public class MemberController {
             }
             String imageUrl = memberService.modifyProfileImage(memberId,image);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(imageUrl));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        }
+    }
+    @Operation(summary = "마이 페이지")
+    @GetMapping(value = "/my-page")
+    public ResponseEntity<BaseResponse<MyPageDto>> getMyPage() {
+        try {
+            Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+            Long memberId = Long.parseLong(loggedInUser.getName());
+
+            MyPageDto myPageDto = memberService.getMyPage(memberId);
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(myPageDto));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
