@@ -10,4 +10,5 @@ import lombok.Setter;
 public class LoginMemberDto {
     String nickname;
     long point;
+    String ProfileImage;
 }

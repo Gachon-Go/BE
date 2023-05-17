@@ -77,7 +77,8 @@ public class MemberServiceImpl implements MemberService {
         Member member = getMember(memberId);
         return LoginMemberDto.builder()
                 .nickname(member.getNickname())
-                .point(member.getPoint()).build();
+                .point(member.getPoint())
+                .ProfileImage(member.getImage()).build();
     }
 
     @Override
