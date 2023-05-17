@@ -28,7 +28,7 @@ public class S3Service {
     private String bucket;
 
     public String uploadProfileImage(MultipartFile multipartFile) {
-        String fileName = multipartFile.getOriginalFilename();
+        String fileName = "profile-image/" + multipartFile.getOriginalFilename();
         UUID fileNameUUID = UUID.randomUUID();
         //파일 형식 구하기
         String ext = Objects.requireNonNull(fileName).split("\\.")[1];
@@ -49,7 +49,7 @@ public class S3Service {
         try {
             byte[] bytes = IOUtils.toByteArray(multipartFile.getInputStream());
             metadata.setContentLength(bytes.length);
-            amazonS3.putObject(new PutObjectRequest(bucket, "profile-image/" + fileName, multipartFile.getInputStream(), metadata)
+            amazonS3.putObject(new PutObjectRequest(bucket, fileName, multipartFile.getInputStream(), metadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
             throw new BaseException(FAILED_UPLOAD_S3);
