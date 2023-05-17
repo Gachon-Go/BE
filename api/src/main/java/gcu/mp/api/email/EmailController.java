@@ -4,6 +4,7 @@ import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
 import gcu.mp.mailclient.EmailService;
 import gcu.mp.redis.Email;
+import gcu.mp.service.member.MemberService;
 import gcu.mp.util.Regex;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,11 +27,13 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "이메일")
 public class EmailController {
     private final EmailService emailService;
+    private final MemberService memberService;
 
     @Operation(summary = "이메일 인증번호 전송 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "2010", description = "유효한 이메일 정규식이 아닙니다.", content = @Content),
+            @ApiResponse(responseCode = "2102", description = "사용중인 이메일입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @ResponseBody
@@ -39,6 +42,9 @@ public class EmailController {
         try {
             if (!Regex.isRegexEmail(email))
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.REGEX_FAILED_EMAIL));
+            if (memberService.existEmail(email)) {
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.EXISTS_EMAIL));
+            }
             emailService.sendEmail(email);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
