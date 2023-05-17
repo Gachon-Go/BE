@@ -1,11 +1,9 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    api project(':domain')
-    api project(':clients:redis-client')
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.468'
+    implementation "org.testcontainers:localstack:1.16.3"
     api project(':clients:web-core:common')
-    api project(':clients:s3-client')
 }
 bootJar {
     enabled = false

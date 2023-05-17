@@ -5,6 +5,7 @@ import gcu.mp.service.member.dto.CreateMemberDto;
 import gcu.mp.service.member.dto.LoginMemberDto;
 import gcu.mp.service.member.dto.ModifyNicknameDto;
 import gcu.mp.service.member.dto.OauthMemberDto;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
     boolean existNickname(String nickname);
@@ -23,4 +24,6 @@ public interface MemberService {
     Long getMemberId(OauthMemberDto toOauthMemberDto);
 
     LoginMemberDto getLonginMember(Long memberId);
+
+    String modifyProfileImage(Long memberId, MultipartFile image);
 }

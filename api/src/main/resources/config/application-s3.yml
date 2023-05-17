@@ -1,0 +1,16 @@
+cloud:
+  aws:
+    credentials:
+      access-key: ENC(QnrPZN9DX0X7ULujJ8gymtOLKdsan7MD99tBQ+BZqRI=)
+      secret-key: ENC(FgcC9uPl3FuVfVF89d5DlW0In3e46j5CQVJTHb3P2AOk8r5Mpsfy/k9wyv7uOIkSWJ1X/JHcXls=)
+    s3: #버킷이름
+      bucket: ENC(Rh8s0woezr6XDYCd/UQXORcURg3T8YId)
+    region: #S3 지역
+      static: ap-northeast-2
+    stack:
+      auto: false
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB

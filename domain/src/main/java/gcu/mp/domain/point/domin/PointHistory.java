@@ -3,6 +3,7 @@ package gcu.mp.domain.point.domin;
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.domin.Member;
 import gcu.mp.domain.point.vo.State;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -66,4 +66,8 @@ public class Member extends BaseEntity {
     public void addPointHistory(PointHistory pointHistory) {
         this.pointHistoryList.add(pointHistory);
     }
+
+    public void setProfileImage(String s3ImageUrl) {
+        this.image = s3ImageUrl;
+    }
 }

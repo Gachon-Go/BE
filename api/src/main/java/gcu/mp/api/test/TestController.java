@@ -1,6 +1,8 @@
 package gcu.mp.api.test;
 
 import gcu.mp.common.api.BaseResponse;
+import gcu.mp.common.api.BaseResponseStatus;
+import gcu.mp.s3client.S3Service;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +24,8 @@ import java.time.LocalDateTime;
 @RequestMapping("/test")
 @Tag(name = "테스트")
 public class TestController {
-    final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final S3Service s3Service;
 
     @Operation(summary = "테스트 API")
     @ResponseBody
@@ -49,11 +49,15 @@ public class TestController {
         LocalDateTime now = LocalDateTime.now();
         return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(now.toString()));
     }
+
     @Operation(summary = "테스트(jwtToken) API")
     @ResponseBody
     @GetMapping("/log2")
     public ResponseEntity<BaseResponse<Long>> test2() {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        if (loggedInUser.getName().equals("anonymousUser")) {
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.INVALID_JWT));
+        }
         Long memberId = Long.parseLong(loggedInUser.getName());
         System.out.println("테스트");
 //        trace, debug 레벨은 Console X, 파일 로깅 X

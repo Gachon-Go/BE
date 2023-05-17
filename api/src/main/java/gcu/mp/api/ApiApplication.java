@@ -11,7 +11,7 @@ import java.util.TimeZone;
 
 @EnableJpaRepositories(basePackages = { "gcu.mp"})
 @EntityScan(basePackages = { "gcu.mp"})
-@SpringBootApplication(scanBasePackages = "gcu.mp")
+@SpringBootApplication(scanBasePackages = {"gcu.mp"})
 @EnableJpaAuditing
 public class ApiApplication {
     @PostConstruct

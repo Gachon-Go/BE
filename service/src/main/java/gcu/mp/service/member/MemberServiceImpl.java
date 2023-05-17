@@ -6,6 +6,7 @@ import gcu.mp.domain.member.domin.SocialLogin;
 import gcu.mp.domain.member.repository.MemberEntityRepository;
 import gcu.mp.domain.member.vo.Role;
 import gcu.mp.domain.member.vo.State;
+import gcu.mp.s3client.S3Service;
 import gcu.mp.service.member.dto.CreateMemberDto;
 import gcu.mp.service.member.dto.LoginMemberDto;
 import gcu.mp.service.member.dto.ModifyNicknameDto;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -25,7 +27,7 @@ import static gcu.mp.common.api.BaseResponseStatus.NOT_EXIST_MEMBER;
 @Service
 public class MemberServiceImpl implements MemberService {
     private final MemberEntityRepository memberEntityRepository;
-
+    private final S3Service s3Service;
     @Transactional
     @Override
     public void createMember(CreateMemberDto createMemberDto) {
@@ -76,6 +78,15 @@ public class MemberServiceImpl implements MemberService {
         return LoginMemberDto.builder()
                 .nickname(member.getNickname())
                 .point(member.getPoint()).build();
+    }
+
+    @Override
+    @Transactional
+    public String modifyProfileImage(Long memberId, MultipartFile image) {
+        Member member = getMember(memberId);
+        String s3ImageUrl = s3Service.uploadProfileImage(image);
+        member.setProfileImage(s3ImageUrl);
+        return s3ImageUrl;
     }
 
     @Transactional
