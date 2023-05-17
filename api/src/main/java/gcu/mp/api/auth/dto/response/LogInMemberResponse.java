@@ -18,11 +18,13 @@ public class LogInMemberResponse {
     String nickname;
     @Schema(description = "point", example = "10000")
     Long point;
-
+    @Schema(description = "image", example = "https://gachongo-bucket.s3.ap-northeast-2.amazonaws.com/afea8097-803c-47a5-9efa-5f47b342e8f0.png")
+    String profileImage;
     public LogInMemberResponse(Long memberId, String accessToken, LoginMemberDto loginMemberDto) {
         this.id = memberId;
         this.jwt = accessToken;
         this.nickname = loginMemberDto.getNickname();
         this.point = loginMemberDto.getPoint();
+        this.profileImage = loginMemberDto.getProfileImage();
     }
 }
