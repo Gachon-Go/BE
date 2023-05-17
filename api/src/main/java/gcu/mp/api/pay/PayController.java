@@ -38,8 +38,11 @@ public class PayController {
     @Operation(summary = "결제요청")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
+            @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
-            @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
+            @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content),
+            @ApiResponse(responseCode = "4123", description = "카카오페이 결제 정보를 가져오는데 실패했습니다.", content = @Content)
     })
     @PostMapping("/request")
     public ResponseEntity<BaseResponse<PayRequestResDto>> payRequest(@RequestBody PayRequestReq payRequestReq) {
