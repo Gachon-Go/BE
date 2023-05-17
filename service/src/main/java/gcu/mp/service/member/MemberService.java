@@ -1,10 +1,7 @@
 package gcu.mp.service.member;
 
 import gcu.mp.domain.member.domin.Member;
-import gcu.mp.service.member.dto.CreateMemberDto;
-import gcu.mp.service.member.dto.LoginMemberDto;
-import gcu.mp.service.member.dto.ModifyNicknameDto;
-import gcu.mp.service.member.dto.OauthMemberDto;
+import gcu.mp.service.member.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
@@ -26,4 +23,6 @@ public interface MemberService {
     LoginMemberDto getLonginMember(Long memberId);
 
     String modifyProfileImage(Long memberId, MultipartFile image);
+
+    MyPageDto getMyPage(Long memberId);
 }
