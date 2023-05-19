@@ -1,6 +1,6 @@
 package gcu.mp.api.member;
 
-import gcu.mp.api.member.dto.request.ModifyNicknameRequest;
+import gcu.mp.api.member.dto.request.ModifyNicknameReq;
 import gcu.mp.api.member.mapper.MemberMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
@@ -44,14 +44,14 @@ public class MemberController {
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @PatchMapping("/nickname")
-    public ResponseEntity<BaseResponse<String>> logIn(@RequestBody ModifyNicknameRequest modifyNicknameRequest) {
+    public ResponseEntity<BaseResponse<String>> logIn(@RequestBody ModifyNicknameReq modifyNicknameReq) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            if (memberService.existNickname(modifyNicknameRequest.getNickname())) {
+            if (memberService.existNickname(modifyNicknameReq.getNickname())) {
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.EXISTS_MEMBER_NICKNAME));
             }
-            memberService.modifyNickname(memberMapper.toModifyNicknameDto(modifyNicknameRequest, memberId));
+            memberService.modifyNickname(memberMapper.toModifyNicknameDto(modifyNicknameReq, memberId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));

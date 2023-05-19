@@ -1,8 +1,10 @@
 package gcu.mp.domain.member.domin;
 
+import gcu.mp.domain.deliveryPost.domain.DeliveryPost;
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.vo.Role;
 import gcu.mp.domain.member.vo.State;
+import gcu.mp.domain.orderPost.domain.OrderPost;
 import gcu.mp.domain.pay.domain.PayHistory;
 import gcu.mp.domain.point.domin.PointHistory;
 import jakarta.persistence.*;
@@ -42,6 +44,10 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<PayHistory> payHistoryList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    List<OrderPost> orderPostList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    List<DeliveryPost> deliveryPostList = new ArrayList<>();
     public void setSocialLogin(SocialLogin socialLogin) {
         this.socialLogin = socialLogin;
         socialLogin.setMember(this);
@@ -69,5 +75,9 @@ public class Member extends BaseEntity {
 
     public void setProfileImage(String s3ImageUrl) {
         this.image = s3ImageUrl;
+    }
+
+    public void addOrderPost(OrderPost orderPost) {
+        this.orderPostList.add(orderPost);
     }
 }
