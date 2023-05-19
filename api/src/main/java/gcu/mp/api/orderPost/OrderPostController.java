@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderPostController {
     private final OrderPostService orderPostService;
     private final OrderPostMapper orderPostMapper;
-    @Operation(summary = "닉네임 변경")
+    @Operation(summary = "주문 게시물 작성")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
