@@ -6,7 +6,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-public class ModifyNicknameRequest {
+public class ModifyNicknameReq {
     String nickname;
 }
