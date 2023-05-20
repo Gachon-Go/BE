@@ -36,7 +36,7 @@ public enum BaseResponseStatus {
     // 2200 post
     NOT_EXIST_POST(false,2203,"존재하지 않는 게시물입니다."),
     // 2300
-
+    INVALID_PURPOSE_VALUE(false,2310,"유효한 purpose 값이 아닙니다."),
 
     /**
      * 3000 : Response 오류

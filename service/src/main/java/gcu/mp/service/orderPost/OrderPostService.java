@@ -14,4 +14,6 @@ public interface OrderPostService {
 
     List<OrderPostCommentDto> getOrderPostCommentList(Long orderPostId, Integer page, Integer size);
     void createOrderPostDetailComment(CreateOrderPostCommentDto createOrderPostCommentDto);
+
+    boolean existOrderPost(long postId);
 }

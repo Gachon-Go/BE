@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static gcu.mp.common.api.BaseResponseStatus.NOT_EXIST_POST;
@@ -95,6 +96,13 @@ public class OrderPostServiceImpl implements OrderPostService {
         orderPostComment.setMember(member);
         orderPostCommentRepository.save(orderPostComment);
     }
+
+    @Override
+    public boolean existOrderPost(long postId) {
+        Optional<OrderPost> orderPostOptional = orderPostRepository.findByIdAndState(postId, State.A);
+        return orderPostOptional.isPresent();
+    }
+
     public OrderPost getOrderPost(Long orderPostId){
         return orderPostRepository.findByIdAndState(orderPostId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_POST));
     }
