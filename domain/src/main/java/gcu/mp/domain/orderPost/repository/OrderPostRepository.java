@@ -10,7 +10,5 @@ import java.util.List;
 
 @Repository
 public interface OrderPostRepository extends JpaRepository<OrderPost,Long> {
-    List<OrderPost> find(PageRequest pageRequest);
-
     List<OrderPost> findByState(State state, PageRequest pageRequest);
 }

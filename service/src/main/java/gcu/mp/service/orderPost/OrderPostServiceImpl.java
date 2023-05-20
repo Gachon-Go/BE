@@ -50,6 +50,7 @@ public class OrderPostServiceImpl implements OrderPostService {
         return orderPostList.stream().map(
                 orderPost -> GetOrderPostDto.builder()
                         .estimatedTime(orderPost.getEstimated_time())
+                        .progress(orderPost.getProgress().getName())
                         .commentNum(0)
                         .title(orderPost.getTitle()).build()
         ).collect(Collectors.toList());

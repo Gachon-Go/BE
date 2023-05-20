@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class GetOrderPostDto {
     String title;
     String estimatedTime;
+    String progress;
     int commentNum;
 }
