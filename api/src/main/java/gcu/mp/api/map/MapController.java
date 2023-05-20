@@ -4,8 +4,10 @@ import gcu.mp.api.map.dto.request.PostMapPointReq;
 import gcu.mp.api.map.mapper.MapMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
+import gcu.mp.service.deliveryPost.DeliveryPostService;
 import gcu.mp.service.map.MapService;
 import gcu.mp.service.map.dto.GetMapPointDto;
+import gcu.mp.service.orderPost.OrderPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static gcu.mp.common.api.BaseResponseStatus.INVALID_PURPOSE_VALUE;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +36,8 @@ import java.util.List;
 public class MapController {
     private final MapService mapService;
     private final MapMapper mapMapper;
-
+    private final OrderPostService orderPostService;
+    private final DeliveryPostService deliveryPostService;
     @Operation(summary = "위치 전송")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
@@ -46,6 +51,19 @@ public class MapController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             long memberId = Long.parseLong(loggedInUser.getName());
+            if (postMapPointReq.getPurpose().equals("order")) {
+                if (!orderPostService.existOrderPost(postMapPointReq.getPostId())) {
+                    return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
+                }
+            }
+            //todo delivery post 개발시 추가
+            else if(postMapPointReq.getPurpose().equals("delivery")){
+                if(!deliveryPostService.existDeliveryPost(postMapPointReq.getPostId())){
+                    return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
+                }
+            }
+            else
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(INVALID_PURPOSE_VALUE));
             mapService.postMapPoint(mapMapper.toPostMapPointDto(memberId, postMapPointReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
@@ -67,7 +85,20 @@ public class MapController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             long memberId = Long.parseLong(loggedInUser.getName());
-            List<GetMapPointDto> getMapPointDtoList = mapService.getMapPointList(purpose,postId);
+            if (purpose.equals("order")) {
+                if (!orderPostService.existOrderPost(postId)) {
+                    return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
+                }
+            }
+            //todo delivery post 개발시 추가
+            else if(purpose.equals("delivery")){
+                if(!deliveryPostService.existDeliveryPost(postId)){
+                    return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
+                }
+            }
+            else
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(INVALID_PURPOSE_VALUE));
+            List<GetMapPointDto> getMapPointDtoList = mapService.getMapPointList(purpose, postId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getMapPointDtoList));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
