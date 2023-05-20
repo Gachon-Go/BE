@@ -87,4 +87,8 @@ public class Member extends BaseEntity {
     public void addOrderPost(OrderPost orderPost) {
         this.orderPostList.add(orderPost);
     }
+
+    public void addOrderPostComment(OrderPostComment orderPostComment) {
+        this.orderPostCommentList.add(orderPostComment);
+    }
 }

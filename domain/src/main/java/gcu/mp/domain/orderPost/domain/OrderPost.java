@@ -40,4 +40,8 @@ public class OrderPost extends BaseEntity {
         this.member = member;
         member.addOrderPost(this);
     }
+
+    public void addOrderPostComment(OrderPostComment orderPostComment) {
+        this.orderPostCommentList.add(orderPostComment);
+    }
 }

@@ -28,4 +28,14 @@ public class OrderPostComment extends BaseEntity {
     OrderPost orderPost;
     @Enumerated(EnumType.STRING)
     State state;
+
+    public void setOrderPost(OrderPost orderPost) {
+        this.orderPost = orderPost;
+        orderPost.addOrderPostComment(this);
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.addOrderPostComment(this);
+    }
 }
