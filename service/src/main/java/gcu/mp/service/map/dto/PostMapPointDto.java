@@ -9,6 +9,7 @@ import lombok.Setter;
 @Builder
 public class PostMapPointDto {
     long memberId;
+    String purpose;
     long postId;
     double latitude;
     double longitude;

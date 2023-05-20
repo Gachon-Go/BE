@@ -9,6 +9,7 @@ public class MapMapper {
     public PostMapPointDto toPostMapPointDto(long memberId, PostMapPointReq postMapPointReq){
         return PostMapPointDto.builder()
                 .postId(postMapPointReq.getPostId())
+                .purpose(postMapPointReq.getPurpose())
                 .latitude(postMapPointReq.getLatitude())
                 .longitude(postMapPointReq.getLongitude())
                 .memberId(memberId).build();
