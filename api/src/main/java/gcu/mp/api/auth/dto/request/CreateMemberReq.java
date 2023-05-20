@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CreateMemberRequest {
+public class CreateMemberReq {
     @Schema(description = "닉네임", example = "peter")
     String nickname;
     @Schema(description = "이메일", example = "dsk0820@gachon.ac.kr")

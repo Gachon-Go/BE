@@ -1,4 +1,4 @@
-package gcu.mp.api.orderPost.dto.request;
+package gcu.mp.api.orderPost.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateOrderPostCommentReq {
+public class OrderPostCommentListRes {
+    @Schema(description = "댓글쓴이", example = "peter")
+    String commentWriter;
     @Schema(description = "댓글 내용", example = "사줄게")
     String content;
 }

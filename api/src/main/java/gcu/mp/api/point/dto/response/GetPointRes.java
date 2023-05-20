@@ -1,4 +1,4 @@
-package gcu.mp.api.orderPost.dto.request;
+package gcu.mp.api.point.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class CreateOrderPostCommentReq {
-    @Schema(description = "댓글 내용", example = "사줄게")
-    String content;
+@NoArgsConstructor
+public class GetPointRes {
+
+    @Schema(description = "보유한 포인트", example = "10000")
+    long point;
 }

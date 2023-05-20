@@ -1,6 +1,9 @@
 package gcu.mp.api.point;
 
-import gcu.mp.service.point.dto.GetPointRes;
+import gcu.mp.api.point.dto.response.GetPointRes;
+import gcu.mp.api.point.dto.response.PointHistoryListRes;
+import gcu.mp.api.point.mapper.PointMapper;
+import gcu.mp.service.point.dto.GetPointDto;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
 import gcu.mp.service.point.PointService;
@@ -33,10 +36,10 @@ import java.util.List;
 @RequestMapping(value = "/point")
 public class PointController {
     private final PointService pointService;
-
+    private final PointMapper pointMapper;
     @Operation(summary = "포인트 조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
@@ -47,7 +50,7 @@ public class PointController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            GetPointRes getPointRes = pointService.getPoint(memberId);
+            GetPointRes getPointRes= pointMapper.toGetPointRes(pointService.getPoint(memberId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getPointRes));
 
         } catch (Exception e) {
@@ -57,20 +60,20 @@ public class PointController {
 
     @Operation(summary = "포인트 내역 조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @GetMapping("/history")
-    public ResponseEntity<BaseResponse<List<PointHistoryDto>>> getPointHistory(@Parameter(name = "page", description = " 페이지 0이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer page,
-                                                                               @Parameter(name = "size", description = " 페이지 사이즈  1이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer size) {
+    public ResponseEntity<BaseResponse<List<PointHistoryListRes>>> getPointHistory(@Parameter(name = "page", description = " 페이지 0이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer page,
+                                                                                   @Parameter(name = "size", description = " 페이지 사이즈  1이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer size) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            List<PointHistoryDto> pointHistory = pointService.getPointHistory(memberId, page, size);
-            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(pointHistory));
+            List<PointHistoryListRes> pointHistoryListResList = pointMapper.toPointHistoryListResList(pointService.getPointHistory(memberId, page, size));
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(pointHistoryListResList));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));

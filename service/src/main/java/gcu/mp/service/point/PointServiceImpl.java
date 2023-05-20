@@ -5,13 +5,12 @@ import gcu.mp.domain.point.domin.PointHistory;
 import gcu.mp.domain.point.repository.PointHistoryRepository;
 import gcu.mp.domain.point.vo.State;
 import gcu.mp.service.member.MemberService;
-import gcu.mp.service.point.dto.GetPointRes;
+import gcu.mp.service.point.dto.GetPointDto;
 import gcu.mp.service.point.dto.PaysuccessPointDto;
 import gcu.mp.service.point.dto.PointHistoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +27,9 @@ public class PointServiceImpl implements PointService {
     private final PointHistoryRepository pointHistoryRepository;
 
     @Override
-    public GetPointRes getPoint(Long memberId) {
+    public GetPointDto getPoint(Long memberId) {
         Member member = memberService.getMember(memberId);
-        return GetPointRes.builder()
+        return GetPointDto.builder()
                 .point(member.getPoint()).build();
     }
 

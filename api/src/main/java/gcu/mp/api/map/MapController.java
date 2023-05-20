@@ -1,6 +1,7 @@
 package gcu.mp.api.map;
 
 import gcu.mp.api.map.dto.request.PostMapPointReq;
+import gcu.mp.api.map.dto.response.GetMapPointsRes;
 import gcu.mp.api.map.mapper.MapMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
@@ -38,6 +39,7 @@ public class MapController {
     private final MapMapper mapMapper;
     private final OrderPostService orderPostService;
     private final DeliveryPostService deliveryPostService;
+
     @Operation(summary = "위치 전송")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
@@ -55,14 +57,11 @@ public class MapController {
                 if (!orderPostService.existOrderPost(postMapPointReq.getPostId())) {
                     return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
                 }
-            }
-            //todo delivery post 개발시 추가
-            else if(postMapPointReq.getPurpose().equals("delivery")){
-                if(!deliveryPostService.existDeliveryPost(postMapPointReq.getPostId())){
+            } else if (postMapPointReq.getPurpose().equals("delivery")) {
+                if (!deliveryPostService.existDeliveryPost(postMapPointReq.getPostId())) {
                     return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
                 }
-            }
-            else
+            } else
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(INVALID_PURPOSE_VALUE));
             mapService.postMapPoint(mapMapper.toPostMapPointDto(memberId, postMapPointReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
@@ -73,14 +72,14 @@ public class MapController {
 
     @Operation(summary = "위치 받기")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = GetMapPointDto.class))),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @GetMapping("")
-    public ResponseEntity<BaseResponse<List<GetMapPointDto>>> getMapPoints(@Parameter(name = "purpose", description = "order 또는 delivery", in = ParameterIn.QUERY) @RequestParam String purpose,
+    public ResponseEntity<BaseResponse<List<GetMapPointsRes>>> getMapPoints(@Parameter(name = "purpose", description = "order 또는 delivery", in = ParameterIn.QUERY) @RequestParam String purpose,
                                                                            @Parameter(name = "postId", description = "포스트 id", in = ParameterIn.QUERY) @RequestParam Long postId) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
@@ -89,17 +88,14 @@ public class MapController {
                 if (!orderPostService.existOrderPost(postId)) {
                     return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
                 }
-            }
-            //todo delivery post 개발시 추가
-            else if(purpose.equals("delivery")){
-                if(!deliveryPostService.existDeliveryPost(postId)){
+            } else if (purpose.equals("delivery")) {
+                if (!deliveryPostService.existDeliveryPost(postId)) {
                     return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
                 }
-            }
-            else
+            } else
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(INVALID_PURPOSE_VALUE));
-            List<GetMapPointDto> getMapPointDtoList = mapService.getMapPointList(purpose, postId);
-            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getMapPointDtoList));
+            List<GetMapPointsRes> getMapPointsResList = mapMapper.toGetMapPointsResList(mapService.getMapPointList(purpose, postId));
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getMapPointsResList));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }

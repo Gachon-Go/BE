@@ -2,6 +2,9 @@ package gcu.mp.api.orderPost;
 
 import gcu.mp.api.orderPost.dto.request.CreateOrderPostCommentReq;
 import gcu.mp.api.orderPost.dto.request.CreateOrderPostReq;
+import gcu.mp.api.orderPost.dto.response.GetOrderPostDetailRes;
+import gcu.mp.api.orderPost.dto.response.GetOrderPostListRes;
+import gcu.mp.api.orderPost.dto.response.OrderPostCommentListRes;
 import gcu.mp.api.orderPost.mapper.OrderPostMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
@@ -38,7 +41,7 @@ public class OrderPostController {
 
     @Operation(summary = "주문 게시물 작성")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
@@ -58,17 +61,17 @@ public class OrderPostController {
 
     @Operation(summary = "주문 게시물 리스트 조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @GetMapping("")
-    public ResponseEntity<BaseResponse<List<GetOrderPostListDto>>> getOrderPostList(@Parameter(name = "page", description = " 페이지 0이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer page,
+    public ResponseEntity<BaseResponse<List<GetOrderPostListRes>>> getOrderPostList(@Parameter(name = "page", description = " 페이지 0이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer page,
                                                                                     @Parameter(name = "size", description = " 페이지 사이즈  1이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer size) {
         try {
-            List<GetOrderPostListDto> getOrderPostDtoList = orderPostService.getOrderPostList(page, size);
-            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getOrderPostDtoList));
+            List<GetOrderPostListRes> getOrderPostListResList = orderPostMapper.toGetOrderPostListResList(orderPostService.getOrderPostList(page, size));
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getOrderPostListResList));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }
@@ -76,16 +79,16 @@ public class OrderPostController {
 
     @Operation(summary = "주문 게시물 상세 조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @GetMapping("/{orderPostId}")
-    public ResponseEntity<BaseResponse<GetOrderPostDetailDto>> getOrderPostDetail(@PathVariable Long orderPostId) {
+    public ResponseEntity<BaseResponse<GetOrderPostDetailRes>> getOrderPostDetail(@PathVariable Long orderPostId) {
         try {
-            GetOrderPostDetailDto getOrderPostDetailDto = orderPostService.getOrderPostDetail(orderPostId);
-            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getOrderPostDetailDto));
+            GetOrderPostDetailRes getOrderPostDetailRes = orderPostMapper.toGetOrderPostDetailRes(orderPostService.getOrderPostDetail(orderPostId));
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getOrderPostDetailRes));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }
@@ -93,18 +96,18 @@ public class OrderPostController {
 
     @Operation(summary = "주문 게시물 상세 댓글 작성")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @PostMapping("/{orderPostId}/comment")
-    public ResponseEntity<BaseResponse<List<OrderPostCommentDto>>> createOrderPostDetailComment(@PathVariable Long orderPostId,
-                                                                                                @RequestBody CreateOrderPostCommentReq createOrderPostCommentReq) {
+    public ResponseEntity<BaseResponse<String>> createOrderPostDetailComment(@PathVariable Long orderPostId,
+                                                                             @RequestBody CreateOrderPostCommentReq createOrderPostCommentReq) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            orderPostService.createOrderPostDetailComment(orderPostMapper.toCreateOrderPostCommentDto(orderPostId,orderPostId,createOrderPostCommentReq));
+            orderPostService.createOrderPostDetailComment(orderPostMapper.toCreateOrderPostCommentDto(orderPostId, orderPostId, createOrderPostCommentReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
@@ -113,18 +116,18 @@ public class OrderPostController {
 
     @Operation(summary = "주문 게시물 상세 댓글 조회")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @GetMapping("/{orderPostId}/comment")
-    public ResponseEntity<BaseResponse<List<OrderPostCommentDto>>> getOrderPostDetailComment(@Parameter(name = "page", description = " 페이지 0이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer page,
-                                                                                             @Parameter(name = "size", description = " 페이지 사이즈  1이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer size,
-                                                                                             @PathVariable Long orderPostId) {
+    public ResponseEntity<BaseResponse<List<OrderPostCommentListRes>>> getOrderPostDetailComment(@Parameter(name = "page", description = " 페이지 0이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer page,
+                                                                                                 @Parameter(name = "size", description = " 페이지 사이즈  1이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer size,
+                                                                                                 @PathVariable Long orderPostId) {
         try {
-            List<OrderPostCommentDto> orderPostCommentList = orderPostService.getOrderPostCommentList(orderPostId, page, size);
-            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(orderPostCommentList));
+            List<OrderPostCommentListRes> orderPostCommentListResList =orderPostMapper.toOrderPostCommentListResList(orderPostService.getOrderPostCommentList(orderPostId, page, size));
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(orderPostCommentListResList));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }

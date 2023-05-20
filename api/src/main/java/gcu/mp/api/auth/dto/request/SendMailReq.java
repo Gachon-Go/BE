@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class SendMailRequest {
+public class SendMailReq {
     @Schema(description = "이메일", example = "dsk0820@gachon.ac.kr")
     String email;
 }

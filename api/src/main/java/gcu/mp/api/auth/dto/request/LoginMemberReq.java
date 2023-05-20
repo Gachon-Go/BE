@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class LoginMemberRequest {
+public class LoginMemberReq {
     @Schema(description = "알림 id", example = "qiuheroifqbwefiqw")
     String fcmId;
     @Schema(description = "소셜로그인 제공자", example = "Kakao")

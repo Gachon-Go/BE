@@ -31,7 +31,7 @@ public class EmailController {
 
     @Operation(summary = "이메일 인증번호 전송 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2010", description = "유효한 이메일 정규식이 아닙니다.", content = @Content),
             @ApiResponse(responseCode = "2102", description = "사용중인 이메일입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
@@ -54,7 +54,7 @@ public class EmailController {
 
     @Operation(summary = "이메일 인증번호 인증 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2011", description = "이메일 인증에 실패하였습니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
