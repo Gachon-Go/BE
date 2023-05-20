@@ -1,17 +1,16 @@
 package gcu.mp.service.orderPost.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class GetOrderPostDto {
+public class GetOrderPostDetailDto {
+    String writer;
     String title;
+    String content;
     String estimatedTime;
-    String progress;
     int commentNum;
 }

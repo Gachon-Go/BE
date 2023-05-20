@@ -8,7 +8,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@ToString
 public class CreateOrderPostDto {
     Long memberId;
     String title;
