@@ -1,13 +1,15 @@
 package gcu.mp.service.map.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
 @Builder
-public class GetMapPointDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class MapPointDto {
     String nickname;
     double latitude;
     double longitude;

@@ -1,9 +1,11 @@
 package gcu.mp.service.orderPost;
 
 
+import gcu.mp.domain.orderPost.domain.OrderPost;
 import gcu.mp.service.orderPost.dto.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderPostService {
     void createOrderPost(CreateOrderPostDto createOrderPostDto);
@@ -15,5 +17,6 @@ public interface OrderPostService {
     List<OrderPostCommentDto> getOrderPostCommentList(Long orderPostId, Integer page, Integer size);
     void createOrderPostDetailComment(CreateOrderPostCommentDto createOrderPostCommentDto);
 
-    boolean existOrderPost(long postId);
+
+
 }

@@ -16,9 +16,5 @@ import java.util.Optional;
 @Service
 public class DeliveryPostServiceImpl implements DeliveryPostService {
     private final DeliveryPostRepository deliveryPostRepository;
-    @Override
-    public boolean existDeliveryPost(Long postId) {
-        Optional<DeliveryPost> deliveryPostOptional = deliveryPostRepository.findByIdAndState(postId, State.A);
-        return deliveryPostOptional.isPresent();
-    }
+
 }

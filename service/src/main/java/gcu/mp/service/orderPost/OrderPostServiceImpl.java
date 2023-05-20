@@ -97,11 +97,7 @@ public class OrderPostServiceImpl implements OrderPostService {
         orderPostCommentRepository.save(orderPostComment);
     }
 
-    @Override
-    public boolean existOrderPost(long postId) {
-        Optional<OrderPost> orderPostOptional = orderPostRepository.findByIdAndState(postId, State.A);
-        return orderPostOptional.isPresent();
-    }
+
 
     public OrderPost getOrderPost(Long orderPostId){
         return orderPostRepository.findByIdAndState(orderPostId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_POST));

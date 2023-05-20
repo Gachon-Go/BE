@@ -15,4 +15,6 @@ public interface OrderPostRepository extends JpaRepository<OrderPost,Long> {
 
 
     Optional<OrderPost> findByIdAndState(Long orderPostId, State state);
+
+    Optional<OrderPost> findByMemberIdAndState(Long memberId, State state);
 }
