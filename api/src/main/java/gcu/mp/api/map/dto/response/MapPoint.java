@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetMapPointsRes {
+public class MapPoint {
     @Schema(description = "닉네임", example = "peter")
     String nickname;
     @Schema(description = "위도", example = "11.111111")

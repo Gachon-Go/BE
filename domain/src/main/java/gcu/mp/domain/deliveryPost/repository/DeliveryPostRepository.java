@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface DeliveryPostRepository extends JpaRepository<DeliveryPost, Long> {
 
     Optional<DeliveryPost> findByIdAndState(Long postId, State state);
+
+    Optional<DeliveryPost> findByMemberIdAndState(Long memberId, State state);
 }

@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface OrderPostRepository extends JpaRepository<OrderPost,Long> {
+public interface OrderPostRepository extends JpaRepository<OrderPost, Long> {
     List<OrderPost> findByState(State state, PageRequest pageRequest);
 
 
     Optional<OrderPost> findByIdAndState(Long orderPostId, State state);
+
 }

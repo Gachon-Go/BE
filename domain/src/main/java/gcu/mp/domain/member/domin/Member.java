@@ -2,11 +2,13 @@ package gcu.mp.domain.member.domin;
 
 import gcu.mp.domain.deliveryPost.domain.DeliveryPost;
 import gcu.mp.domain.deliveryPost.domain.DeliveryPostComment;
+import gcu.mp.domain.deliveryPost.domain.DeliveryPostProgress;
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.vo.Role;
 import gcu.mp.domain.member.vo.State;
 import gcu.mp.domain.orderPost.domain.OrderPost;
 import gcu.mp.domain.orderPost.domain.OrderPostComment;
+import gcu.mp.domain.orderPost.domain.OrderPostProgress;
 import gcu.mp.domain.pay.domain.PayHistory;
 import gcu.mp.domain.point.domin.PointHistory;
 import jakarta.persistence.*;
@@ -54,7 +56,10 @@ public class Member extends BaseEntity {
     List<DeliveryPost> deliveryPostList = new ArrayList<>();
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<DeliveryPostComment> deliveryPostCommentList = new ArrayList<>();
-
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    List<OrderPostProgress> orderPostProgressList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    List<DeliveryPostProgress> deliveryPostProgressList = new ArrayList<>();
     public void setSocialLogin(SocialLogin socialLogin) {
         this.socialLogin = socialLogin;
         socialLogin.setMember(this);
@@ -90,5 +95,9 @@ public class Member extends BaseEntity {
 
     public void addOrderPostComment(OrderPostComment orderPostComment) {
         this.orderPostCommentList.add(orderPostComment);
+    }
+
+    public void addOrderPostProgress(OrderPostProgress orderPostProgress) {
+        this.orderPostProgressList.add(orderPostProgress);
     }
 }

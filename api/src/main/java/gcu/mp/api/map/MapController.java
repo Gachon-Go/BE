@@ -1,13 +1,13 @@
 package gcu.mp.api.map;
 
 import gcu.mp.api.map.dto.request.PostMapPointReq;
-import gcu.mp.api.map.dto.response.GetMapPointsRes;
+import gcu.mp.api.map.dto.response.GetMapInformationRes;
+import gcu.mp.api.map.dto.response.MapPoint;
 import gcu.mp.api.map.mapper.MapMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
 import gcu.mp.service.deliveryPost.DeliveryPostService;
 import gcu.mp.service.map.MapService;
-import gcu.mp.service.map.dto.GetMapPointDto;
 import gcu.mp.service.orderPost.OrderPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -53,16 +53,6 @@ public class MapController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             long memberId = Long.parseLong(loggedInUser.getName());
-            if (postMapPointReq.getPurpose().equals("order")) {
-                if (!orderPostService.existOrderPost(postMapPointReq.getPostId())) {
-                    return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
-                }
-            } else if (postMapPointReq.getPurpose().equals("delivery")) {
-                if (!deliveryPostService.existDeliveryPost(postMapPointReq.getPostId())) {
-                    return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
-                }
-            } else
-                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(INVALID_PURPOSE_VALUE));
             mapService.postMapPoint(mapMapper.toPostMapPointDto(memberId, postMapPointReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
@@ -72,30 +62,19 @@ public class MapController {
 
     @Operation(summary = "위치 받기")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "1000", description = "성공", content = @Content(schema = @Schema(implementation = GetMapPointDto.class))),
+            @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @GetMapping("")
-    public ResponseEntity<BaseResponse<List<GetMapPointsRes>>> getMapPoints(@Parameter(name = "purpose", description = "order 또는 delivery", in = ParameterIn.QUERY) @RequestParam String purpose,
-                                                                           @Parameter(name = "postId", description = "포스트 id", in = ParameterIn.QUERY) @RequestParam Long postId) {
+    public ResponseEntity<BaseResponse<GetMapInformationRes>> getMapPoints() {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             long memberId = Long.parseLong(loggedInUser.getName());
-            if (purpose.equals("order")) {
-                if (!orderPostService.existOrderPost(postId)) {
-                    return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
-                }
-            } else if (purpose.equals("delivery")) {
-                if (!deliveryPostService.existDeliveryPost(postId)) {
-                    return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_POST));
-                }
-            } else
-                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(INVALID_PURPOSE_VALUE));
-            List<GetMapPointsRes> getMapPointsResList = mapMapper.toGetMapPointsResList(mapService.getMapPointList(purpose, postId));
-            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getMapPointsResList));
+            GetMapInformationRes getMapInformationRes = mapMapper.toGetMapPointsResList(mapService.getMapInformation(memberId));
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getMapInformationRes));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }

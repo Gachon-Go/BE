@@ -1,19 +1,25 @@
 package gcu.mp.service.map;
 
-import gcu.mp.common.exception.BaseException;
+import gcu.mp.domain.deliveryPost.domain.DeliveryPost;
 import gcu.mp.domain.member.domin.Member;
+import gcu.mp.domain.orderPost.domain.OrderPost;
 import gcu.mp.redis.RedisUtil;
-import gcu.mp.service.map.dto.GetMapPointDto;
+import gcu.mp.service.deliveryPost.DeliveryPostService;
+import gcu.mp.service.map.dto.GetMapInformationDto;
+import gcu.mp.service.map.dto.MapPointDto;
 import gcu.mp.service.map.dto.PostMapPointDto;
 import gcu.mp.service.member.MemberService;
+import gcu.mp.service.orderPost.OrderPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,43 +28,66 @@ import java.util.List;
 public class MapServiceImpl implements MapService {
     private final RedisUtil redisUtil;
     private final MemberService memberService;
+    private final OrderPostService orderPostService;
+    private final DeliveryPostService deliveryPostService;
+
     @Override
     @Transactional
     public void postMapPoint(PostMapPointDto postMapPointDto) {
-        if (redisUtil.existData("kakaoMap " + postMapPointDto.getPurpose() + " " + postMapPointDto.getPostId())) {
-            String data = redisUtil.getData("kakaoMap " + postMapPointDto.getPurpose() + " " + postMapPointDto.getPostId());
-            StringBuilder newData = new StringBuilder();
-            redisUtil.deleteData("kakaoMap " + postMapPointDto.getPurpose() + " " + postMapPointDto.getPostId());
-            String[] splitData = data.split(",");
-            for (String splitDatum : splitData) {
-                String[] split2Data = splitDatum.split(" ");
-                if (!split2Data[0].equals(String.valueOf(postMapPointDto.getMemberId()))) {
-                    newData.append(splitDatum).append(",");
-                }
-            }
-            newData.append(postMapPointDto.getMemberId()).append(" ").append(postMapPointDto.getLatitude()).append(" ").append(postMapPointDto.getLongitude());
-            redisUtil.setDataExpire("kakaoMap " + postMapPointDto.getPurpose() + " " + postMapPointDto.getPostId(), newData.toString(), 60 * 10L);
-
-        } else {
-            redisUtil.setDataExpire("kakaoMap " + postMapPointDto.getPurpose() + " " + postMapPointDto.getPostId(), postMapPointDto.getMemberId() + " " + postMapPointDto.getLatitude() + " " + postMapPointDto.getLongitude(), 60 * 10L);
+        if (redisUtil.existData("naverMap " + postMapPointDto.getMemberId())) {
+            redisUtil.deleteData("naverMap " + postMapPointDto.getMemberId());
         }
+        redisUtil.setDataExpire("naverMap " + postMapPointDto.getMemberId(), postMapPointDto.getLatitude() + " " + postMapPointDto.getLongitude(), 60 * 10L);
+
     }
 
     @Override
-    public List<GetMapPointDto> getMapPointList(String purpose, Long postId) {
-        List<GetMapPointDto> getMapPointDtoList = new ArrayList<>();
-        if (!redisUtil.existData("kakaoMap " + purpose + " " + postId)) {
-            return getMapPointDtoList;
+    public GetMapInformationDto getMapInformation(Long memberId) {
+        List<MapPointDto> mapPointDtoList = new ArrayList<>();
+        String purpose;
+        Long postId;
+        postId = orderPostService.getOrderPostProgressOrderIdByMemberId(memberId);
+        List<Member> memberList = orderPostService.getOrderPostProgressMemberIdByMemberId(memberId);
+        purpose = "order";
+        if (memberList.isEmpty()) {
+            postId = deliveryPostService.getDeliveryPostProgressOrderIdByMemberId(memberId);
+            memberList = deliveryPostService.getDeliveryPostProgressMemberIdByMemberId(memberId);
+            purpose = "delivery";
         }
-        String data = redisUtil.getData("kakaoMap " + purpose + " " + postId);
-        String[] splitData = data.split(",");
-        for (String splitDatum : splitData) {
-            String[] a = splitDatum.split(" ");
-            getMapPointDtoList.add(GetMapPointDto.builder()
-                    .nickname(memberService.getMember(Long.parseLong(a[0])).getNickname())
-                    .latitude(Double.parseDouble(a[1]))
-                    .longitude(Double.parseDouble(a[2])).build());
+        if (memberList.isEmpty()) {
+            return GetMapInformationDto.builder()
+                    .postId(0L)
+                    .purpose("진행 중인 거래가 없습니다.")
+                    .mapPointDtoList(mapPointDtoList).build();
         }
-        return getMapPointDtoList;
+        for (Member member : memberList) {
+            String data = redisUtil.getData("naverMap " + member.getId());
+            String[] splitData = data.split(" ");
+            MapPointDto mapPointDto = MapPointDto.builder()
+                    .nickname(member.getNickname())
+                    .latitude(Double.parseDouble(splitData[0]))
+                    .longitude(Double.parseDouble(splitData[1])).build();
+            mapPointDtoList.add(mapPointDto);
+        }
+        return GetMapInformationDto.builder()
+                .postId(postId)
+                .purpose(purpose)
+                .mapPointDtoList(mapPointDtoList).build();
     }
+
+//    @Override
+//    public GetMapInformationDto getMapInformation(Long memberId) {
+//        List<MapPointDto> mapPointDtoList = new ArrayList<>();
+//
+//        if (orderPostOptional.isPresent()) {
+//            List<Long> memberIdList = orderPostService.getOrderPostIdListByMemberId(orderPostOptional.get());
+//        } else if (deliveryPostOptional.isPresent()) {
+//
+//        } else {
+//            return GetMapInformationDto.builder()
+//                    .postId(0L)
+//                    .purpose("진행 중인 거래가 없습니다.")
+//                    .mapPointDtoList(mapPointDtoList).build();
+//        }
+//    }
 }

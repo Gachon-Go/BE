@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderPostCommentListRes {
+    @Schema(description = "댓글 고유번호",example = "1")
+    Long commentId;
     @Schema(description = "댓글쓴이", example = "peter")
     String commentWriter;
     @Schema(description = "댓글 내용", example = "사줄게")

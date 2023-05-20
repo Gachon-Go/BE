@@ -126,8 +126,25 @@ public class OrderPostController {
                                                                                                  @Parameter(name = "size", description = " 페이지 사이즈  1이상", in = ParameterIn.QUERY) @RequestParam(required = false) Integer size,
                                                                                                  @PathVariable Long orderPostId) {
         try {
-            List<OrderPostCommentListRes> orderPostCommentListResList =orderPostMapper.toOrderPostCommentListResList(orderPostService.getOrderPostCommentList(orderPostId, page, size));
+            List<OrderPostCommentListRes> orderPostCommentListResList = orderPostMapper.toOrderPostCommentListResList(orderPostService.getOrderPostCommentList(orderPostId, page, size));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(orderPostCommentListResList));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        }
+    }
+
+    @Operation(summary = "주문 게시물 고객 선택")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "1000", description = "성공"),
+            @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
+            @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
+            @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
+    })
+    @GetMapping("/{orderPostId}/comment/{commentId}")
+    public ResponseEntity<BaseResponse<String>> selectOrderPostCustomer(@PathVariable Long orderPostId, @PathVariable Long commentId) {
+        try {
+            orderPostService.selectOrderPostCustomer(orderPostId, commentId);
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }

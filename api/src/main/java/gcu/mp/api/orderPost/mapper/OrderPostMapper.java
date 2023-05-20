@@ -32,6 +32,7 @@ public class OrderPostMapper {
     public List<GetOrderPostListRes> toGetOrderPostListResList(List<GetOrderPostListDto> orderPostList) {
         return orderPostList.stream().map(
                 getOrderPostListDto -> GetOrderPostListRes.builder()
+                        .orderId(getOrderPostListDto.getOrderId())
                         .commentNum(getOrderPostListDto.getCommentNum())
                         .progress(getOrderPostListDto.getProgress())
                         .estimatedTime(getOrderPostListDto.getEstimatedTime())
@@ -52,6 +53,7 @@ public class OrderPostMapper {
     public List<OrderPostCommentListRes> toOrderPostCommentListResList(List<OrderPostCommentDto> orderPostCommentList) {
         return orderPostCommentList.stream().map(
                 orderPostCommentDto -> OrderPostCommentListRes.builder()
+                        .commentId(orderPostCommentDto.getCommentId())
                         .commentWriter(orderPostCommentDto.getCommentWriter())
                         .content(orderPostCommentDto.getContent())
                         .build()

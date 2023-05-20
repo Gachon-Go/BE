@@ -1,5 +1,6 @@
 package gcu.mp.domain.orderPost.domain;
 
+import gcu.mp.domain.deliveryPost.domain.DeliveryPostProgress;
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.domin.Member;
 import gcu.mp.domain.orderPost.vo.Progress;
@@ -35,7 +36,8 @@ public class OrderPost extends BaseEntity {
     Member member;
     @OneToMany(mappedBy = "orderPost", cascade = CascadeType.ALL)
     List<OrderPostComment> orderPostCommentList = new ArrayList<>();
-
+    @OneToMany(mappedBy = "orderPost", cascade = CascadeType.ALL)
+    List<OrderPostProgress> orderPostProgressList = new ArrayList<>();
     public void setMember(Member member) {
         this.member = member;
         member.addOrderPost(this);
@@ -43,5 +45,9 @@ public class OrderPost extends BaseEntity {
 
     public void addOrderPostComment(OrderPostComment orderPostComment) {
         this.orderPostCommentList.add(orderPostComment);
+    }
+
+    public void addOrderPostProgress(OrderPostProgress orderPostProgress) {
+        this.orderPostProgressList.add(orderPostProgress);
     }
 }
