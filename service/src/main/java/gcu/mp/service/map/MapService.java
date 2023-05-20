@@ -8,5 +8,5 @@ import java.util.List;
 public interface MapService {
     void postMapPoint(PostMapPointDto postMapPointDto);
 
-    List<GetMapPointDto> getMapPointList(Long postId);
+    List<GetMapPointDto> getMapPointList(String purpose,Long postId);
 }

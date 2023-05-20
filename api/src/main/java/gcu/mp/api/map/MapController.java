@@ -7,6 +7,8 @@ import gcu.mp.common.api.BaseResponseStatus;
 import gcu.mp.service.map.MapService;
 import gcu.mp.service.map.dto.GetMapPointDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -60,11 +62,12 @@ public class MapController {
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
     @GetMapping("")
-    public ResponseEntity<BaseResponse<List<GetMapPointDto>>> getMapPoints(@RequestParam Long postId) {
+    public ResponseEntity<BaseResponse<List<GetMapPointDto>>> getMapPoints(@Parameter(name = "purpose", description = "order 또는 delivery", in = ParameterIn.QUERY) @RequestParam String purpose,
+                                                                           @Parameter(name = "postId", description = "포스트 id", in = ParameterIn.QUERY) @RequestParam Long postId) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             long memberId = Long.parseLong(loggedInUser.getName());
-            List<GetMapPointDto> getMapPointDtoList = mapService.getMapPointList(postId);
+            List<GetMapPointDto> getMapPointDtoList = mapService.getMapPointList(purpose,postId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getMapPointDtoList));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
