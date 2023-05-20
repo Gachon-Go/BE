@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderPostCommentDto {
+    Long commentId;
     String commentWriter;
     String content;
 }

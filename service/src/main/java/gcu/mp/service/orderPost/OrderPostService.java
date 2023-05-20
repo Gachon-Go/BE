@@ -1,6 +1,7 @@
 package gcu.mp.service.orderPost;
 
 
+import gcu.mp.domain.member.domin.Member;
 import gcu.mp.domain.orderPost.domain.OrderPost;
 import gcu.mp.service.orderPost.dto.*;
 
@@ -18,5 +19,9 @@ public interface OrderPostService {
     void createOrderPostDetailComment(CreateOrderPostCommentDto createOrderPostCommentDto);
 
 
+    void selectOrderPostCustomer(Long orderPostId, Long commentId);
 
+    List<Member> getOrderPostProgressMemberIdByMemberId(Long memberId);
+
+    Long getOrderPostProgressOrderIdByMemberId(Long memberId);
 }

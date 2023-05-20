@@ -37,7 +37,7 @@ public enum BaseResponseStatus {
     NOT_EXIST_POST(false,2203,"존재하지 않는 게시물입니다."),
     // 2300
     INVALID_PURPOSE_VALUE(false,2310,"유효한 purpose 값이 아닙니다."),
-
+    NOT_EXIST_COMMENT(false,2041,"존재하지 않는 댓글입니다."),
     /**
      * 3000 : Response 오류
      */

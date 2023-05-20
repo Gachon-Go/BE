@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetOrderPostListRes {
+    @Schema(description = "order 게시물 고유 번호", example = "1")
+    Long orderId;
     @Schema(description = "제목", example = "먀관 403호 엽떡 사줘")
     String title;
     @Schema(description = "목표시간", example = "13:00")

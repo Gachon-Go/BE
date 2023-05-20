@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetOrderPostListDto {
+    Long orderId;
     String title;
     String estimatedTime;
     String progress;

@@ -60,7 +60,7 @@ public class MapController {
         }
     }
 
-    @Operation(summary = "위치 받기(아직 미완성...)")
+    @Operation(summary = "위치 받기")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공"),
             @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
