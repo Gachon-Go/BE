@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderPostRepository extends JpaRepository<OrderPost,Long> {
     List<OrderPost> findByState(State state, PageRequest pageRequest);
 
-    OrderPost findByIdAndState(Long orderPostId, State state);
+
+    Optional<OrderPost> findByIdAndState(Long orderPostId, State state);
 }

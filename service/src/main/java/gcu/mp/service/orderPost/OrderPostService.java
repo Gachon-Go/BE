@@ -1,9 +1,7 @@
 package gcu.mp.service.orderPost;
 
 
-import gcu.mp.service.orderPost.dto.CreateOrderPostDto;
-import gcu.mp.service.orderPost.dto.GetOrderPostDetailDto;
-import gcu.mp.service.orderPost.dto.GetOrderPostListDto;
+import gcu.mp.service.orderPost.dto.*;
 
 import java.util.List;
 
@@ -13,4 +11,7 @@ public interface OrderPostService {
     List<GetOrderPostListDto> getOrderPostList(Integer page, Integer size);
 
     GetOrderPostDetailDto getOrderPostDetail(Long orderPostId);
+
+    List<OrderPostCommentDto> getOrderPostCommentList(Long orderPostId, Integer page, Integer size);
+    void createOrderPostDetailComment(CreateOrderPostCommentDto createOrderPostCommentDto);
 }

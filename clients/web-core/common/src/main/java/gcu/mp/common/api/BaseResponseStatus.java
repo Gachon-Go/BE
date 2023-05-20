@@ -33,7 +33,7 @@ public enum BaseResponseStatus {
     EXISTS_MEMBER_NICKNAME(false,2101,"사용중인 유저 닉네임 입니다."),
     EXISTS_EMAIL(false,2102,"사용중인 이메일입니다."),
     NOT_EXIST_MEMBER(false,2103,"존재하지 않는 유저입니다."),
-
+    NOT_EXIST_POST(false,2203,"존재하지 않는 게시물입니다."),
 
 
     /**

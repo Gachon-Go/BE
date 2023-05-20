@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -30,9 +33,15 @@ public class OrderPost extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     Member member;
+    @OneToMany(mappedBy = "orderPost", cascade = CascadeType.ALL)
+    List<OrderPostComment> orderPostCommentList = new ArrayList<>();
 
     public void setMember(Member member) {
         this.member = member;
         member.addOrderPost(this);
+    }
+
+    public void addOrderPostComment(OrderPostComment orderPostComment) {
+        this.orderPostCommentList.add(orderPostComment);
     }
 }
