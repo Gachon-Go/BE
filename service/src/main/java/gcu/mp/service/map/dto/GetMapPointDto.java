@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class GetMapPointDto {
-    long memberId;
+    String nickname;
     double latitude;
     double longitude;
 }

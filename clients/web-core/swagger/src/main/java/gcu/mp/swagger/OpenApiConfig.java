@@ -1,5 +1,9 @@
 package gcu.mp.swagger;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -9,6 +13,7 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.lang.annotation.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,4 +38,5 @@ public class OpenApiConfig {
                 .security(Collections.singletonList(securityRequirement))
                 .info(info);
     }
+
 }

@@ -2,9 +2,14 @@ package gcu.mp.api.orderPost.mapper;
 
 import gcu.mp.api.orderPost.dto.request.CreateOrderPostCommentReq;
 import gcu.mp.api.orderPost.dto.request.CreateOrderPostReq;
-import gcu.mp.service.orderPost.dto.CreateOrderPostCommentDto;
-import gcu.mp.service.orderPost.dto.CreateOrderPostDto;
+import gcu.mp.api.orderPost.dto.response.GetOrderPostDetailRes;
+import gcu.mp.api.orderPost.dto.response.GetOrderPostListRes;
+import gcu.mp.api.orderPost.dto.response.OrderPostCommentListRes;
+import gcu.mp.service.orderPost.dto.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class OrderPostMapper {
@@ -22,5 +27,34 @@ public class OrderPostMapper {
                 .orderPostId(orderPostId)
                 .content(createOrderPostCommentReq.getContent())
                 .build();
+    }
+
+    public List<GetOrderPostListRes> toGetOrderPostListResList(List<GetOrderPostListDto> orderPostList) {
+        return orderPostList.stream().map(
+                getOrderPostListDto -> GetOrderPostListRes.builder()
+                        .commentNum(getOrderPostListDto.getCommentNum())
+                        .progress(getOrderPostListDto.getProgress())
+                        .estimatedTime(getOrderPostListDto.getEstimatedTime())
+                        .title(getOrderPostListDto.getTitle())
+                        .build()
+        ).collect(Collectors.toList());
+    }
+
+    public GetOrderPostDetailRes toGetOrderPostDetailRes(GetOrderPostDetailDto orderPostDetail) {
+        return GetOrderPostDetailRes.builder()
+                .writer(orderPostDetail.getWriter())
+                .title(orderPostDetail.getTitle())
+                .estimatedTime(orderPostDetail.getEstimatedTime())
+                .commentNum(orderPostDetail.getCommentNum())
+                .build();
+    }
+
+    public List<OrderPostCommentListRes> toOrderPostCommentListResList(List<OrderPostCommentDto> orderPostCommentList) {
+        return orderPostCommentList.stream().map(
+                orderPostCommentDto -> OrderPostCommentListRes.builder()
+                        .commentWriter(orderPostCommentDto.getCommentWriter())
+                        .content(orderPostCommentDto.getContent())
+                        .build()
+        ).collect(Collectors.toList());
     }
 }

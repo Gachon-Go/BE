@@ -1,5 +1,6 @@
 package gcu.mp.api.member.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Getter
@@ -7,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ModifyNicknameReq {
+    @Schema(description = "닉네임", example = "peeter")
     String nickname;
 }

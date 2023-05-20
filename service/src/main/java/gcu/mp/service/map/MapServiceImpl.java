@@ -1,9 +1,11 @@
 package gcu.mp.service.map;
 
 import gcu.mp.common.exception.BaseException;
+import gcu.mp.domain.member.domin.Member;
 import gcu.mp.redis.RedisUtil;
 import gcu.mp.service.map.dto.GetMapPointDto;
 import gcu.mp.service.map.dto.PostMapPointDto;
+import gcu.mp.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ import java.util.List;
 @Service
 public class MapServiceImpl implements MapService {
     private final RedisUtil redisUtil;
-
+    private final MemberService memberService;
     @Override
     @Transactional
     public void postMapPoint(PostMapPointDto postMapPointDto) {
@@ -50,15 +52,13 @@ public class MapServiceImpl implements MapService {
         }
         String data = redisUtil.getData("kakaoMap " + purpose + " " + postId);
         String[] splitData = data.split(",");
-        System.out.println("dd1");
         for (String splitDatum : splitData) {
             String[] a = splitDatum.split(" ");
             getMapPointDtoList.add(GetMapPointDto.builder()
-                    .memberId(Long.parseLong(a[0]))
+                    .nickname(memberService.getMember(Long.parseLong(a[0])).getNickname())
                     .latitude(Double.parseDouble(a[1]))
                     .longitude(Double.parseDouble(a[2])).build());
         }
-        System.out.println("dd2");
         return getMapPointDtoList;
     }
 }
