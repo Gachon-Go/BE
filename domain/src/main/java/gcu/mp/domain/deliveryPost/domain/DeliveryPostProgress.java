@@ -31,4 +31,17 @@ public class DeliveryPostProgress extends BaseEntity {
     @Enumerated(EnumType.STRING)
     ProgressState progressState;
 
+    public void setDeliveryPost(DeliveryPost deliveryPost) {
+        this.deliveryPost = deliveryPost;
+        deliveryPost.addDeliveryPostProgress(this);
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.addDeliveryPostProgress(this);
+    }
+
+    public void updateProgressState(ProgressState progressState) {
+        this.progressState = progressState;
+    }
 }

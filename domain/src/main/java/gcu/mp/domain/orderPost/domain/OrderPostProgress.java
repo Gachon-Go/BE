@@ -40,4 +40,8 @@ public class OrderPostProgress extends BaseEntity {
         this.member = member;
         member.addOrderPostProgress(this);
     }
+
+    public void updateProgressState(ProgressState progressState) {
+        this.progressState = progressState;
+    }
 }

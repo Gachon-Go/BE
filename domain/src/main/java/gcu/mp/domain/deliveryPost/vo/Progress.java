@@ -1,5 +1,15 @@
 package gcu.mp.domain.deliveryPost.vo;
 
 public enum Progress {
-    ing,done
+    ING("진행중"),
+    DONE("모집완료");
+    final private String name;
+
+    Progress(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

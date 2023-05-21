@@ -9,14 +9,10 @@ import gcu.mp.api.orderPost.mapper.OrderPostMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
 import gcu.mp.service.orderPost.OrderPostService;
-import gcu.mp.service.orderPost.dto.GetOrderPostDetailDto;
-import gcu.mp.service.orderPost.dto.GetOrderPostListDto;
-import gcu.mp.service.orderPost.dto.OrderPostCommentDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -87,7 +83,9 @@ public class OrderPostController {
     @GetMapping("/{orderPostId}")
     public ResponseEntity<BaseResponse<GetOrderPostDetailRes>> getOrderPostDetail(@PathVariable Long orderPostId) {
         try {
-            GetOrderPostDetailRes getOrderPostDetailRes = orderPostMapper.toGetOrderPostDetailRes(orderPostService.getOrderPostDetail(orderPostId));
+            Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+            Long memberId = Long.parseLong(loggedInUser.getName());
+            GetOrderPostDetailRes getOrderPostDetailRes = orderPostMapper.toGetOrderPostDetailRes(orderPostService.getOrderPostDetail(memberId,orderPostId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getOrderPostDetailRes));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
@@ -107,7 +105,7 @@ public class OrderPostController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            orderPostService.createOrderPostDetailComment(orderPostMapper.toCreateOrderPostCommentDto(orderPostId, orderPostId, createOrderPostCommentReq));
+            orderPostService.createOrderPostDetailComment(orderPostMapper.toCreateOrderPostCommentDto(memberId, orderPostId, createOrderPostCommentReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
@@ -140,10 +138,31 @@ public class OrderPostController {
             @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
-    @GetMapping("/{orderPostId}/comment/{commentId}")
+    @PostMapping("/{orderPostId}/comment/{commentId}/select")
     public ResponseEntity<BaseResponse<String>> selectOrderPostCustomer(@PathVariable Long orderPostId, @PathVariable Long commentId) {
         try {
+            if(orderPostService.existOrderPostProgress(orderPostId)){
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.EXISTS_PROGRESS));
+            }
             orderPostService.selectOrderPostCustomer(orderPostId, commentId);
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        }
+    }
+    @Operation(summary = "주문 게시물 모집완료")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "1000", description = "성공"),
+            @ApiResponse(responseCode = "2004", description = "유효하지 않은 토큰입니다.", content = @Content),
+            @ApiResponse(responseCode = "2012", description = "권한이 없는 유저의 접근입니다.", content = @Content),
+            @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
+    })
+    @PostMapping("/{orderPostId}/done")
+    public ResponseEntity<BaseResponse<String>> doneSelectOrderPostCustomer(@PathVariable Long orderPostId) {
+        try {
+            Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+            Long memberId = Long.parseLong(loggedInUser.getName());
+            orderPostService.doneSelectOrderPostCustomer(memberId,orderPostId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));

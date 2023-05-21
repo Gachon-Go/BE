@@ -1,8 +1,8 @@
 package gcu.mp.domain.deliveryPost.domain;
 
+import gcu.mp.domain.deliveryPost.vo.State;
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.domin.Member;
-import gcu.mp.domain.orderPost.vo.State;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,4 +28,14 @@ public class DeliveryPostComment extends BaseEntity {
     DeliveryPost deliveryPost;
     @Enumerated(EnumType.STRING)
     State state;
+
+    public void setDeliveryPost(DeliveryPost deliveryPost) {
+        this.deliveryPost = deliveryPost;
+        deliveryPost.addDeliveryPostComment(this);
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.addDeliveryPostComment(this);
+    }
 }

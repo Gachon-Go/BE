@@ -50,7 +50,7 @@ public class MapServiceImpl implements MapService {
         List<Member> memberList = orderPostService.getOrderPostProgressMemberIdByMemberId(memberId);
         purpose = "order";
         if (memberList.isEmpty()) {
-            postId = deliveryPostService.getDeliveryPostProgressOrderIdByMemberId(memberId);
+            postId = deliveryPostService.getDeliveryPostProgressDeliveryIdByMemberId(memberId);
             memberList = deliveryPostService.getDeliveryPostProgressMemberIdByMemberId(memberId);
             purpose = "delivery";
         }
