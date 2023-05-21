@@ -24,7 +24,7 @@ public class DeliveryPostProgress extends BaseEntity {
     @JoinColumn(name = "member_id")
     Member member;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_post_id")
+    @JoinColumn(name = "delivery_post_id")
     DeliveryPost deliveryPost;
     @Enumerated(EnumType.STRING)
     State state;
