@@ -45,7 +45,7 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
         if (deliveryPostProgressOptional.isEmpty())
             return new ArrayList<>();
         else {
-            Long orderPostId = deliveryPostProgressOptional.get().getId();
+            Long orderPostId = deliveryPostProgressOptional.get().getDeliveryPost().getId();
             List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(orderPostId, State.A, ProgressState.ING);
             return deliveryPostProgressList.stream().map(
                     DeliveryPostProgress::getMember
@@ -139,6 +139,7 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
     }
 
     @Override
+    @Transactional
     public void doneSelectDeliveryPostCustomer(Long memberId, Long deliveryPostId) {
         Member member = memberService.getMember(memberId);
         List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(deliveryPostId, State.A, ProgressState.WAIT);

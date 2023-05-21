@@ -51,6 +51,11 @@ public class OrderPostServiceImpl implements OrderPostService {
                 .state(State.A)
                 .progress(ING)
                 .build();
+        OrderPostProgress orderPostProgress = OrderPostProgress.builder()
+                .progressState(ProgressState.WAIT)
+                .state(State.A).build();
+        orderPostProgress.setMember(member);
+        orderPostProgress.setOrderPost(orderPost);
         orderPost.setMember(member);
         orderPostRepository.save(orderPost);
     }
@@ -125,7 +130,7 @@ public class OrderPostServiceImpl implements OrderPostService {
         if (orderPostProgressOptional.isEmpty())
             return new ArrayList<>();
         else {
-            Long orderPostId = orderPostProgressOptional.get().getId();
+            Long orderPostId = orderPostProgressOptional.get().getOrderPost().getId();
             List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndStateAndProgressState(orderPostId, State.A, ProgressState.ING);
             return orderPostProgressList.stream().map(
                     OrderPostProgress::getMember
@@ -140,6 +145,7 @@ public class OrderPostServiceImpl implements OrderPostService {
     }
 
     @Override
+    @Transactional
     public void doneSelectOrderPostCustomer(Long memberId, Long orderPostId) {
         Member member = memberService.getMember(memberId);
         List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndStateAndProgressState(orderPostId,State.A,ProgressState.WAIT);
