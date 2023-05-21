@@ -1,6 +1,7 @@
 package gcu.mp.domain.deliveryPost.vo;
 
 public enum ProgressState {
+    WAIT("대기중"),
     ING("진행중"),
     DONE("거래 종료"),
     CANCEL("거래 취소");

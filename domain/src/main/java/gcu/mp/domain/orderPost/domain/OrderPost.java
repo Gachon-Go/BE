@@ -6,10 +6,7 @@ import gcu.mp.domain.member.domin.Member;
 import gcu.mp.domain.orderPost.vo.Progress;
 import gcu.mp.domain.orderPost.vo.State;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -34,8 +31,10 @@ public class OrderPost extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     Member member;
+    @Builder.Default
     @OneToMany(mappedBy = "orderPost", cascade = CascadeType.ALL)
     List<OrderPostComment> orderPostCommentList = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "orderPost", cascade = CascadeType.ALL)
     List<OrderPostProgress> orderPostProgressList = new ArrayList<>();
     public void setMember(Member member) {

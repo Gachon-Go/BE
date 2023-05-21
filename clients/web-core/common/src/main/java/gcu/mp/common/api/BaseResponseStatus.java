@@ -62,7 +62,8 @@ public enum BaseResponseStatus {
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
-    KAKAO_PAY_READY_ERROR(false, 4123,"카카오페이 결제 정보를 가져오는데 실패했습니다." );
+    KAKAO_PAY_READY_ERROR(false, 4123,"카카오페이 결제 정보를 가져오는데 실패했습니다." ),
+    EXISTS_PROGRESS(false, 4124, "이미 진행 중이거나 사람 선택을 완료했습니다.");
 
 
     // 5000 : 필요시 만들어서 쓰세요

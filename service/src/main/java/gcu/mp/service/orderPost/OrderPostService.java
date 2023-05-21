@@ -13,7 +13,7 @@ public interface OrderPostService {
 
     List<GetOrderPostListDto> getOrderPostList(Integer page, Integer size);
 
-    GetOrderPostDetailDto getOrderPostDetail(Long orderPostId);
+    GetOrderPostDetailDto getOrderPostDetail(Long memberId,Long orderPostId);
 
     List<OrderPostCommentDto> getOrderPostCommentList(Long orderPostId, Integer page, Integer size);
     void createOrderPostDetailComment(CreateOrderPostCommentDto createOrderPostCommentDto);
@@ -24,4 +24,8 @@ public interface OrderPostService {
     List<Member> getOrderPostProgressMemberIdByMemberId(Long memberId);
 
     Long getOrderPostProgressOrderIdByMemberId(Long memberId);
+
+    void doneSelectOrderPostCustomer(Long memberId, Long orderPostId);
+
+    boolean existOrderPostProgress(Long orderPostId);
 }

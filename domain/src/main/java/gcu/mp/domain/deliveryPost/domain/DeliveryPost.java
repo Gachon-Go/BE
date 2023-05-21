@@ -5,10 +5,7 @@ import gcu.mp.domain.deliveryPost.vo.State;
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.domin.Member;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -33,8 +30,23 @@ public class DeliveryPost extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     Member member;
+    @Builder.Default
     @OneToMany(mappedBy = "deliveryPost", cascade = CascadeType.ALL)
     List<DeliveryPostComment> deliveryPostCommentList = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "deliveryPost", cascade = CascadeType.ALL)
     List<DeliveryPostProgress> deliveryPostProgressList = new ArrayList<>();
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.addDeliveryPost(this);
+    }
+
+    public void addDeliveryPostComment(DeliveryPostComment deliveryPostComment) {
+        this.deliveryPostCommentList.add(deliveryPostComment);
+    }
+
+    public void addDeliveryPostProgress(DeliveryPostProgress deliveryPostProgress) {
+        this.deliveryPostProgressList.add(deliveryPostProgress);
+    }
 }

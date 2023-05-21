@@ -43,6 +43,7 @@ public class OrderPostMapper {
 
     public GetOrderPostDetailRes toGetOrderPostDetailRes(GetOrderPostDetailDto orderPostDetail) {
         return GetOrderPostDetailRes.builder()
+                .mine(orderPostDetail.isMine())
                 .writer(orderPostDetail.getWriter())
                 .title(orderPostDetail.getTitle())
                 .estimatedTime(orderPostDetail.getEstimatedTime())

@@ -1,4 +1,4 @@
-package gcu.mp.api.orderPost.dto.response;
+package gcu.mp.api.deliveryPost.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetOrderPostDetailRes {
+public class GetDeliveryPostDetailRes {
     @Schema(description = "본인 게시물이면 true 아니면 false", example = "true 또는 false")
     boolean mine;
     @Schema(description = "글쓴이", example = "peter")

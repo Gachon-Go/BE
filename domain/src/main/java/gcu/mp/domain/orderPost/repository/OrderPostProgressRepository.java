@@ -14,4 +14,6 @@ public interface OrderPostProgressRepository extends JpaRepository<OrderPostProg
     Optional<OrderPostProgress> findByMemberIdAndStateAndProgressState(Long memberId, State state, ProgressState progressState);
 
     List<OrderPostProgress> findByOrderPostIdAndStateAndProgressState(Long orderPostId, State state, ProgressState progressState);
+
+    List<OrderPostProgress> findByOrderPostIdAndState(Long orderPostId, State state);
 }

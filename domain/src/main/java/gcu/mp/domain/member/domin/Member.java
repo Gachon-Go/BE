@@ -12,10 +12,7 @@ import gcu.mp.domain.orderPost.domain.OrderPostProgress;
 import gcu.mp.domain.pay.domain.PayHistory;
 import gcu.mp.domain.point.domin.PointHistory;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -43,21 +40,28 @@ public class Member extends BaseEntity {
     private String email;
     private long point;
     private String image;
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<PointHistory> pointHistoryList = new ArrayList<>();
-
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<PayHistory> payHistoryList = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<OrderPost> orderPostList = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<OrderPostComment> orderPostCommentList = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<DeliveryPost> deliveryPostList = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<DeliveryPostComment> deliveryPostCommentList = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<OrderPostProgress> orderPostProgressList = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<DeliveryPostProgress> deliveryPostProgressList = new ArrayList<>();
     public void setSocialLogin(SocialLogin socialLogin) {
@@ -99,5 +103,17 @@ public class Member extends BaseEntity {
 
     public void addOrderPostProgress(OrderPostProgress orderPostProgress) {
         this.orderPostProgressList.add(orderPostProgress);
+    }
+
+    public void addDeliveryPost(DeliveryPost deliveryPost) {
+        this.deliveryPostList.add(deliveryPost);
+    }
+
+    public void addDeliveryPostComment(DeliveryPostComment deliveryPostComment) {
+        this.deliveryPostCommentList.add(deliveryPostComment);
+    }
+
+    public void addDeliveryPostProgress(DeliveryPostProgress deliveryPostProgress) {
+        this.deliveryPostProgressList.add(deliveryPostProgress);
     }
 }
