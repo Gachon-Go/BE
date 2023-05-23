@@ -26,8 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static gcu.mp.common.api.BaseResponseStatus.NOT_EXIST_COMMENT;
-import static gcu.mp.common.api.BaseResponseStatus.NOT_EXIST_POST;
+import static gcu.mp.common.api.BaseResponseStatus.*;
 import static gcu.mp.domain.orderPost.vo.Progress.ING;
 
 @Slf4j
@@ -141,14 +140,15 @@ public class OrderPostServiceImpl implements OrderPostService {
     @Override
     public Long getOrderPostProgressOrderIdByMemberId(Long memberId) {
         Optional<OrderPostProgress> orderPostProgressOptional = orderPostProgressRepository.findByMemberIdAndStateAndProgressState(memberId, State.A, ProgressState.ING);
-        return orderPostProgressOptional.map(BaseEntity::getId).orElse(null);
+        OrderPostProgress orderPostProgress = orderPostProgressOptional.orElseThrow(()->new BaseException(NOT_EXIST_PROGRESS));
+        return orderPostProgress.getOrderPost().getId();
     }
 
     @Override
     @Transactional
     public void doneSelectOrderPostCustomer(Long memberId, Long orderPostId) {
         Member member = memberService.getMember(memberId);
-        List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndStateAndProgressState(orderPostId,State.A,ProgressState.WAIT);
+        List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndStateAndProgressState(orderPostId, State.A, ProgressState.WAIT);
         for (OrderPostProgress orderPostProgress : orderPostProgressList) {
             orderPostProgress.updateProgressState(ProgressState.ING);
         }
@@ -156,21 +156,36 @@ public class OrderPostServiceImpl implements OrderPostService {
 
     @Override
     public boolean existOrderPostProgress(Long orderPostId) {
-        List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndState(orderPostId,State.A);
+        List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndState(orderPostId, State.A);
         for (OrderPostProgress orderPostProgress : orderPostProgressList) {
-            if (orderPostProgress.getProgressState().equals(ProgressState.WAIT) || orderPostProgress.getProgressState().equals(ProgressState.ING))
-            {
+            if (orderPostProgress.getProgressState().equals(ProgressState.WAIT) || orderPostProgress.getProgressState().equals(ProgressState.ING)) {
                 return true;
             }
         }
         return false;
     }
 
+    @Override
+    public boolean existProgressingOrderPostByMemberId(Long memberId) {
+        return orderPostRepository.existsByMemberIdAndStateAndProgress(memberId, State.A, ING);
+    }
+
+    @Override
+    public Optional<OrderPostProgress> existProgressingOrderPostProgressByMemberId(Long memberId) {
+        return orderPostProgressRepository.findByMemberIdAndStateAndProgressState(memberId, State.A, ProgressState.ING);
+    }
+
     public OrderPostComment getOrderPostComment(Long commentId) {
         return orderPostCommentRepository.findByIdAndState(commentId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_COMMENT));
     }
 
+    @Override
     public OrderPost getOrderPost(Long orderPostId) {
         return orderPostRepository.findByIdAndState(orderPostId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_POST));
+    }
+
+    @Override
+    public List<OrderPostProgress> getOrderPostProgressListByPostId(Long id) {
+        return orderPostProgressRepository.findByOrderPostIdAndStateAndProgressState(id,State.A,ProgressState.ING);
     }
 }

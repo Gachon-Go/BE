@@ -12,4 +12,8 @@ public interface PointService {
     void paySuccess(PaysuccessPointDto paysuccessPointDto);
 
     List<PointHistoryDto> getPointHistory(Long memberId, int page, int size);
+
+    String getPointTransactionId(Long memberId, Long point);
+
+    void TransactionPoint(Long memberId, String transactionId);
 }

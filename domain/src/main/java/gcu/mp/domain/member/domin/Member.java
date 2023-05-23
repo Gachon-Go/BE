@@ -81,7 +81,7 @@ public class Member extends BaseEntity {
         payHistoryList.add(payHistory);
     }
 
-    public void addPoint(int totalAmount) {
+    public void addPoint(long totalAmount) {
         this.point += totalAmount;
     }
 

@@ -1,9 +1,12 @@
 package gcu.mp.service.deliveryPost;
 
+import gcu.mp.domain.deliveryPost.domain.DeliveryPost;
+import gcu.mp.domain.deliveryPost.domain.DeliveryPostProgress;
 import gcu.mp.domain.member.domin.Member;
 import gcu.mp.service.deliveryPost.dto.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DeliveryPostService {
 
@@ -28,4 +31,12 @@ public interface DeliveryPostService {
     void doneSelectDeliveryPostCustomer(Long memberId, Long DeliveryPostId);
 
     boolean existDeliveryPostProgress(Long deliveryPostId);
+
+    boolean existProgressingDeliveryPostByMemberId(Long memberId);
+
+    Optional<DeliveryPostProgress> existProgressingDeliveryPostProgressByMemberId(Long memberId);
+
+    DeliveryPost getDeliveryPost(Long id);
+
+    List<DeliveryPostProgress> getDeliveryPostProgressListByPostId(Long id);
 }

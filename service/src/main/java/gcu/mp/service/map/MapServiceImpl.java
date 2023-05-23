@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 @Service
 public class MapServiceImpl implements MapService {
     private final RedisUtil redisUtil;
-    private final MemberService memberService;
     private final OrderPostService orderPostService;
     private final DeliveryPostService deliveryPostService;
 
@@ -74,20 +73,4 @@ public class MapServiceImpl implements MapService {
                 .purpose(purpose)
                 .mapPointDtoList(mapPointDtoList).build();
     }
-
-//    @Override
-//    public GetMapInformationDto getMapInformation(Long memberId) {
-//        List<MapPointDto> mapPointDtoList = new ArrayList<>();
-//
-//        if (orderPostOptional.isPresent()) {
-//            List<Long> memberIdList = orderPostService.getOrderPostIdListByMemberId(orderPostOptional.get());
-//        } else if (deliveryPostOptional.isPresent()) {
-//
-//        } else {
-//            return GetMapInformationDto.builder()
-//                    .postId(0L)
-//                    .purpose("진행 중인 거래가 없습니다.")
-//                    .mapPointDtoList(mapPointDtoList).build();
-//        }
-//    }
 }

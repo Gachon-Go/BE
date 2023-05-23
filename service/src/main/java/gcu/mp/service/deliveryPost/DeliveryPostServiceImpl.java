@@ -7,6 +7,7 @@ import gcu.mp.domain.deliveryPost.domain.DeliveryPostProgress;
 import gcu.mp.domain.deliveryPost.repository.DeliveryPostCommentRepository;
 import gcu.mp.domain.deliveryPost.repository.DeliveryPostProgressRepository;
 import gcu.mp.domain.deliveryPost.repository.DeliveryPostRepository;
+import gcu.mp.domain.deliveryPost.vo.Progress;
 import gcu.mp.domain.deliveryPost.vo.ProgressState;
 import gcu.mp.domain.deliveryPost.vo.State;
 import gcu.mp.domain.entity.BaseEntity;
@@ -159,11 +160,27 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
         return false;
     }
 
+    @Override
+    public boolean existProgressingDeliveryPostByMemberId(Long memberId) {
+        return deliveryPostRepository.existsByMemberIdAndStateAndProgress(memberId, State.A, ING);
+    }
+
+    @Override
+    public Optional<DeliveryPostProgress> existProgressingDeliveryPostProgressByMemberId(Long memberId) {
+        return deliveryPostProgressRepository.findByMemberIdAndStateAndProgressState(memberId, State.A, ProgressState.ING);
+    }
+
     public DeliveryPostComment getDeliveryPostComment(Long commentId) {
         return deliveryPostCommentRepository.findByIdAndState(commentId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_COMMENT));
     }
 
+    @Override
     public DeliveryPost getDeliveryPost(Long deliveryPostId) {
         return deliveryPostRepository.findByIdAndState(deliveryPostId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_POST));
+    }
+
+    @Override
+    public List<DeliveryPostProgress> getDeliveryPostProgressListByPostId(Long id) {
+        return deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(id,State.A,ProgressState.ING);
     }
 }
