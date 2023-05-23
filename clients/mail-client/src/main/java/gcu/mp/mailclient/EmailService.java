@@ -45,7 +45,7 @@ public class EmailService {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             message.addRecipients(MimeMessage.RecipientType.TO, email);
-            message.setSubject("안녕하세요 인증번호입니다.");
+            message.setSubject("[GachonGo] 이메일 인증번호를 안내해드립니다.");
             message.setFrom(configEmail);
             message.setText(authCode, "utf-8", "html");
         } catch (MessagingException e) {

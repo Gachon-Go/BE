@@ -117,7 +117,7 @@ public class PointServiceImpl implements PointService {
                 Long postOwnerId = orderPost.getMember().getId();
                 if (postOwnerId == orderPostProgressOptionalByMember.get().getId()) {
                     List<OrderPostProgress> orderPostProgressList = orderPostService.getOrderPostProgressListByPostId(orderPost.getId());
-                    if (orderPostProgressList.size()<=1) {
+                    if (orderPostProgressList.size()<=2) {
                         orderPostProgressOptionalByMember.get().updateProgressState(ProgressState.DONE);
                     }
                 } else {
@@ -145,7 +145,7 @@ public class PointServiceImpl implements PointService {
                 Long postOwnerId = deliveryPost.getMember().getId();
                 if (postOwnerId == deliveryPostProgressByMember.get().getId()) {
                     List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostService.getDeliveryPostProgressListByPostId(deliveryPost.getId());
-                    if (deliveryPostProgressList.isEmpty()) {
+                    if (deliveryPostProgressList.size()<=2) {
                         deliveryPostProgressByMember.get().updateProgressState(DONE);
                     }
                 } else {
