@@ -85,7 +85,7 @@ public class OrderPostController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            GetOrderPostDetailRes getOrderPostDetailRes = orderPostMapper.toGetOrderPostDetailRes(orderPostService.getOrderPostDetail(memberId,orderPostId));
+            GetOrderPostDetailRes getOrderPostDetailRes = orderPostMapper.toGetOrderPostDetailRes(orderPostService.getOrderPostDetail(memberId, orderPostId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getOrderPostDetailRes));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
@@ -141,7 +141,7 @@ public class OrderPostController {
     @PostMapping("/{orderPostId}/comment/{commentId}/select")
     public ResponseEntity<BaseResponse<String>> selectOrderPostCustomer(@PathVariable Long orderPostId, @PathVariable Long commentId) {
         try {
-            if(orderPostService.existOrderPostProgress(orderPostId)){
+            if (orderPostService.existOrderPostProgress(orderPostId)) {
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.EXISTS_PROGRESS));
             }
             orderPostService.selectOrderPostCustomer(orderPostId, commentId);
@@ -149,7 +149,9 @@ public class OrderPostController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
         }
+
     }
+
     @Operation(summary = "주문 게시물 모집완료")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공"),
@@ -162,7 +164,7 @@ public class OrderPostController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            orderPostService.doneSelectOrderPostCustomer(memberId,orderPostId);
+            orderPostService.doneSelectOrderPostCustomer(memberId, orderPostId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));

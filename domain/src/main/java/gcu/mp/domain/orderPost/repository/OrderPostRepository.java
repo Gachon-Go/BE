@@ -1,6 +1,7 @@
 package gcu.mp.domain.orderPost.repository;
 
 import gcu.mp.domain.orderPost.domain.OrderPost;
+import gcu.mp.domain.orderPost.vo.Progress;
 import gcu.mp.domain.orderPost.vo.State;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,5 @@ public interface OrderPostRepository extends JpaRepository<OrderPost, Long> {
 
     Optional<OrderPost> findByIdAndState(Long orderPostId, State state);
 
+    boolean existsByMemberIdAndStateAndProgress(Long memberId, State state, Progress progress);
 }

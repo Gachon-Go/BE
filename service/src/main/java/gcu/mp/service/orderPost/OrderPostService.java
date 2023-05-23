@@ -3,6 +3,7 @@ package gcu.mp.service.orderPost;
 
 import gcu.mp.domain.member.domin.Member;
 import gcu.mp.domain.orderPost.domain.OrderPost;
+import gcu.mp.domain.orderPost.domain.OrderPostProgress;
 import gcu.mp.service.orderPost.dto.*;
 
 import java.util.List;
@@ -28,4 +29,12 @@ public interface OrderPostService {
     void doneSelectOrderPostCustomer(Long memberId, Long orderPostId);
 
     boolean existOrderPostProgress(Long orderPostId);
+
+    boolean existProgressingOrderPostByMemberId(Long memberId);
+
+    Optional<OrderPostProgress> existProgressingOrderPostProgressByMemberId(Long memberId);
+
+    OrderPost getOrderPost(Long id);
+
+    List<OrderPostProgress> getOrderPostProgressListByPostId(Long id);
 }

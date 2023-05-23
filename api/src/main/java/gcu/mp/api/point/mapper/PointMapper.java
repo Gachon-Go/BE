@@ -1,6 +1,7 @@
 package gcu.mp.api.point.mapper;
 
 import gcu.mp.api.point.dto.response.GetPointRes;
+import gcu.mp.api.point.dto.response.GetPointTransactionIdRes;
 import gcu.mp.api.point.dto.response.PointHistoryListRes;
 import gcu.mp.service.point.dto.GetPointDto;
 import gcu.mp.service.point.dto.PointHistoryDto;
@@ -25,5 +26,10 @@ public class PointMapper {
                         .point(pointHistoryDto.getPoint())
                         .build()
         ).collect(Collectors.toList());
+    }
+
+    public GetPointTransactionIdRes toGetPointTransactionIdRes(String pointTransactionId) {
+        return GetPointTransactionIdRes.builder()
+                .TransactionId(pointTransactionId).build();
     }
 }
