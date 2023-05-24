@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 
 import java.util.Random;
@@ -18,6 +20,7 @@ import java.util.Random;
 @Slf4j
 @RequiredArgsConstructor
 public class EmailService {
+    private final SpringTemplateEngine templateEngine;
     private final JavaMailSender mailSender;
     private final RedisUtil redisUtil;
 
@@ -39,7 +42,6 @@ public class EmailService {
 
     // 메일 반환
     private MimeMessage createEmailForm(String email) {
-
         String authCode = createdCode();
 
         MimeMessage message = mailSender.createMimeMessage();
@@ -47,7 +49,7 @@ public class EmailService {
             message.addRecipients(MimeMessage.RecipientType.TO, email);
             message.setSubject("[GachonGo] 이메일 인증번호를 안내해드립니다.");
             message.setFrom(configEmail);
-            message.setText(authCode, "utf-8", "html");
+            message.setText(setContext(email, authCode), "utf-8", "html");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
@@ -56,6 +58,12 @@ public class EmailService {
         return message;
     }
 
+    private String setContext(String email, String authCode) { // 타임리프 설정하는 코드
+        Context context = new Context();
+        context.setVariable("email", email); // Template에 전달할 데이터 설정
+        context.setVariable("authCode", authCode); // Template에 전달할 데이터 설정
+        return templateEngine.process("mail", context); // mail.html
+    }
 
     // 메일 보내기 ( 비동기 처리)
     @Async
