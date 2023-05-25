@@ -55,7 +55,7 @@ public class PointController {
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getPointRes));
 
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -77,7 +77,7 @@ public class PointController {
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(pointHistoryListResList));
 
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -99,7 +99,7 @@ public class PointController {
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getPointTransactionIdRes));
 
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
     @Operation(summary = "포인트 거래(고유번호 입력)")
@@ -118,7 +118,7 @@ public class PointController {
             pointService.TransactionPoint(memberId, TransactionId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }

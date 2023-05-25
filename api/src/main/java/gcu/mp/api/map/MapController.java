@@ -2,7 +2,6 @@ package gcu.mp.api.map;
 
 import gcu.mp.api.map.dto.request.PostMapPointReq;
 import gcu.mp.api.map.dto.response.GetMapInformationRes;
-import gcu.mp.api.map.dto.response.MapPoint;
 import gcu.mp.api.map.mapper.MapMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
@@ -11,8 +10,6 @@ import gcu.mp.service.deliveryPost.DeliveryPostService;
 import gcu.mp.service.map.MapService;
 import gcu.mp.service.orderPost.OrderPostService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,9 +23,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-import static gcu.mp.common.api.BaseResponseStatus.INVALID_PURPOSE_VALUE;
 
 @Slf4j
 @RestController
@@ -57,7 +51,7 @@ public class MapController {
             mapService.postMapPoint(mapMapper.toPostMapPointDto(memberId, postMapPointReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -77,7 +71,7 @@ public class MapController {
             GetMapInformationRes getMapInformationRes = mapMapper.toGetMapPointsResList(mapService.getMapInformation(memberId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getMapInformationRes));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }

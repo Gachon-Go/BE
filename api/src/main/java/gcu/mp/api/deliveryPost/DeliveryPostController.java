@@ -52,7 +52,7 @@ public class DeliveryPostController {
             deliveryPostService.createDeliveryPost(deliveryPostMapper.toCreateDeliveryPostDto(memberId, createDeliveryPostReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -70,7 +70,7 @@ public class DeliveryPostController {
             List<GetDeliveryPostListRes> getDeliveryPostListResList = deliveryPostMapper.toGetDeliveryPostListResList(deliveryPostService.getDeliveryPostList(page, size));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getDeliveryPostListResList));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -89,7 +89,7 @@ public class DeliveryPostController {
             GetDeliveryPostDetailRes getDeliveryPostDetailRes = deliveryPostMapper.toGetDeliveryPostDetailRes(deliveryPostService.getDeliveryPostDetail(memberId,deliveryPostId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getDeliveryPostDetailRes));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -109,7 +109,7 @@ public class DeliveryPostController {
             deliveryPostService.createDeliveryPostDetailComment(deliveryPostMapper.toCreateDeliveryPostCommentDto(memberId, deliveryPostId, createDeliveryPostCommentReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -128,7 +128,7 @@ public class DeliveryPostController {
             List<DeliveryPostCommentListRes> deliveryPostCommentListResList = deliveryPostMapper.toDeliveryPostCommentListResList(deliveryPostService.getDeliveryPostCommentList(deliveryPostId, page, size));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(deliveryPostCommentListResList));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -148,7 +148,7 @@ public class DeliveryPostController {
             deliveryPostService.selectDeliveryPostCustomer(deliveryPostId, commentId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
     @Operation(summary = "배달 게시물 모집완료")
@@ -166,7 +166,7 @@ public class DeliveryPostController {
             deliveryPostService.doneSelectDeliveryPostCustomer(memberId,deliveryPostId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }

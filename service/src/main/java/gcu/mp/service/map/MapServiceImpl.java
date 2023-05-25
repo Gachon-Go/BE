@@ -45,9 +45,7 @@ public class MapServiceImpl implements MapService {
         List<MapPointDto> mapPointDtoList = new ArrayList<>();
         String purpose;
         Long postId;
-        log.info("getMapInformation: {}", "");
         postId = orderPostService.getOrderPostProgressOrderIdByMemberId(memberId);
-        log.info("post ID: {}", postId);
         List<Member> memberList = orderPostService.getOrderPostProgressMemberIdByMemberId(memberId);
         purpose = "order";
         if (memberList.isEmpty()) {

@@ -52,7 +52,7 @@ public class OrderPostController {
             orderPostService.createOrderPost(orderPostMapper.toCreateOrderPostDto(memberId, createOrderPostReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -70,7 +70,7 @@ public class OrderPostController {
             List<GetOrderPostListRes> getOrderPostListResList = orderPostMapper.toGetOrderPostListResList(orderPostService.getOrderPostList(page, size));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getOrderPostListResList));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -89,7 +89,7 @@ public class OrderPostController {
             GetOrderPostDetailRes getOrderPostDetailRes = orderPostMapper.toGetOrderPostDetailRes(orderPostService.getOrderPostDetail(memberId, orderPostId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getOrderPostDetailRes));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -109,7 +109,7 @@ public class OrderPostController {
             orderPostService.createOrderPostDetailComment(orderPostMapper.toCreateOrderPostCommentDto(memberId, orderPostId, createOrderPostCommentReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -128,7 +128,7 @@ public class OrderPostController {
             List<OrderPostCommentListRes> orderPostCommentListResList = orderPostMapper.toOrderPostCommentListResList(orderPostService.getOrderPostCommentList(orderPostId, page, size));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(orderPostCommentListResList));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -148,7 +148,7 @@ public class OrderPostController {
             orderPostService.selectOrderPostCustomer(orderPostId, commentId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
 
     }
@@ -168,7 +168,7 @@ public class OrderPostController {
             orderPostService.doneSelectOrderPostCustomer(memberId, orderPostId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }
