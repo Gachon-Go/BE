@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<BaseException> handleCustomException(final BaseException e) {
         log.error("handleCustomException: {}", e.getStatus().getCode());
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(e.getStatus().getHttpCode())
                 .body(new BaseException(e.getStatus()));
     }
 

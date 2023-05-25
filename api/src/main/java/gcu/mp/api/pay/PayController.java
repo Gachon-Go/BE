@@ -54,7 +54,7 @@ public class PayController {
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(payRequestResDto));
 
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -68,7 +68,7 @@ public class PayController {
             pointService.paySuccess(payMapper.toPaysuccessPointDto(kakaoApproveDto));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>("성공"));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -80,7 +80,7 @@ public class PayController {
             Long memberId = Long.parseLong(loggedInUser.getName());
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>("실패"));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -92,7 +92,7 @@ public class PayController {
             Long memberId = Long.parseLong(loggedInUser.getName());
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>("취소"));
         } catch (BaseException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+            return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }
