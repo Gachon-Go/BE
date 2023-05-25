@@ -5,6 +5,7 @@ import gcu.mp.api.point.dto.response.GetPointRes;
 import gcu.mp.api.point.dto.response.GetPointTransactionIdRes;
 import gcu.mp.api.point.dto.response.PointHistoryListRes;
 import gcu.mp.api.point.mapper.PointMapper;
+import gcu.mp.common.exception.BaseException;
 import gcu.mp.service.point.dto.GetPointDto;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
@@ -53,8 +54,8 @@ public class PointController {
             GetPointRes getPointRes = pointMapper.toGetPointRes(pointService.getPoint(memberId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getPointRes));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -75,8 +76,8 @@ public class PointController {
             List<PointHistoryListRes> pointHistoryListResList = pointMapper.toPointHistoryListResList(pointService.getPointHistory(memberId, page, size));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(pointHistoryListResList));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -97,8 +98,8 @@ public class PointController {
             GetPointTransactionIdRes getPointTransactionIdRes = pointMapper.toGetPointTransactionIdRes(pointService.getPointTransactionId(memberId, getPointTransactionIdReq.getPoint()));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getPointTransactionIdRes));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
     @Operation(summary = "포인트 거래(고유번호 입력)")
@@ -116,8 +117,8 @@ public class PointController {
             Long memberId = Long.parseLong(loggedInUser.getName());
             pointService.TransactionPoint(memberId, TransactionId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }

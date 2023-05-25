@@ -125,12 +125,17 @@ public class OrderPostServiceImpl implements OrderPostService {
 
     @Override
     public List<Member> getOrderPostProgressMemberIdByMemberId(Long memberId) {
+        log.info("1");
         Optional<OrderPostProgress> orderPostProgressOptional = orderPostProgressRepository.findByMemberIdAndStateAndProgressState(memberId, State.A, ProgressState.ING);
-        if (orderPostProgressOptional.isEmpty())
+        log.info("2");
+        if (orderPostProgressOptional.isEmpty()) {
+            log.info("3");
             return new ArrayList<>();
+        }
         else {
             Long orderPostId = orderPostProgressOptional.get().getOrderPost().getId();
             List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndStateAndProgressState(orderPostId, State.A, ProgressState.ING);
+            log.info("4");
             return orderPostProgressList.stream().map(
                     OrderPostProgress::getMember
             ).collect(Collectors.toList());
@@ -140,8 +145,7 @@ public class OrderPostServiceImpl implements OrderPostService {
     @Override
     public Long getOrderPostProgressOrderIdByMemberId(Long memberId) {
         Optional<OrderPostProgress> orderPostProgressOptional = orderPostProgressRepository.findByMemberIdAndStateAndProgressState(memberId, State.A, ProgressState.ING);
-        OrderPostProgress orderPostProgress = orderPostProgressOptional.orElseThrow(()->new BaseException(NOT_EXIST_PROGRESS));
-        return orderPostProgress.getOrderPost().getId();
+        return orderPostProgressOptional.map(orderPostProgress -> orderPostProgress.getOrderPost().getId()).orElse(null);
     }
 
     @Override

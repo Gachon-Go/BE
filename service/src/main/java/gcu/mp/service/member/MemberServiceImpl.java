@@ -70,8 +70,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public LoginMemberDto getLonginMember(Long memberId) {
+    @Transactional
+    public LoginMemberDto getLonginMember(Long memberId,String fcmId) {
         Member member = getMember(memberId);
+        member.setFcmId(fcmId);
         return LoginMemberDto.builder()
                 .nickname(member.getNickname())
                 .point(member.getPoint())

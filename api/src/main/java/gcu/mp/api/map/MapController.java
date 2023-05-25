@@ -6,6 +6,7 @@ import gcu.mp.api.map.dto.response.MapPoint;
 import gcu.mp.api.map.mapper.MapMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
+import gcu.mp.common.exception.BaseException;
 import gcu.mp.service.deliveryPost.DeliveryPostService;
 import gcu.mp.service.map.MapService;
 import gcu.mp.service.orderPost.OrderPostService;
@@ -55,8 +56,8 @@ public class MapController {
             long memberId = Long.parseLong(loggedInUser.getName());
             mapService.postMapPoint(mapMapper.toPostMapPointDto(memberId, postMapPointReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -75,8 +76,8 @@ public class MapController {
             long memberId = Long.parseLong(loggedInUser.getName());
             GetMapInformationRes getMapInformationRes = mapMapper.toGetMapPointsResList(mapService.getMapInformation(memberId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getMapInformationRes));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }

@@ -4,6 +4,7 @@ import gcu.mp.api.pay.dto.request.PayRequestReq;
 import gcu.mp.api.pay.mapper.PayMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
+import gcu.mp.common.exception.BaseException;
 import gcu.mp.payclient.KakaoPayService;
 import gcu.mp.payclient.dto.KakaoApproveDto;
 import gcu.mp.payclient.dto.PayRequestResDto;
@@ -52,8 +53,8 @@ public class PayController {
             PayRequestResDto payRequestResDto = kakaoPayService.payment(payMapper.toPayRequestDto(memberId, payRequestReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(payRequestResDto));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -61,12 +62,14 @@ public class PayController {
     @Hidden
     public ResponseEntity<BaseResponse<String>> paySuccess(@RequestParam("pg_token") String pgToken,
                                                            @RequestParam("partner_order_id") String partner_order_id) {
-
-        KakaoApproveDto kakaoApproveDto = kakaoPayService.paySuccess(partner_order_id, pgToken);
-        payService.paySuccess(payMapper.toPaySuccessDto(kakaoApproveDto));
-        pointService.paySuccess(payMapper.toPaysuccessPointDto(kakaoApproveDto));
-        return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>("성공"));
-
+        try {
+            KakaoApproveDto kakaoApproveDto = kakaoPayService.paySuccess(partner_order_id, pgToken);
+            payService.paySuccess(payMapper.toPaySuccessDto(kakaoApproveDto));
+            pointService.paySuccess(payMapper.toPaysuccessPointDto(kakaoApproveDto));
+            return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>("성공"));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
+        }
     }
 
     @GetMapping("/fail")
@@ -76,8 +79,8 @@ public class PayController {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>("실패"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -88,8 +91,8 @@ public class PayController {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>("취소"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }

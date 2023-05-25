@@ -6,6 +6,7 @@ import gcu.mp.api.auth.dto.response.LogInMemberRes;
 import gcu.mp.api.auth.mapper.AuthMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
+import gcu.mp.common.exception.BaseException;
 import gcu.mp.oauthclient.OAuthService;
 import gcu.mp.oauthclient.dto.core.OAuth2UserInfo;
 import gcu.mp.security.SecurityConfig.jwt.JwtTokenProvider;
@@ -59,8 +60,8 @@ public class AuthController {
             memberService.createMember(authMapper.toCreateMemberDto(createMemberReq, oAuth2UserInfo));
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -78,11 +79,11 @@ public class AuthController {
             Long memberId = memberService.getMemberId(authMapper.toOauthMemberDto(oAuth2UserInfo));
             if (memberId == null)
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_EXIST_MEMBER));
-            LoginMemberDto loginMemberDto = memberService.getLonginMember(memberId);
+            LoginMemberDto loginMemberDto = memberService.getLonginMember(memberId,loginMemberReq.getFcmId());
             LogInMemberRes logInMemberRes = new LogInMemberRes(memberId, jwtTokenProvider.createAccessToken(Long.toString(memberId)), loginMemberDto);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(logInMemberRes));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -99,8 +100,8 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.EXISTS_MEMBER_NICKNAME));
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }
