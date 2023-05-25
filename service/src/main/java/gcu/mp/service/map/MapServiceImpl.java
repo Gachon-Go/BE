@@ -45,9 +45,9 @@ public class MapServiceImpl implements MapService {
         List<MapPointDto> mapPointDtoList = new ArrayList<>();
         String purpose;
         Long postId;
-        log.info("getMapInformation: {}","");
+        log.info("getMapInformation: {}", "");
         postId = orderPostService.getOrderPostProgressOrderIdByMemberId(memberId);
-        log.info("post ID: {}",postId);
+        log.info("post ID: {}", postId);
         List<Member> memberList = orderPostService.getOrderPostProgressMemberIdByMemberId(memberId);
         purpose = "order";
         if (memberList.isEmpty()) {
@@ -55,7 +55,7 @@ public class MapServiceImpl implements MapService {
             memberList = deliveryPostService.getDeliveryPostProgressMemberIdByMemberId(memberId);
             purpose = "delivery";
         }
-        if (postId==null) {
+        if (postId == null) {
             return GetMapInformationDto.builder()
                     .postId(0L)
                     .purpose("진행 중인 거래가 없습니다.")
@@ -63,11 +63,16 @@ public class MapServiceImpl implements MapService {
         }
         for (Member member : memberList) {
             String data = redisUtil.getData("naverMap " + member.getId());
-            String[] splitData = data.split(" ");
-            MapPointDto mapPointDto = MapPointDto.builder()
-                    .nickname(member.getNickname())
-                    .latitude(Double.parseDouble(splitData[0]))
-                    .longitude(Double.parseDouble(splitData[1])).build();
+            MapPointDto mapPointDto;
+            if (data==null) {
+                continue;
+            } else {
+                String[] splitData = data.split(" ");
+                mapPointDto = MapPointDto.builder()
+                        .nickname(member.getNickname())
+                        .latitude(Double.parseDouble(splitData[0]))
+                        .longitude(Double.parseDouble(splitData[1])).build();
+            }
             mapPointDtoList.add(mapPointDto);
         }
         return GetMapInformationDto.builder()
