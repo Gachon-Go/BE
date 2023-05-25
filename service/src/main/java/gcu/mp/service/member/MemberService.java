@@ -20,7 +20,7 @@ public interface MemberService {
 
     Long getMemberId(OauthMemberDto toOauthMemberDto);
 
-    LoginMemberDto getLonginMember(Long memberId);
+    LoginMemberDto getLonginMember(Long memberId,String fcmId);
 
     String modifyProfileImage(Long memberId, MultipartFile image);
 

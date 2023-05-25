@@ -5,6 +5,7 @@ import gcu.mp.api.member.dto.response.MyPageRes;
 import gcu.mp.api.member.mapper.MemberMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
+import gcu.mp.common.exception.BaseException;
 import gcu.mp.service.member.MemberService;
 import gcu.mp.service.member.dto.MyPageDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,8 +55,8 @@ public class MemberController {
             }
             memberService.modifyNickname(memberMapper.toModifyNicknameDto(modifyNicknameReq, memberId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -75,8 +76,8 @@ public class MemberController {
             memberService.resignMember(memberId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -103,8 +104,8 @@ public class MemberController {
             String imageUrl = memberService.modifyProfileImage(memberId, image);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(imageUrl));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -126,8 +127,8 @@ public class MemberController {
             MyPageRes myPageRes = memberMapper.toMyPageRes(myPageDto);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(myPageRes));
 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }

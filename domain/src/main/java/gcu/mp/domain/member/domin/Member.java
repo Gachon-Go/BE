@@ -116,4 +116,8 @@ public class Member extends BaseEntity {
     public void addDeliveryPostProgress(DeliveryPostProgress deliveryPostProgress) {
         this.deliveryPostProgressList.add(deliveryPostProgress);
     }
+
+    public void setFcmId(String fcmId) {
+        this.fcm_id = fcmId;
+    }
 }

@@ -45,7 +45,9 @@ public class MapServiceImpl implements MapService {
         List<MapPointDto> mapPointDtoList = new ArrayList<>();
         String purpose;
         Long postId;
+        log.info("getMapInformation: {}","");
         postId = orderPostService.getOrderPostProgressOrderIdByMemberId(memberId);
+        log.info("post ID: {}",postId);
         List<Member> memberList = orderPostService.getOrderPostProgressMemberIdByMemberId(memberId);
         purpose = "order";
         if (memberList.isEmpty()) {
@@ -53,7 +55,7 @@ public class MapServiceImpl implements MapService {
             memberList = deliveryPostService.getDeliveryPostProgressMemberIdByMemberId(memberId);
             purpose = "delivery";
         }
-        if (memberList.isEmpty()) {
+        if (postId==null) {
             return GetMapInformationDto.builder()
                     .postId(0L)
                     .purpose("진행 중인 거래가 없습니다.")

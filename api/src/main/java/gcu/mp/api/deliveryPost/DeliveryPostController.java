@@ -8,6 +8,7 @@ import gcu.mp.api.deliveryPost.dto.response.GetDeliveryPostListRes;
 import gcu.mp.api.deliveryPost.mapper.DeliveryPostMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
+import gcu.mp.common.exception.BaseException;
 import gcu.mp.service.deliveryPost.DeliveryPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -50,8 +51,8 @@ public class DeliveryPostController {
             Long memberId = Long.parseLong(loggedInUser.getName());
             deliveryPostService.createDeliveryPost(deliveryPostMapper.toCreateDeliveryPostDto(memberId, createDeliveryPostReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -68,8 +69,8 @@ public class DeliveryPostController {
         try {
             List<GetDeliveryPostListRes> getDeliveryPostListResList = deliveryPostMapper.toGetDeliveryPostListResList(deliveryPostService.getDeliveryPostList(page, size));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getDeliveryPostListResList));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -87,8 +88,8 @@ public class DeliveryPostController {
             Long memberId = Long.parseLong(loggedInUser.getName());
             GetDeliveryPostDetailRes getDeliveryPostDetailRes = deliveryPostMapper.toGetDeliveryPostDetailRes(deliveryPostService.getDeliveryPostDetail(memberId,deliveryPostId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getDeliveryPostDetailRes));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -107,8 +108,8 @@ public class DeliveryPostController {
             Long memberId = Long.parseLong(loggedInUser.getName());
             deliveryPostService.createDeliveryPostDetailComment(deliveryPostMapper.toCreateDeliveryPostCommentDto(memberId, deliveryPostId, createDeliveryPostCommentReq));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -126,8 +127,8 @@ public class DeliveryPostController {
         try {
             List<DeliveryPostCommentListRes> deliveryPostCommentListResList = deliveryPostMapper.toDeliveryPostCommentListResList(deliveryPostService.getDeliveryPostCommentList(deliveryPostId, page, size));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(deliveryPostCommentListResList));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -146,8 +147,8 @@ public class DeliveryPostController {
             }
             deliveryPostService.selectDeliveryPostCustomer(deliveryPostId, commentId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
     @Operation(summary = "배달 게시물 모집완료")
@@ -164,8 +165,8 @@ public class DeliveryPostController {
             Long memberId = Long.parseLong(loggedInUser.getName());
             deliveryPostService.doneSelectDeliveryPostCustomer(memberId,deliveryPostId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(BaseResponseStatus.SERVER_ERROR));
+        } catch (BaseException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BaseResponse<>(e.getStatus()));
         }
     }
 }
