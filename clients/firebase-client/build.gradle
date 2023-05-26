@@ -1,0 +1,13 @@
+dependencies {
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    api project(':core:async')
+    implementation project(path: ':clients:web-core:common')
+}
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

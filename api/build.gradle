@@ -21,4 +21,5 @@ dependencies {
     implementation project(':clients:oauth-client')
     implementation project(':clients:pay-client')
     implementation project(':clients:s3-client')
+    implementation project(':clients:firebase-client')
 }

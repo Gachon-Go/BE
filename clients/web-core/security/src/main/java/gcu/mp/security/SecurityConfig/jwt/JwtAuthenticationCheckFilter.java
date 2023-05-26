@@ -23,8 +23,6 @@ public class JwtAuthenticationCheckFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         String token = resolveToken(request);
-        log.info("{}",SecurityContextHolder.getContext().getAuthentication());
-        log.info("Jwt Authentication Check Filter token : {}", token);
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -35,7 +33,6 @@ public class JwtAuthenticationCheckFilter extends OncePerRequestFilter {
 
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("token: {}",bearerToken);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtTokenProvider.TOKEN_PREFIX)) {
             return bearerToken.substring(JwtTokenProvider.TOKEN_PREFIX.length());
         }
