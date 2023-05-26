@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### fcm ###
+gachon-go-firebase-adminsdk-hkqn0-c1c71aa8b9.json
+
 ### STS ###
 .apt_generated
 .classpath

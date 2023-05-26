@@ -66,7 +66,8 @@ public enum BaseResponseStatus {
     KAKAO_PAY_READY_ERROR(false, 4123, HttpStatus.OK, "카카오페이 결제 정보를 가져오는데 실패했습니다."),
     EXISTS_PROGRESS(false, 4124, HttpStatus.OK, "이미 진행 중이거나 사람 선택을 완료했습니다."),
     NOT_EXIST_PROGRESS(false, 4126, HttpStatus.OK, "진행중인 거래가 없습니다."),
-    NOT_EQUALS_POST(false, 4127, HttpStatus.OK, "거래하려는 같은 게시물이 아닙니다.");
+    NOT_EQUALS_POST(false, 4127, HttpStatus.OK, "거래하려는 같은 게시물이 아닙니다."),
+    FAILED_SEND_MESSAGE(false, 4128, HttpStatus.OK,"fcm 메세지 전송에 실패했습니다." );
 
 
     // 5000 : 필요시 만들어서 쓰세요

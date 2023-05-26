@@ -35,6 +35,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
+      - name: make gachon-go-firebase-adminsdk-hkqn0-c1c71aa8b9.json
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: gachon-go-firebase-adminsdk-hkqn0-c1c71aa8b9.json
+          json: ${{ secrets.FIREBASE_SECRET }}
+          dir: './api/src/main/resources'
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
