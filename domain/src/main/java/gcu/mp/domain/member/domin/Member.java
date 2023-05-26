@@ -6,6 +6,7 @@ import gcu.mp.domain.deliveryPost.domain.DeliveryPostProgress;
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.vo.Role;
 import gcu.mp.domain.member.vo.State;
+import gcu.mp.domain.notification.domain.Notification;
 import gcu.mp.domain.orderPost.domain.OrderPost;
 import gcu.mp.domain.orderPost.domain.OrderPostComment;
 import gcu.mp.domain.orderPost.domain.OrderPostProgress;
@@ -64,6 +65,10 @@ public class Member extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     List<DeliveryPostProgress> deliveryPostProgressList = new ArrayList<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    List<Notification> notificationList = new ArrayList<>();
+
     public void setSocialLogin(SocialLogin socialLogin) {
         this.socialLogin = socialLogin;
         socialLogin.setMember(this);
@@ -119,5 +124,9 @@ public class Member extends BaseEntity {
 
     public void setFcmId(String fcmId) {
         this.fcm_id = fcmId;
+    }
+
+    public void addNotification(Notification notification) {
+        this.notificationList.add(notification);
     }
 }

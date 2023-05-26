@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.transform.OutputKeys;
 
 @Tag(name = "푸시 알림", description = "(TEST 전용) FCM Notification 관련 api 입니다.")
 @RequiredArgsConstructor

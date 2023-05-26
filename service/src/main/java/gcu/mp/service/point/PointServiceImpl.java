@@ -14,6 +14,8 @@ import gcu.mp.domain.point.vo.State;
 import gcu.mp.redis.RedisUtil;
 import gcu.mp.service.deliveryPost.DeliveryPostService;
 import gcu.mp.service.member.MemberService;
+import gcu.mp.service.notification.Dto.NotificationEventDto;
+import gcu.mp.service.notification.NotificationService;
 import gcu.mp.service.orderPost.OrderPostService;
 import gcu.mp.service.point.dto.GetPointDto;
 import gcu.mp.service.point.dto.PaysuccessPointDto;
@@ -42,6 +44,7 @@ public class PointServiceImpl implements PointService {
     private final DeliveryPostService deliveryPostService;
     private final PointHistoryRepository pointHistoryRepository;
     private final RedisUtil redisUtil;
+    private final NotificationService notificationService;
 
     @Override
     public GetPointDto getPoint(Long memberId) {
@@ -66,7 +69,7 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public List<PointHistoryDto> getPointHistory(Long memberId, int page, int size) {
-        Member member = memberService.getMember(memberId);
+        memberService.getMember(memberId);
         PageRequest pageRequest = PageRequest.of(page, size);
         List<PointHistory> pointHistoryList = pointHistoryRepository.findByMemberIdAndState(memberId, State.A, pageRequest);
         return pointHistoryList.stream()
@@ -117,7 +120,7 @@ public class PointServiceImpl implements PointService {
                 Long postOwnerId = orderPost.getMember().getId();
                 if (postOwnerId == orderPostProgressOptionalByMember.get().getId()) {
                     List<OrderPostProgress> orderPostProgressList = orderPostService.getOrderPostProgressListByPostId(orderPost.getId());
-                    if (orderPostProgressList.size()<=2) {
+                    if (orderPostProgressList.size() <= 2) {
                         orderPostProgressOptionalByMember.get().updateProgressState(ProgressState.DONE);
                     }
                 } else {
@@ -145,7 +148,7 @@ public class PointServiceImpl implements PointService {
                 Long postOwnerId = deliveryPost.getMember().getId();
                 if (postOwnerId == deliveryPostProgressByMember.get().getId()) {
                     List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostService.getDeliveryPostProgressListByPostId(deliveryPost.getId());
-                    if (deliveryPostProgressList.size()<=2) {
+                    if (deliveryPostProgressList.size() <= 2) {
                         deliveryPostProgressByMember.get().updateProgressState(DONE);
                     }
                 } else {
@@ -165,19 +168,43 @@ public class PointServiceImpl implements PointService {
             PointHistory memberPointHistory = PointHistory.builder()
                     .point(point)
                     .state(State.A)
-                    .flag("+")
+                    .flag("-")
                     .content(title)
                     .build();
             memberPointHistory.setMember(member);
             PointHistory receivePointMemberPointHistory = PointHistory.builder()
                     .point(point)
                     .state(State.A)
-                    .flag("-")
+                    .flag("+")
                     .content(title)
                     .build();
             receivePointMemberPointHistory.setMember(member);
             pointHistoryRepository.save(memberPointHistory);
             pointHistoryRepository.save(receivePointMemberPointHistory);
+            NotificationEventDto notificationEventDto = NotificationEventDto.builder()
+                    .memberId(member.getId())
+                    .flag(2)
+                    .content(title + "에 대한 포인트 " + point + "가 전송되었습니다.")
+                    .build();
+            notificationService.notificationEvent(notificationEventDto);
+            notificationEventDto = NotificationEventDto.builder()
+                    .memberId(member.getId())
+                    .flag(1)
+                    .content(title + "배달이 완료되었습니다. 지금 확인해 보세요!")
+                    .build();
+            notificationService.notificationEvent(notificationEventDto);
+            notificationEventDto = NotificationEventDto.builder()
+                    .memberId(receivePointMember.getId())
+                    .flag(2)
+                    .content(title + "에 대한 포인트 " + point + "를 받았습니다.")
+                    .build();
+            notificationService.notificationEvent(notificationEventDto);
+            notificationEventDto = NotificationEventDto.builder()
+                    .memberId(receivePointMember.getId())
+                    .flag(1)
+                    .content(title + "배달이 완료되었습니다. 지금 확인해 보세요!")
+                    .build();
+            notificationService.notificationEvent(notificationEventDto);
         }
     }
 

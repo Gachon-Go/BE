@@ -14,6 +14,8 @@ import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.domin.Member;
 import gcu.mp.service.deliveryPost.dto.*;
 import gcu.mp.service.member.MemberService;
+import gcu.mp.service.notification.Dto.NotificationEventDto;
+import gcu.mp.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +41,7 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
     private final DeliveryPostProgressRepository deliveryPostProgressRepository;
     private final MemberService memberService;
     private final DeliveryPostCommentRepository deliveryPostCommentRepository;
+    private final NotificationService notificationService;
 
     @Override
     public List<Member> getDeliveryPostProgressMemberIdByMemberId(Long memberId) {
@@ -124,6 +127,12 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
         deliveryPostComment.setDeliveryPost(deliveryPost);
         deliveryPostComment.setMember(member);
         deliveryPostCommentRepository.save(deliveryPostComment);
+        NotificationEventDto notificationEventDto = NotificationEventDto.builder()
+                .memberId(deliveryPost.getMember().getId())
+                .flag(4)
+                .content("내가 작성한 게시물 " + deliveryPost.getTitle() + "에 새로운 댓글이 작성되었습니다.")
+                .build();
+        notificationService.notificationEvent(notificationEventDto);
     }
 
     @Override
@@ -146,6 +155,14 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
         List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(deliveryPostId, State.A, ProgressState.WAIT);
         for (DeliveryPostProgress deliveryPostProgress : deliveryPostProgressList) {
             deliveryPostProgress.updateProgressState(ProgressState.ING);
+        }
+        for (DeliveryPostProgress deliveryPostProgress : deliveryPostProgressList) {
+            NotificationEventDto notificationEventDto = NotificationEventDto.builder()
+                    .memberId(deliveryPostProgress.getMember().getId())
+                    .flag(1)
+                    .content(deliveryPostProgress.getDeliveryPost().getTitle() + "게시글에서 배달기사로 선택되었습니다.")
+                    .build();
+            notificationService.notificationEvent(notificationEventDto);
         }
     }
 
@@ -181,6 +198,6 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
 
     @Override
     public List<DeliveryPostProgress> getDeliveryPostProgressListByPostId(Long id) {
-        return deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(id,State.A,ProgressState.ING);
+        return deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(id, State.A, ProgressState.ING);
     }
 }

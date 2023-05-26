@@ -5,6 +5,7 @@ dependencies {
     api project(':domain')
     api project(':clients:redis-client')
     api project(':clients:web-core:common')
+    api project(':clients:firebase-client')
     api project(':clients:s3-client')
 }
 bootJar {
