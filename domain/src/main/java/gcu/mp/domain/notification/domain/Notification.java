@@ -3,10 +3,7 @@ package gcu.mp.domain.notification.domain;
 import gcu.mp.domain.entity.BaseEntity;
 import gcu.mp.domain.member.domin.Member;
 import gcu.mp.domain.notification.vo.State;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Notification extends BaseEntity {
     String content;
     int flag;
+    @Enumerated(EnumType.STRING)
     State state;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

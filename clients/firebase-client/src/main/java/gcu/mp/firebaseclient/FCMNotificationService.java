@@ -38,4 +38,5 @@ public class FCMNotificationService {
                 log.error("fcm 메세지 전송 실패: {}",e.getMessagingErrorCode());
             }
     }
+
 }
