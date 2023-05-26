@@ -13,6 +13,8 @@ import gcu.mp.domain.orderPost.repository.OrderPostRepository;
 import gcu.mp.domain.orderPost.vo.ProgressState;
 import gcu.mp.domain.orderPost.vo.State;
 import gcu.mp.service.member.MemberService;
+import gcu.mp.service.notification.Dto.NotificationEventDto;
+import gcu.mp.service.notification.NotificationService;
 import gcu.mp.service.orderPost.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +40,7 @@ public class OrderPostServiceImpl implements OrderPostService {
     private final OrderPostRepository orderPostRepository;
     private final OrderPostCommentRepository orderPostCommentRepository;
     private final OrderPostProgressRepository orderPostProgressRepository;
-
+    private final NotificationService notificationService;
     @Override
     @Transactional
     public void createOrderPost(CreateOrderPostDto createOrderPostDto) {
@@ -108,6 +110,12 @@ public class OrderPostServiceImpl implements OrderPostService {
         orderPostComment.setOrderPost(orderPost);
         orderPostComment.setMember(member);
         orderPostCommentRepository.save(orderPostComment);
+        NotificationEventDto notificationEventDto = NotificationEventDto.builder()
+                .memberId(orderPost.getMember().getId())
+                .flag(4)
+                .content("내가 작성한 게시물 "+orderPost.getTitle()+"에 새로운 댓글이 작성되었습니다.")
+                .build();
+        notificationService.notificationEvent(notificationEventDto);
     }
 
     @Override
@@ -155,6 +163,14 @@ public class OrderPostServiceImpl implements OrderPostService {
         List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndStateAndProgressState(orderPostId, State.A, ProgressState.WAIT);
         for (OrderPostProgress orderPostProgress : orderPostProgressList) {
             orderPostProgress.updateProgressState(ProgressState.ING);
+        }
+        for (OrderPostProgress orderPostProgress : orderPostProgressList) {
+            NotificationEventDto notificationEventDto = NotificationEventDto.builder()
+                    .memberId(orderPostProgress.getMember().getId())
+                    .flag(1)
+                    .content(orderPostProgress.getOrderPost().getTitle()+"게시글에서 배달기사로 선택되었습니다.")
+                    .build();
+            notificationService.notificationEvent(notificationEventDto);
         }
     }
 
