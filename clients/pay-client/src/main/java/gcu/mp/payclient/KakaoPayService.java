@@ -22,6 +22,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Slf4j
@@ -106,6 +107,7 @@ public class KakaoPayService {
             log.error("service1: {}",partner_order_id);
             log.error("service1: {}",pgToken);
             String[] payData = redisUtil.getData("kakaoPay " + partner_order_id).split(" ");
+            log.error("payData: {}", Arrays.toString(payData));
             URL address = new URL(approveUrl);
             HttpURLConnection connection = (HttpURLConnection) address.openConnection(); // 서버연결
             connection.setRequestMethod("POST");
