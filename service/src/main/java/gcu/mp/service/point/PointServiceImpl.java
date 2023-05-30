@@ -81,23 +81,21 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public String getPointTransactionId(Long memberId, Long point) {
+    public String getPointTransactionId(Long memberId) {
         String uniqueId = createdCode();
         String key = "point " + uniqueId;
-        String value = memberId + " " + point;
+        String value = memberId.toString();
         redisUtil.setDataExpire(key, value, 60 * 10L);
         return uniqueId;
     }
 
     @Override
     @Transactional
-    public void TransactionPoint(Long memberId, String transactionId) {
+    public void TransactionPoint(Long memberId, String transactionId,Long point) {
         String key = "point " + transactionId;
         if (redisUtil.existData(key)) {
             String value = redisUtil.getData(key);
-            String[] splitValue = value.split(" ");
-            Long receivePointMemberId = Long.valueOf(splitValue[0]);
-            long point = Long.parseLong(splitValue[1]);
+            Long receivePointMemberId = Long.valueOf(value);
             Member member = memberService.getMember(memberId);
             Member receivePointMember = memberService.getMember(receivePointMemberId);
             member.addPoint(-point);
