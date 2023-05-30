@@ -13,7 +13,7 @@ public interface PointService {
 
     List<PointHistoryDto> getPointHistory(Long memberId, int page, int size);
 
-    String getPointTransactionId(Long memberId, Long point);
+    String getPointTransactionId(Long memberId);
 
-    void TransactionPoint(Long memberId, String transactionId);
+    void TransactionPoint(Long memberId, String transactionId,Long point);
 }

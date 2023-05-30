@@ -89,19 +89,19 @@ public class PointController {
             @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
-    @PostMapping("/transaction")
-    public ResponseEntity<BaseResponse<GetPointTransactionIdRes>> getPointTransactionId(@RequestBody GetPointTransactionIdReq getPointTransactionIdReq) {
+    @GetMapping("/transaction/code")
+    public ResponseEntity<BaseResponse<GetPointTransactionIdRes>> getPointTransactionId() {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            log.info("controller: {}",getPointTransactionIdReq.getPoint());
-            GetPointTransactionIdRes getPointTransactionIdRes = pointMapper.toGetPointTransactionIdRes(pointService.getPointTransactionId(memberId, getPointTransactionIdReq.getPoint()));
+            GetPointTransactionIdRes getPointTransactionIdRes = pointMapper.toGetPointTransactionIdRes(pointService.getPointTransactionId(memberId));
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(getPointTransactionIdRes));
 
         } catch (BaseException e) {
             return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));
         }
     }
+
     @Operation(summary = "포인트 거래(고유번호 입력)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "1000", description = "성공"),
@@ -110,12 +110,13 @@ public class PointController {
             @ApiResponse(responseCode = "2103", description = "존재하지 않는 유저입니다.", content = @Content),
             @ApiResponse(responseCode = "4001", description = "서버 오류입니다.", content = @Content)
     })
-    @PostMapping("/transaction/{TransactionId}")
-    public ResponseEntity<BaseResponse<String>> TransactionPoint(@Parameter(name = "TransactionId", description = "거래 고유 번호", in = ParameterIn.PATH) @PathVariable String TransactionId) {
+    @PostMapping("/transaction/code")
+    public ResponseEntity<BaseResponse<String>> TransactionPoint(@Parameter(name = "TransactionId", description = "거래 고유 번호", in = ParameterIn.QUERY) @RequestParam String TransactionId,
+                                                                 @RequestBody GetPointTransactionIdReq getPointTransactionIdReq) {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-            pointService.TransactionPoint(memberId, TransactionId);
+            pointService.TransactionPoint(memberId, TransactionId, getPointTransactionIdReq.getPoint());
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
             return ResponseEntity.status(e.getStatus().getHttpCode()).body(new BaseResponse<>(e.getStatus()));

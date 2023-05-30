@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetNotificationListDto {
-    List<NotificationInfoDto> todayNotificationList = new ArrayList<>();
-    List<NotificationInfoDto> yesterDayNotificationList = new ArrayList<>();
-    List<NotificationInfoDto> pastNotificationList = new ArrayList<>();
+    List<NotificationInfoDto> todayNotificationList;
+    List<NotificationInfoDto> yesterDayNotificationList;
+    List<NotificationInfoDto> pastNotificationList;
 }
