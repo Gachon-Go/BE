@@ -103,6 +103,8 @@ public class KakaoPayService {
 
     public KakaoApproveDto paySuccess(String partner_order_id, String pgToken) {
         try {
+            log.error("service1: {}",partner_order_id);
+            log.error("service1: {}",pgToken);
             String[] payData = redisUtil.getData("kakaoPay " + partner_order_id).split(" ");
             URL address = new URL(approveUrl);
             HttpURLConnection connection = (HttpURLConnection) address.openConnection(); // 서버연결
