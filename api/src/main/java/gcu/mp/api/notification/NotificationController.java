@@ -17,7 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
-@Tag(name = "푸시 알림", description = "(TEST 전용) FCM Notification 관련 api 입니다.")
+@Tag(name = "푸시 알림", description = "FCM Notification 관련 api 입니다.")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("notification")
@@ -26,7 +26,7 @@ public class NotificationController {
     private final FCMNotificationService fcmNotificationService;
     private final NotificationService notificationService;
     private final NotificationAPIMapper notificationAPIMapper;
-    @Operation(summary = "알림 보내기")
+    @Operation(summary = "알림 보내기(TEST 전용)")
     @PostMapping()
     public ResponseEntity<BaseResponse<String>> sendNotificationByToken(@RequestBody FCMNotificationRequestDto requestDto) {
         try {
