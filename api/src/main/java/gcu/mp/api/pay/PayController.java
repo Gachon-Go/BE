@@ -63,8 +63,6 @@ public class PayController {
     public ResponseEntity<BaseResponse<String>> paySuccess(@RequestParam("pg_token") String pgToken,
                                                            @RequestParam("partner_order_id") String partner_order_id) {
         try {
-            log.error("controller: {}",pgToken);
-            log.error("controller: {}",partner_order_id);
             KakaoApproveDto kakaoApproveDto = kakaoPayService.paySuccess(partner_order_id, pgToken);
             payService.paySuccess(payMapper.toPaySuccessDto(kakaoApproveDto));
             pointService.paySuccess(payMapper.toPaysuccessPointDto(kakaoApproveDto));

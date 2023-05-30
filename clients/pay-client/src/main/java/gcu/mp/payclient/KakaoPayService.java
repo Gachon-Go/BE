@@ -84,7 +84,6 @@ public class KakaoPayService {
             String a = change.readLine();
             JSONParser parser = new JSONParser();
             JSONObject elem = (JSONObject) parser.parse(a);
-            log.error(elem.toString());
             // 받는 부분
             payRequestResDto = PayRequestResDto.builder()
                     .tid(elem.get("tid").toString())
@@ -104,10 +103,7 @@ public class KakaoPayService {
 
     public KakaoApproveDto paySuccess(String partner_order_id, String pgToken) {
         try {
-            log.error("service1: {}",partner_order_id);
-            log.error("service1: {}",pgToken);
             String[] payData = redisUtil.getData("kakaoPay " + partner_order_id).split(" ");
-            log.error("payData: {}", Arrays.toString(payData));
             URL address = new URL(approveUrl);
             HttpURLConnection connection = (HttpURLConnection) address.openConnection(); // 서버연결
             connection.setRequestMethod("POST");
@@ -136,7 +132,6 @@ public class KakaoPayService {
             BufferedReader change = new BufferedReader(read);
             String a = change.readLine();
             JsonElement elem = JsonParser.parseString(a);
-            log.error(elem.toString());
             return KakaoApproveDto.builder()
                     .aid(elem.getAsJsonObject().get("aid").getAsString())
                     .amount(KakaoApproveDto.Amount.builder()
