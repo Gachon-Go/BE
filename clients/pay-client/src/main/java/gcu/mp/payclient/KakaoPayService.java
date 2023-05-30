@@ -83,6 +83,7 @@ public class KakaoPayService {
             String a = change.readLine();
             JSONParser parser = new JSONParser();
             JSONObject elem = (JSONObject) parser.parse(a);
+            log.error(elem.toString());
             // 받는 부분
             payRequestResDto = PayRequestResDto.builder()
                     .tid(elem.get("tid").toString())
@@ -131,6 +132,7 @@ public class KakaoPayService {
             BufferedReader change = new BufferedReader(read);
             String a = change.readLine();
             JsonElement elem = JsonParser.parseString(a);
+            log.error(elem.toString());
             return KakaoApproveDto.builder()
                     .aid(elem.getAsJsonObject().get("aid").getAsString())
                     .amount(KakaoApproveDto.Amount.builder()
