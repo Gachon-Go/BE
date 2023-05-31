@@ -21,6 +21,8 @@ public class GetDeliveryPostDetailRes {
     String content;
     @Schema(description = "목표시간", example = "13:00")
     String estimatedTime;
+    @Schema(description = "글쓴이 이미지", example = "img")
+    String writerImage;
     @Schema(description = "댓글 수", example = "10")
     int commentNum;
 }

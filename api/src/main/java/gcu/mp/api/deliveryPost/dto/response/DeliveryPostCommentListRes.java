@@ -15,6 +15,8 @@ public class DeliveryPostCommentListRes {
     Long commentId;
     @Schema(description = "댓글쓴이", example = "peter")
     String commentWriter;
+    @Schema(description = "댓글쓴이 이미지", example = "jpg")
+    String commentWriterImage;
     @Schema(description = "댓글 내용", example = "사줄게")
     String content;
 }
