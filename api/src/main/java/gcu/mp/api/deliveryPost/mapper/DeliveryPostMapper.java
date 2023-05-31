@@ -46,6 +46,7 @@ public class DeliveryPostMapper {
                 .mine(deliveryPostDetail.isMine())
                 .writer(deliveryPostDetail.getWriter())
                 .title(deliveryPostDetail.getTitle())
+                .content(deliveryPostDetail.getContent())
                 .estimatedTime(deliveryPostDetail.getEstimatedTime())
                 .commentNum(deliveryPostDetail.getCommentNum())
                 .build();
