@@ -92,7 +92,7 @@ public class PointServiceImpl implements PointService {
 
     @Override
     @Transactional
-    public void TransactionPoint(Long memberId, String transactionId,Long point) {
+    public void TransactionPoint(Long memberId, String transactionId, Long point) {
         String key = "point " + transactionId;
         if (redisUtil.existData(key)) {
             String value = redisUtil.getData(key);
@@ -149,6 +149,7 @@ public class PointServiceImpl implements PointService {
                     List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostService.getDeliveryPostProgressListByPostId(deliveryPost.getId());
                     if (deliveryPostProgressList.size() <= 2) {
                         deliveryPostProgressByMember.get().updateProgressState(DONE);
+                        deliveryPostProgressByReceivePointMember.get().updateProgressState(DONE);
                     }
                 } else {
                     deliveryPostProgressByMember.get().updateProgressState(DONE);
@@ -156,6 +157,7 @@ public class PointServiceImpl implements PointService {
                 if (postOwnerId == deliveryPostProgressByReceivePointMember.get().getId()) {
                     List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostService.getDeliveryPostProgressListByPostId(deliveryPost.getId());
                     if (deliveryPostProgressList.isEmpty()) {
+                        deliveryPostProgressByMember.get().updateProgressState(DONE);
                         deliveryPostProgressByReceivePointMember.get().updateProgressState(DONE);
                     }
                 } else {
