@@ -14,4 +14,5 @@ public class GetOrderPostDetailDto {
     String content;
     String estimatedTime;
     int commentNum;
+    String writerImage;
 }

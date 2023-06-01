@@ -79,6 +79,7 @@ public class OrderPostServiceImpl implements OrderPostService {
     public GetOrderPostDetailDto getOrderPostDetail(Long memberId, Long orderPostId) {
         OrderPost orderPost = getOrderPost(orderPostId);
         return GetOrderPostDetailDto.builder()
+                .writerImage(orderPost.getMember().getImage())
                 .mine(orderPost.getMember().getId().equals(memberId))
                 .writer(orderPost.getMember().getNickname())
                 .commentNum(orderPost.getOrderPostCommentList().size())
@@ -93,6 +94,7 @@ public class OrderPostServiceImpl implements OrderPostService {
         List<OrderPostComment> orderPostCommentList = orderPostCommentRepository.findByOrderPostIdAndState(orderPostId, State.A, pageRequest);
         return orderPostCommentList.stream().map(
                 orderPostComment -> OrderPostCommentDto.builder()
+                        .commentWriterImage(orderPostComment.getMember().getImage())
                         .commentId(orderPostComment.getId())
                         .commentWriter(orderPostComment.getMember().getNickname())
                         .content(orderPostComment.getContent()).build()

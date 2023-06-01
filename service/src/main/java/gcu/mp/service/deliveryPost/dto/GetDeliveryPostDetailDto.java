@@ -14,4 +14,5 @@ public class GetDeliveryPostDetailDto {
     String content;
     String estimatedTime;
     int commentNum;
+    String writerImage;
 }

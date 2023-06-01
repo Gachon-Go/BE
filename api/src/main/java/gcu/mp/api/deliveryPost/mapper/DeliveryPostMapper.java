@@ -46,6 +46,7 @@ public class DeliveryPostMapper {
                 .mine(deliveryPostDetail.isMine())
                 .writer(deliveryPostDetail.getWriter())
                 .title(deliveryPostDetail.getTitle())
+                .writerImage(deliveryPostDetail.getWriterImage())
                 .content(deliveryPostDetail.getContent())
                 .estimatedTime(deliveryPostDetail.getEstimatedTime())
                 .commentNum(deliveryPostDetail.getCommentNum())
@@ -55,6 +56,7 @@ public class DeliveryPostMapper {
     public List<DeliveryPostCommentListRes> toDeliveryPostCommentListResList(List<DeliveryPostCommentDto> deliveryPostCommentList) {
         return deliveryPostCommentList.stream().map(
                 deliveryPostCommentDto -> DeliveryPostCommentListRes.builder()
+                        .commentWriterImage(deliveryPostCommentDto.getCommentWriterImage())
                         .commentId(deliveryPostCommentDto.getCommentId())
                         .commentWriter(deliveryPostCommentDto.getCommentWriter())
                         .content(deliveryPostCommentDto.getContent())

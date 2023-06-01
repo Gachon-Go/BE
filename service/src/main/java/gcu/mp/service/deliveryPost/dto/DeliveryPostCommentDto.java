@@ -13,4 +13,5 @@ public class DeliveryPostCommentDto {
     Long commentId;
     String commentWriter;
     String content;
+    String commentWriterImage;
 }

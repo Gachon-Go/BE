@@ -96,6 +96,7 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
     public GetDeliveryPostDetailDto getDeliveryPostDetail(Long memberId, Long deliveryPostId) {
         DeliveryPost deliveryPost = getDeliveryPost(deliveryPostId);
         return GetDeliveryPostDetailDto.builder()
+                .writerImage(deliveryPost.getMember().getImage())
                 .mine(deliveryPost.getMember().getId().equals(memberId))
                 .writer(deliveryPost.getMember().getNickname())
                 .commentNum(deliveryPost.getDeliveryPostCommentList().size())
@@ -110,6 +111,7 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
         List<DeliveryPostComment> deliveryPostCommentList = deliveryPostCommentRepository.findByDeliveryPostIdAndState(deliveryPostId, State.A, pageRequest);
         return deliveryPostCommentList.stream().map(
                 deliveryPostComment -> DeliveryPostCommentDto.builder()
+                        .commentWriterImage(deliveryPostComment.getMember().getImage())
                         .commentId(deliveryPostComment.getId())
                         .commentWriter(deliveryPostComment.getMember().getNickname())
                         .content(deliveryPostComment.getContent()).build()
