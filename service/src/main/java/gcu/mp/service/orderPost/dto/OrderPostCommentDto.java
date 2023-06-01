@@ -14,4 +14,5 @@ public class OrderPostCommentDto {
     String commentWriter;
     String content;
     String commentWriterImage;
+    Boolean isAccept;
 }

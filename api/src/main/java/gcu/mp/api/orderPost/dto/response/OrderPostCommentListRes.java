@@ -19,4 +19,6 @@ public class OrderPostCommentListRes {
     String commentWriterImage;
     @Schema(description = "댓글 내용", example = "사줄게")
     String content;
+    @Schema(description = "수락했는지 안했는지", example = "true, false")
+    Boolean isAccept;
 }

@@ -94,13 +94,16 @@ public class OrderPostServiceImpl implements OrderPostService {
         List<OrderPostComment> orderPostCommentList = orderPostCommentRepository.findByOrderPostIdAndState(orderPostId, State.A, pageRequest);
         return orderPostCommentList.stream().map(
                 orderPostComment -> OrderPostCommentDto.builder()
+                        .isAccept(isAcceptOrderPost(orderPostId,orderPostComment.getMember().getId()))
                         .commentWriterImage(orderPostComment.getMember().getImage())
                         .commentId(orderPostComment.getId())
                         .commentWriter(orderPostComment.getMember().getNickname())
                         .content(orderPostComment.getContent()).build()
         ).collect(Collectors.toList());
     }
-
+    public boolean isAcceptOrderPost(Long orderPostId, Long memberId) {
+        return orderPostProgressRepository.existsByOrderPostIdAndMemberIdAndState(orderPostId, memberId, State.A);
+    }
     @Override
     @Transactional
     public void createOrderPostDetailComment(CreateOrderPostCommentDto createOrderPostCommentDto) {

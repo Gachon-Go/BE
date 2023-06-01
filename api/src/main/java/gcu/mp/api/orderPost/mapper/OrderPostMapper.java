@@ -57,6 +57,7 @@ public class OrderPostMapper {
         return orderPostCommentList.stream().map(
                 orderPostCommentDto -> OrderPostCommentListRes.builder()
                         .commentWriterImage(orderPostCommentDto.getCommentWriterImage())
+                        .isAccept(orderPostCommentDto.getIsAccept())
                         .commentId(orderPostCommentDto.getCommentId())
                         .commentWriter(orderPostCommentDto.getCommentWriter())
                         .content(orderPostCommentDto.getContent())
