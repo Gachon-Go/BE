@@ -23,6 +23,7 @@ import gcu.mp.service.point.dto.PointHistoryDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,7 +71,7 @@ public class PointServiceImpl implements PointService {
     @Override
     public List<PointHistoryDto> getPointHistory(Long memberId, int page, int size) {
         memberService.getMember(memberId);
-        PageRequest pageRequest = PageRequest.of(page, size);
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
         List<PointHistory> pointHistoryList = pointHistoryRepository.findByMemberIdAndState(memberId, State.A, pageRequest);
         return pointHistoryList.stream()
                 .map(pointHistory -> PointHistoryDto.builder()
