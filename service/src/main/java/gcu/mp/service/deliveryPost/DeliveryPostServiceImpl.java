@@ -159,7 +159,6 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
     @Transactional
     public void doneSelectDeliveryPostCustomer(Long memberId, Long deliveryPostId) {
         Member member = memberService.getMember(memberId);
-        List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(deliveryPostId, State.A, ProgressState.WAIT);
         DeliveryPost deliveryPost = getDeliveryPost(deliveryPostId);
         DeliveryPostProgress MemberDeliveryPostProgress = DeliveryPostProgress.builder()
                 .state(State.A)
@@ -167,6 +166,8 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
         MemberDeliveryPostProgress.setDeliveryPost(deliveryPost);
         MemberDeliveryPostProgress.setMember(member);
         deliveryPostProgressRepository.save(MemberDeliveryPostProgress);
+        deliveryPostProgressRepository.flush();
+        List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(deliveryPostId, State.A, ProgressState.WAIT);
         for (DeliveryPostProgress deliveryPostProgress : deliveryPostProgressList) {
             deliveryPostProgress.updateProgressState(ProgressState.ING);
         }
