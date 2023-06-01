@@ -142,7 +142,7 @@ public class DeliveryPostController {
     @PostMapping("/{deliveryPostId}/comment/{commentId}/select")
     public ResponseEntity<BaseResponse<String>> selectDeliveryPostCustomer(@PathVariable Long deliveryPostId, @PathVariable Long commentId) {
         try {
-            if(deliveryPostService.existDeliveryPostProgress(deliveryPostId)){
+            if(deliveryPostService.existDeliveryPostProgress(commentId)){
                 return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.EXISTS_PROGRESS));
             }
             deliveryPostService.selectDeliveryPostCustomer(deliveryPostId, commentId);
