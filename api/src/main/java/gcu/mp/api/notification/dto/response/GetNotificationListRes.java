@@ -14,6 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GetNotificationListRes {
     List<NotificationInfo> todayNotificationList = new ArrayList<>();
-    List<NotificationInfo> yesterDayNotificationList = new ArrayList<>();
+    List<NotificationInfo> yesterdayNotificationList = new ArrayList<>();
     List<NotificationInfo> pastNotificationList = new ArrayList<>();
 }
