@@ -30,7 +30,7 @@ public interface DeliveryPostService {
 
     void doneSelectDeliveryPostCustomer(Long memberId, Long DeliveryPostId);
 
-    boolean existDeliveryPostProgress(Long deliveryPostId);
+    boolean existDeliveryPostProgress(Long commentId);
 
     boolean existProgressingDeliveryPostByMemberId(Long memberId);
 

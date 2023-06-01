@@ -174,8 +174,10 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
     }
 
     @Override
-    public boolean existDeliveryPostProgress(Long deliveryPostId) {
-        List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostProgressRepository.findByDeliveryPostIdAndState(deliveryPostId, State.A);
+    public boolean existDeliveryPostProgress(Long commentId) {
+        DeliveryPostComment deliveryPostComment = deliveryPostCommentRepository.findByIdAndState(commentId,State.A).orElseThrow(() -> new BaseException(NOT_EXIST_COMMENT));
+        Member member = deliveryPostComment.getMember();
+        List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostProgressRepository.findByMemberIdAndState(member.getId(),State.A);
         for (DeliveryPostProgress deliveryPostProgress : deliveryPostProgressList) {
             if (deliveryPostProgress.getProgressState().equals(ProgressState.WAIT) || deliveryPostProgress.getProgressState().equals(ProgressState.ING)) {
                 return true;
