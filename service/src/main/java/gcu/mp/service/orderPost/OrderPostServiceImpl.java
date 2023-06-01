@@ -181,7 +181,7 @@ public class OrderPostServiceImpl implements OrderPostService {
 
     @Override
     public boolean existOrderPostProgress(Long orderPostId) {
-        OrderPostComment orderPostComment = orderPostCommentRepository.findByIdAndState(orderPostId,State.A).orElseThrow(() -> new BaseException(NOT_EXIST_COMMENT));
+        OrderPostComment orderPostComment = orderPostCommentRepository.findByOrderPostIdAndState(orderPostId,State.A).orElseThrow(() -> new BaseException(NOT_EXIST_COMMENT));
         List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndState(orderPostId, State.A);
         List<OrderPostProgress> orderPostProgressListByMember = orderPostProgressRepository.findByMemberIdAndState(orderPostComment.getMember().getId(), State.A);
         for (OrderPostProgress orderPostProgress : orderPostProgressList) {
