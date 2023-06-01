@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -218,5 +219,11 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
     @Override
     public List<DeliveryPostProgress> getDeliveryPostProgressListByPostId(Long id) {
         return deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(id, State.A, ProgressState.ING);
+    }
+
+    @Override
+    public boolean checkMemberPost(Long memberId, Long deliveryPostId) {
+        DeliveryPost deliveryPost =deliveryPostRepository.findByIdAndState(deliveryPostId,State.A).orElseThrow(() -> new BaseException(NOT_EXIST_POST));
+        return Objects.equals(deliveryPost.getMember().getId(),memberId);
     }
 }

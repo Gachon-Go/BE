@@ -163,6 +163,9 @@ public class DeliveryPostController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
+            if(!deliveryPostService.checkMemberPost(memberId,deliveryPostId)){
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_MEMBER_POST));
+            }
             deliveryPostService.doneSelectDeliveryPostCustomer(memberId,deliveryPostId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {
