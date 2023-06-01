@@ -165,6 +165,9 @@ public class OrderPostController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
+            if(!orderPostService.checkMemberPost(memberId,orderPostId)){
+                return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.NOT_MEMBER_POST));
+            }
             orderPostService.doneSelectOrderPostCustomer(memberId, orderPostId);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(BaseResponseStatus.SUCCESS));
         } catch (BaseException e) {

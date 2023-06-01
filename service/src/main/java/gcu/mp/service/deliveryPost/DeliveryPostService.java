@@ -39,4 +39,6 @@ public interface DeliveryPostService {
     DeliveryPost getDeliveryPost(Long id);
 
     List<DeliveryPostProgress> getDeliveryPostProgressListByPostId(Long id);
+
+    boolean checkMemberPost(Long memberId, Long deliveryPostId);
 }
