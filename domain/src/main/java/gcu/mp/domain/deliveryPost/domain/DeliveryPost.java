@@ -49,4 +49,8 @@ public class DeliveryPost extends BaseEntity {
     public void addDeliveryPostProgress(DeliveryPostProgress deliveryPostProgress) {
         this.deliveryPostProgressList.add(deliveryPostProgress);
     }
+
+    public void updateProgress(Progress progress) {
+        this.progress = progress;
+    }
 }

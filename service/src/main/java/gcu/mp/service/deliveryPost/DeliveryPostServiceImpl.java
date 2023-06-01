@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import static gcu.mp.common.api.BaseResponseStatus.NOT_EXIST_COMMENT;
 import static gcu.mp.common.api.BaseResponseStatus.NOT_EXIST_POST;
+import static gcu.mp.domain.deliveryPost.vo.Progress.DONE;
 import static gcu.mp.domain.deliveryPost.vo.Progress.ING;
 
 @Slf4j
@@ -160,6 +161,7 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
     public void doneSelectDeliveryPostCustomer(Long memberId, Long deliveryPostId) {
         Member member = memberService.getMember(memberId);
         DeliveryPost deliveryPost = getDeliveryPost(deliveryPostId);
+        deliveryPost.updateProgress(DONE);
         DeliveryPostProgress MemberDeliveryPostProgress = DeliveryPostProgress.builder()
                 .state(State.A)
                 .progressState(ProgressState.WAIT).build();

@@ -49,4 +49,8 @@ public class OrderPost extends BaseEntity {
     public void addOrderPostProgress(OrderPostProgress orderPostProgress) {
         this.orderPostProgressList.add(orderPostProgress);
     }
+
+    public void updateProgress(Progress progress) {
+        this.progress = progress;
+    }
 }

@@ -117,17 +117,22 @@ public class PointServiceImpl implements PointService {
                 OrderPost orderPost = orderPostService.getOrderPost(orderPostProgressOptionalByReceivePointMember.get().getOrderPost().getId());
                 title = orderPost.getTitle();
                 Long postOwnerId = orderPost.getMember().getId();
+                //post의 주인이 돈을 주려는 사람과 같다면
                 if (postOwnerId == orderPostProgressOptionalByMember.get().getId()) {
                     List<OrderPostProgress> orderPostProgressList = orderPostService.getOrderPostProgressListByPostId(orderPost.getId());
+                    //해당 포스트의 진행중인 거래가 2명 이하라면
                     if (orderPostProgressList.size() <= 2) {
                         orderPostProgressOptionalByMember.get().updateProgressState(ProgressState.DONE);
+                        orderPostProgressOptionalByReceivePointMember.get().updateProgressState(ProgressState.DONE);
                     }
                 } else {
                     orderPostProgressOptionalByMember.get().updateProgressState(ProgressState.DONE);
                 }
+                //post의 주인이 돈을 받는 사람과 같다면
                 if (postOwnerId == orderPostProgressOptionalByReceivePointMember.get().getId()) {
                     List<OrderPostProgress> orderPostProgressList = orderPostService.getOrderPostProgressListByPostId(orderPost.getId());
-                    if (orderPostProgressList.isEmpty()) {
+                    if (orderPostProgressList.size()<=2) {
+                        orderPostProgressOptionalByMember.get().updateProgressState(ProgressState.DONE);
                         orderPostProgressOptionalByReceivePointMember.get().updateProgressState(ProgressState.DONE);
                     }
                 } else {
@@ -156,7 +161,7 @@ public class PointServiceImpl implements PointService {
                 }
                 if (postOwnerId == deliveryPostProgressByReceivePointMember.get().getId()) {
                     List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostService.getDeliveryPostProgressListByPostId(deliveryPost.getId());
-                    if (deliveryPostProgressList.isEmpty()) {
+                    if (deliveryPostProgressList.size() <= 2) {
                         deliveryPostProgressByMember.get().updateProgressState(DONE);
                         deliveryPostProgressByReceivePointMember.get().updateProgressState(DONE);
                     }
