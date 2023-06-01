@@ -14,4 +14,5 @@ public class DeliveryPostCommentDto {
     String commentWriter;
     String content;
     String commentWriterImage;
+    Boolean isAccept;
 }

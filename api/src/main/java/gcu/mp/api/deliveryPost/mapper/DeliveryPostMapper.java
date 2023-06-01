@@ -57,6 +57,7 @@ public class DeliveryPostMapper {
         return deliveryPostCommentList.stream().map(
                 deliveryPostCommentDto -> DeliveryPostCommentListRes.builder()
                         .commentWriterImage(deliveryPostCommentDto.getCommentWriterImage())
+                        .isAccept(deliveryPostCommentDto.getIsAccept())
                         .commentId(deliveryPostCommentDto.getCommentId())
                         .commentWriter(deliveryPostCommentDto.getCommentWriter())
                         .content(deliveryPostCommentDto.getContent())
