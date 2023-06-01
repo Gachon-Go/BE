@@ -160,6 +160,13 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
     public void doneSelectDeliveryPostCustomer(Long memberId, Long deliveryPostId) {
         Member member = memberService.getMember(memberId);
         List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostProgressRepository.findByDeliveryPostIdAndStateAndProgressState(deliveryPostId, State.A, ProgressState.WAIT);
+        DeliveryPost deliveryPost = getDeliveryPost(deliveryPostId);
+        DeliveryPostProgress MemberDeliveryPostProgress = DeliveryPostProgress.builder()
+                .state(State.A)
+                .progressState(ProgressState.WAIT).build();
+        MemberDeliveryPostProgress.setDeliveryPost(deliveryPost);
+        MemberDeliveryPostProgress.setMember(member);
+        deliveryPostProgressRepository.save(MemberDeliveryPostProgress);
         for (DeliveryPostProgress deliveryPostProgress : deliveryPostProgressList) {
             deliveryPostProgress.updateProgressState(ProgressState.ING);
         }

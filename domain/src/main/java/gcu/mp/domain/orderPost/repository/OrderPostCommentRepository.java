@@ -14,4 +14,6 @@ public interface OrderPostCommentRepository extends JpaRepository<OrderPostComme
     List<OrderPostComment> findByOrderPostIdAndState(Long orderPostId, State state, PageRequest pageRequest);
 
     Optional<OrderPostComment> findByIdAndState(Long commentId, State state);
+
+    Optional<OrderPostComment> findByOrderPostIdAndState(Long orderPostId, State state);
 }
