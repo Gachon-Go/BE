@@ -168,6 +168,9 @@ public class OrderPostServiceImpl implements OrderPostService {
                 .progressState(ProgressState.WAIT).build();
         MemberDeliveryPostProgress.setOrderPost(orderPost);
         MemberDeliveryPostProgress.setMember(member);
+        orderPostProgressRepository.save(MemberDeliveryPostProgress);
+        orderPostProgressRepository.flush();
+
         List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findByOrderPostIdAndStateAndProgressState(orderPostId, State.A, ProgressState.WAIT);
         for (OrderPostProgress orderPostProgress : orderPostProgressList) {
             orderPostProgress.updateProgressState(ProgressState.ING);
