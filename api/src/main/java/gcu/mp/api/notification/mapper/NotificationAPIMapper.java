@@ -27,7 +27,7 @@ public class NotificationAPIMapper {
                                         .build()
                         ).collect(Collectors.toList())
                 )
-                .yesterDayNotificationList(
+                .yesterdayNotificationList(
                         getNotificationListDto.getYesterDayNotificationList().stream().map(
                                 notificationInfoDto -> NotificationInfo.builder()
                                         .content(notificationInfoDto.getContent())
