@@ -111,11 +111,16 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
         List<DeliveryPostComment> deliveryPostCommentList = deliveryPostCommentRepository.findByDeliveryPostIdAndState(deliveryPostId, State.A, pageRequest);
         return deliveryPostCommentList.stream().map(
                 deliveryPostComment -> DeliveryPostCommentDto.builder()
+                        .isAccept(isAcceptDeliveryPost(deliveryPostId, deliveryPostComment.getMember().getId()))
                         .commentWriterImage(deliveryPostComment.getMember().getImage())
                         .commentId(deliveryPostComment.getId())
                         .commentWriter(deliveryPostComment.getMember().getNickname())
                         .content(deliveryPostComment.getContent()).build()
         ).collect(Collectors.toList());
+    }
+
+    public boolean isAcceptDeliveryPost(Long deliveryPostId, Long memberId) {
+        return deliveryPostProgressRepository.existsByDeliveryPostIdAndMemberIdAndState(deliveryPostId, memberId, State.A);
     }
 
     @Override

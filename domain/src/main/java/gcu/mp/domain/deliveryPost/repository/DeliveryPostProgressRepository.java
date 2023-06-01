@@ -16,4 +16,6 @@ public interface DeliveryPostProgressRepository extends JpaRepository<DeliveryPo
     List<DeliveryPostProgress> findByDeliveryPostIdAndStateAndProgressState(Long orderPostId, State state, ProgressState progressState);
 
     List<DeliveryPostProgress> findByDeliveryPostIdAndState(Long deliveryPostId, State state);
+
+    boolean existsByDeliveryPostIdAndMemberIdAndState(Long deliveryPostId, Long memberId, State state);
 }
