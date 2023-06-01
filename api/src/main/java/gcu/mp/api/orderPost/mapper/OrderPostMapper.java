@@ -46,6 +46,8 @@ public class OrderPostMapper {
                 .mine(orderPostDetail.isMine())
                 .writer(orderPostDetail.getWriter())
                 .title(orderPostDetail.getTitle())
+                .content(orderPostDetail.getContent())
+                .writerImage(orderPostDetail.getWriterImage())
                 .estimatedTime(orderPostDetail.getEstimatedTime())
                 .commentNum(orderPostDetail.getCommentNum())
                 .build();
@@ -54,6 +56,7 @@ public class OrderPostMapper {
     public List<OrderPostCommentListRes> toOrderPostCommentListResList(List<OrderPostCommentDto> orderPostCommentList) {
         return orderPostCommentList.stream().map(
                 orderPostCommentDto -> OrderPostCommentListRes.builder()
+                        .commentWriterImage(orderPostCommentDto.getCommentWriterImage())
                         .commentId(orderPostCommentDto.getCommentId())
                         .commentWriter(orderPostCommentDto.getCommentWriter())
                         .content(orderPostCommentDto.getContent())

@@ -23,4 +23,6 @@ public class GetOrderPostDetailRes {
     String estimatedTime;
     @Schema(description = "댓글 수", example = "10")
     int commentNum;
+    @Schema(description = "글쓴이 이미지", example = "img")
+    String writerImage;
 }

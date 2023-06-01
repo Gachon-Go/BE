@@ -13,4 +13,5 @@ public class OrderPostCommentDto {
     Long commentId;
     String commentWriter;
     String content;
+    String commentWriterImage;
 }
