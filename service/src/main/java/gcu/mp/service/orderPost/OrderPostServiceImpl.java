@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static gcu.mp.common.api.BaseResponseStatus.*;
+import static gcu.mp.domain.orderPost.vo.Progress.DONE;
 import static gcu.mp.domain.orderPost.vo.Progress.ING;
 
 @Slf4j
@@ -163,6 +164,7 @@ public class OrderPostServiceImpl implements OrderPostService {
     public void doneSelectOrderPostCustomer(Long memberId, Long orderPostId) {
         Member member = memberService.getMember(memberId);
         OrderPost orderPost = getOrderPost(orderPostId);
+        orderPost.updateProgress(DONE);
         OrderPostProgress MemberDeliveryPostProgress = OrderPostProgress.builder()
                 .state(State.A)
                 .progressState(ProgressState.WAIT).build();
