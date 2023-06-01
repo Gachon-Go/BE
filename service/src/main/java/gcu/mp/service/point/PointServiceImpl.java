@@ -177,7 +177,7 @@ public class PointServiceImpl implements PointService {
                     .flag("+")
                     .content(title)
                     .build();
-            receivePointMemberPointHistory.setMember(member);
+            receivePointMemberPointHistory.setMember(receivePointMember);
             pointHistoryRepository.save(memberPointHistory);
             pointHistoryRepository.save(receivePointMemberPointHistory);
             NotificationEventDto notificationEventDto = NotificationEventDto.builder()
