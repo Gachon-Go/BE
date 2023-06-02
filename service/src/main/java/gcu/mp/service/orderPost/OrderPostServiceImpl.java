@@ -232,7 +232,19 @@ public class OrderPostServiceImpl implements OrderPostService {
 
     @Override
     public boolean checkMemberPost(Long memberId, Long orderPostId) {
-        OrderPost orderPost =orderPostRepository.findByIdAndState(orderPostId,State.A).orElseThrow(() -> new BaseException(NOT_EXIST_POST));
-        return Objects.equals(orderPost.getMember().getId(),memberId);
+        OrderPost orderPost = orderPostRepository.findByIdAndState(orderPostId, State.A).orElseThrow(() -> new BaseException(NOT_EXIST_POST));
+        return Objects.equals(orderPost.getMember().getId(), memberId);
+    }
+
+    @Override
+    public int getOrderPostSize(Long memberId) {
+        List<OrderPost> orderPostList = orderPostRepository.findByMemberIdAndState(memberId, State.A);
+        return orderPostList.size();
+    }
+
+    @Override
+    public int getOrderProgressPostSize(Long memberId) {
+        List<OrderPostProgress> orderPostProgressList = orderPostProgressRepository.findAllByMemberIdAndStateAndProgressState(memberId, State.A, ProgressState.DONE);
+        return orderPostProgressList.size();
     }
 }

@@ -19,4 +19,6 @@ public interface DeliveryPostRepository extends JpaRepository<DeliveryPost, Long
     List<DeliveryPost> findByState(State state, PageRequest pageRequest);
 
     boolean existsByMemberIdAndStateAndProgress(Long memberId, State state, Progress progress);
+
+    List<DeliveryPost> findByMemberIdAndState(Long memberId, State state);
 }

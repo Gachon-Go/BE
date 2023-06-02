@@ -39,4 +39,8 @@ public interface OrderPostService {
     List<OrderPostProgress> getOrderPostProgressListByPostId(Long id);
 
     boolean checkMemberPost(Long memberId, Long orderPostId);
+
+    int getOrderPostSize(Long memberId);
+
+    int getOrderProgressPostSize(Long memberId);
 }

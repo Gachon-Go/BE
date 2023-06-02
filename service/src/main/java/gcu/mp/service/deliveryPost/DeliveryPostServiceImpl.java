@@ -226,4 +226,16 @@ public class DeliveryPostServiceImpl implements DeliveryPostService {
         DeliveryPost deliveryPost =deliveryPostRepository.findByIdAndState(deliveryPostId,State.A).orElseThrow(() -> new BaseException(NOT_EXIST_POST));
         return Objects.equals(deliveryPost.getMember().getId(),memberId);
     }
+
+    @Override
+    public int getDeliveryPostSize(Long memberId) {
+        List<DeliveryPost> deliveryPostList = deliveryPostRepository.findByMemberIdAndState(memberId,State.A);
+        return deliveryPostList.size();
+    }
+
+    @Override
+    public int getDeliveryProgressPostSize(Long memberId) {
+        List<DeliveryPostProgress> deliveryPostProgressList = deliveryPostProgressRepository.findAllByMemberIdAndStateAndProgressState(memberId,State.A,ProgressState.DONE);
+        return deliveryPostProgressList.size();
+    }
 }
