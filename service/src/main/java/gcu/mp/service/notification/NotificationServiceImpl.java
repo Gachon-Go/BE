@@ -12,6 +12,7 @@ import gcu.mp.service.notification.Dto.NotificationInfoDto;
 import gcu.mp.service.notification.mapper.NotificationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +50,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public GetNotificationListDto getNotificationList(Long memberId) {
         LocalDateTime localDateTime = LocalDateTime.now();
-        List<Notification> notificationList = notificationRepository.findByMemberIdAndState(memberId,State.A);
+        List<Notification> notificationList = notificationRepository.findByMemberIdAndState(memberId,State.A, Sort.by(Sort.Direction.DESC,"id"));
         List<NotificationInfoDto> yesterdayNotificationList = new ArrayList<>();
         List<NotificationInfoDto> pastNotificationList = new ArrayList<>();
         List<NotificationInfoDto> todayNotificationList = new ArrayList<>();
