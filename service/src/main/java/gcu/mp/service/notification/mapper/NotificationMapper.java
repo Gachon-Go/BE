@@ -10,6 +10,6 @@ public class NotificationMapper {
         return FCMNotificationRequestDto.builder()
                 .fcmCode(fcmId)
                 .body(notificationEventDto.getContent())
-                .title("걸어봐 위엄 like a lion~").build();
+                .title("Gachon Go").build();
     }
 }
