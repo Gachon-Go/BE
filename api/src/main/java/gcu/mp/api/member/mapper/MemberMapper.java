@@ -15,13 +15,13 @@ public class MemberMapper {
                 .memberId(memberId).build();
     }
 
-    public MyPageRes toMyPageRes(MyPageDto myPageDto) {
+    public MyPageRes toMyPageRes(MyPageDto myPageDto,int deliveryNum,int postNum,int orderNum) {
         return MyPageRes.builder()
-                .deliveryNum(myPageDto.getDeliveryNum())
+                .deliveryNum(deliveryNum)
                 .point(myPageDto.getPoint())
                 .nickname(myPageDto.getNickname())
-                .orderNum(myPageDto.getOrderNum())
-                .postNum(myPageDto.getPostNum())
+                .orderNum(orderNum)
+                .postNum(postNum)
                 .build();
     }
 }

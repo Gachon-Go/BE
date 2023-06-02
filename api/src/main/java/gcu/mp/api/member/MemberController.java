@@ -6,8 +6,10 @@ import gcu.mp.api.member.mapper.MemberMapper;
 import gcu.mp.common.api.BaseResponse;
 import gcu.mp.common.api.BaseResponseStatus;
 import gcu.mp.common.exception.BaseException;
+import gcu.mp.service.deliveryPost.DeliveryPostService;
 import gcu.mp.service.member.MemberService;
 import gcu.mp.service.member.dto.MyPageDto;
+import gcu.mp.service.orderPost.OrderPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,6 +37,8 @@ import static gcu.mp.util.FileCheck.checkImage;
 public class MemberController {
     private final MemberMapper memberMapper;
     private final MemberService memberService;
+    private final OrderPostService orderPostService;
+    private final DeliveryPostService deliveryPostService;
 
     @Operation(summary = "닉네임 변경")
     @ApiResponses(value = {
@@ -122,9 +126,11 @@ public class MemberController {
         try {
             Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
             Long memberId = Long.parseLong(loggedInUser.getName());
-
+            int deliveryNum = deliveryPostService.getDeliveryProgressPostSize(memberId);
+            int postNum = orderPostService.getOrderPostSize(memberId)+ deliveryPostService.getDeliveryPostSize(memberId);
+            int orderNum = orderPostService.getOrderProgressPostSize(memberId);
             MyPageDto myPageDto = memberService.getMyPage(memberId);
-            MyPageRes myPageRes = memberMapper.toMyPageRes(myPageDto);
+            MyPageRes myPageRes = memberMapper.toMyPageRes(myPageDto,deliveryNum,postNum,orderNum);
             return ResponseEntity.status(HttpStatus.OK).body(new BaseResponse<>(myPageRes));
 
         } catch (BaseException e) {

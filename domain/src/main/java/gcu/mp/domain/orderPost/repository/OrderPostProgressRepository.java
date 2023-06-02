@@ -20,4 +20,6 @@ public interface OrderPostProgressRepository extends JpaRepository<OrderPostProg
     boolean existsByOrderPostIdAndMemberIdAndState(Long orderPostId, Long memberId, State state);
 
     List<OrderPostProgress> findByMemberIdAndState(Long id, State state);
+
+    List<OrderPostProgress> findAllByMemberIdAndStateAndProgressState(Long memberId, State state, ProgressState progressState);
 }

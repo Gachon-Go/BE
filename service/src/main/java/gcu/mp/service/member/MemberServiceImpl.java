@@ -7,7 +7,9 @@ import gcu.mp.domain.member.repository.MemberEntityRepository;
 import gcu.mp.domain.member.vo.Role;
 import gcu.mp.domain.member.vo.State;
 import gcu.mp.s3client.S3Service;
+import gcu.mp.service.deliveryPost.DeliveryPostService;
 import gcu.mp.service.member.dto.*;
+import gcu.mp.service.orderPost.OrderPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -95,9 +97,6 @@ public class MemberServiceImpl implements MemberService {
         Member member = getMember(memberId);
         //todo 게시물 api 제작 시 DB에서 가져오기
         return MyPageDto.builder()
-                .deliveryNum(0)
-                .postNum(0)
-                .orderNum(0)
                 .nickname(member.getNickname())
                 .point(member.getPoint()).build();
     }
